@@ -23,6 +23,17 @@
                 Style="{StaticResource SubHeadline}"
                 SemanticProperties.HeadingLevel="Level2"
                 SemanticProperties.Description="Welcome to dot net Multi platform App U I" />
+            <Entry
+                x:Name="ServerEntry"
+                Placeholder="ws://localhost:5085/ws or wss://localhost:7094/ws"
+                HorizontalOptions="Fill" />
+
+            <Button
+                x:Name="ConnectBtn"
+                Text="Connect &amp; Send"
+                SemanticProperties.Hint="Connect to websocket server from entry and send test message"
+                Clicked="OnConnectClicked"
+                HorizontalOptions="Fill" />
 
             <Button
                 x:Name="CounterBtn"

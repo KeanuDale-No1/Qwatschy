@@ -1,4 +1,4 @@
-namespace VoiceChat.Web.Networking
+namespace VoiceChat.Shared.Networking
 {
     public class WebSocketOptions
     {

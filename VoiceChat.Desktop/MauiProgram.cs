@@ -22,7 +22,7 @@ public static class MauiProgram
 #endif
 
         // Register WebSocket service for the app
-        builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
+		builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
 
         return builder.Build();
 	}
