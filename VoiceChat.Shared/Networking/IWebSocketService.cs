@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using VoiceChat.Shared.Networking;
 
-namespace VoiceChat.Desktop.Networking
+namespace VoiceChat.Shared.Networking
 {
     public interface IWebSocketService
     {

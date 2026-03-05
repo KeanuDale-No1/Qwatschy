@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using VoiceChat.Desktop.Networking;
+using VoiceChat.Shared.Networking;
 
 namespace VoiceChat.Desktop;
 
@@ -20,8 +21,9 @@ public static class MauiProgram
 		builder.Logging.AddDebug();
 #endif
 
-		return builder.Build();
-		// Register WebSocket service for the app
-		builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
+        // Register WebSocket service for the app
+        builder.Services.AddSingleton<IWebSocketService, WebSocketService>();
+
+        return builder.Build();
 	}
 }

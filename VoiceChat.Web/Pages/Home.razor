@@ -1,7 +1,52 @@
 ﻿@page "/"
+@using VoiceChat.Shared.Networking
+@using VoiceChat.Web.Networking
+@inject IWebSocketService WebSocketService
+@inject NavigationManager Navigation
+@inject Microsoft.Extensions.Options.IOptions<WebSocketOptions> WsOptions
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        // Determine websocket URI: prefer configured value, otherwise build from Navigation
+        Uri wsUri;
+        var configured = WsOptions?.Value?.Url;
+        if (!string.IsNullOrWhiteSpace(configured))
+        {
+            wsUri = new Uri(configured);
+        }
+        else
+        {
+            // Build a ws/wss URI for the server websocket endpoint at /ws
+            var origin = new Uri(Navigation.BaseUri);
+            var wsScheme = origin.Scheme == "https" ? "wss" : "ws";
+            var portPart = origin.IsDefaultPort ? string.Empty : $":{origin.Port}";
+            wsUri = new Uri($"{wsScheme}://{origin.Host}{portPart}/ws");
+        }
+
+        try
+        {
+            await WebSocketService.ConnectAsync(wsUri);
+
+            // Wait briefly for the connection to open (up to 5s)
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            while (!WebSocketService.IsConnected && sw.Elapsed < TimeSpan.FromSeconds(5))
+            {
+                await Task.Delay(50);
+            }
+
+            var msg = new SocketMessage { Type = "client_message", Data = "HalloServver" };
+            await WebSocketService.SendAsync(msg);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"WebSocket error: {ex.Message}");
+        }
+    }
+}
