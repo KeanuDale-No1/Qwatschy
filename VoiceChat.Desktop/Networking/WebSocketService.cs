@@ -27,7 +27,7 @@ namespace VoiceChat.Desktop.Networking
             _receiveCts = new CancellationTokenSource();
             _ = ReceiveLoop(_receiveCts.Token);
         }
-
+        
         async Task ReceiveLoop(CancellationToken ct)
         {
             var buffer = new byte[4096];
