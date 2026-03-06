@@ -1,6 +1,15 @@
 <Solution>
-  <Project Path="VoiceChat.Desktop/VoiceChat.Desktop.csproj" />
-  <Project Path="VoiceChat.Server/VoiceChat.Server.csproj" />
-  <Project Path="VoiceChat.Shared/VoiceChat.Shared.csproj" />
-  <Project Path="VoiceChat.Web/VoiceChat.Web.csproj" />
+  <Folder Name="/VoiceChat.Backend/">
+    <Project Path="VoiceChat.Entities/VoiceChat.Entities.csproj" />
+    <Project Path="VoiceChat.Server/VoiceChat.Server.csproj" />
+  </Folder>
+  <Folder Name="/VoiceChat.Clients/">
+    <Project Path="VoiceChat.Desktop/VoiceChat.Desktop.csproj">
+      <Deploy Solution="Debug|*" />
+    </Project>
+    <Project Path="VoiceChat.Web/VoiceChat.Web.csproj" />
+  </Folder>
+  <Folder Name="/VoiceChat.Shareds/">
+    <Project Path="VoiceChat.Shared/VoiceChat.Shared.csproj" />
+  </Folder>
 </Solution>
