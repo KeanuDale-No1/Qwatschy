@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace VoiceChat.Desktop;
+namespace VoiceChat.Desktop.Platforms.iOS;
 
 public class Program
 {

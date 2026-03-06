@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace VoiceChat.Desktop;
+namespace VoiceChat.Desktop.Platforms.MacCatalyst;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

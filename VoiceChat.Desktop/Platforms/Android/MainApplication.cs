@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace VoiceChat.Desktop;
+namespace VoiceChat.Desktop.Platforms.Android;
 
 [Application]
 public class MainApplication : MauiApplication
