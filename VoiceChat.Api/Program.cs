@@ -45,6 +45,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using VoiceChat.Api.UseCases;
 using VoiceChat.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,8 @@ db.Database.Migrate();
 
 
 app.UseWebSockets();
+
+AddUsecases(builder);
 
 app.Map("/ws", async context =>
 {
@@ -87,3 +90,27 @@ app.MapDelete("/api/channels/{id:guid}", async (ChannelsService svc, Guid id) =>
 });
 
 app.Run();
+
+static void AddUsecases(WebApplicationBuilder builder)
+{
+    var assembly = typeof(IUseCase<,>).Assembly;
+
+    var useCaseTypes = assembly
+        .GetTypes()
+        .Where(t => t.IsClass && !t.IsAbstract)
+        .Select(t => new
+        {
+            Implementation = t,
+            Interfaces = t.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IUseCase<,>))
+        })
+        .Where(x => x.Interfaces.Any());
+
+    foreach (var type in useCaseTypes)
+    {
+        foreach (var iface in type.Interfaces)
+        {
+            builder.Services.AddScoped(iface, type.Implementation);
+        }
+    }
+}
