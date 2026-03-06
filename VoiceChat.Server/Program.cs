@@ -43,12 +43,22 @@
 #endregion
 
 
+
+using Microsoft.EntityFrameworkCore;
+using VoiceChat.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Register channels service (file-based persistence)
 builder.Services.AddSingleton<ChannelsService>();
 
 var app = builder.Build();
+
+
+
+using var db = new VoiceChatDbContext();
+db.Database.Migrate();
+
 
 app.UseWebSockets();
 

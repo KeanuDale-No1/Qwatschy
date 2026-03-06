@@ -1,7 +1,7 @@
 <Solution>
   <Folder Name="/VoiceChat.Backend/">
     <Project Path="VoiceChat.Entities/VoiceChat.Entities.csproj" />
-    <Project Path="VoiceChat.Server/VoiceChat.Server.csproj" />
+    <Project Path="VoiceChat.Server/VoiceChat.Api.csproj" />
   </Folder>
   <Folder Name="/VoiceChat.Clients/">
     <Project Path="VoiceChat.Desktop/VoiceChat.Desktop.csproj">

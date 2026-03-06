@@ -1,4 +1,4 @@
-namespace VoiceChat.Entities;
+namespace VoiceChat.Entities.Auth;
 
 public class User
 {
