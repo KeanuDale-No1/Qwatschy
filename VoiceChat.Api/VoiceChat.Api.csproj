@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\VoiceChat.Entities\VoiceChat.Entities.csproj" />
+    <ProjectReference Include="..\VoiceChat.Data\VoiceChat.Data.csproj" />
     <ProjectReference Include="..\VoiceChat.Shared\VoiceChat.Shared.csproj" />
   </ItemGroup>
 
