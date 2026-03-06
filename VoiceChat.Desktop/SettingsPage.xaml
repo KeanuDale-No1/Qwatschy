@@ -8,25 +8,37 @@
     <ContentPage.Content>
         <ScrollView>
             <VerticalStackLayout Padding="20" Spacing="18">
-                <Label Text="Einstellungen" FontAttributes="Bold" FontSize="20" />
+                <Label Text="Einstellungen" FontAttributes="Bold" FontSize="20"
+                       TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
 
-                <Frame CornerRadius="8" Padding="12">
+                <Frame CornerRadius="8" Padding="12"
+                       BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2B2B2B}"
+                       BorderColor="{AppThemeBinding Light=#E6E6E6, Dark=#444444}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="Anzeige Modus" FontAttributes="Bold" />
-                        <Label Text="Wähle den Theme-Modus für die Anwendung." Opacity="0.7" FontSize="12" />
+                        <Label Text="Anzeige Modus" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                        <Label Text="Wähle den Theme-Modus für die Anwendung." Opacity="0.7" FontSize="12"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#DDDDDD}" />
 
                         <HorizontalStackLayout Spacing="12" Margin="0,8,0,0">
-                            <RadioButton x:Name="RbSystem" Content="System" CheckedChanged="OnRadioChanged" />
-                            <RadioButton x:Name="RbLight" Content="Whitemode" CheckedChanged="OnRadioChanged" />
-                            <RadioButton x:Name="RbDark" Content="Darkmode" CheckedChanged="OnRadioChanged" />
+                            <RadioButton x:Name="RbSystem" Content="System" CheckedChanged="OnRadioChanged"
+                                         TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                            <RadioButton x:Name="RbLight" Content="Whitemode" CheckedChanged="OnRadioChanged"
+                                         TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                            <RadioButton x:Name="RbDark" Content="Darkmode" CheckedChanged="OnRadioChanged"
+                                         TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </Frame>
 
-                <Frame CornerRadius="8" Padding="12">
+                <Frame CornerRadius="8" Padding="12"
+                       BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#2B2B2B}"
+                       BorderColor="{AppThemeBinding Light=#E6E6E6, Dark=#444444}">
                     <VerticalStackLayout Spacing="8">
-                        <Label Text="Über" FontAttributes="Bold" />
-                        <Label Text="VoiceChat - Einstellungen" Opacity="0.7" />
+                        <Label Text="Über" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light=#000000, Dark=#FFFFFF}" />
+                        <Label Text="VoiceChat - Einstellungen" Opacity="0.7"
+                               TextColor="{AppThemeBinding Light=#666666, Dark=#DDDDDD}" />
                     </VerticalStackLayout>
                 </Frame>
             </VerticalStackLayout>
