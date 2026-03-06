@@ -11,4 +11,16 @@
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
+    <ShellContent
+        Title="Channels"
+        Icon="dotnet_bot.png"
+        ContentTemplate="{DataTemplate local:ChannelPage}"
+        Route="ChannelPage" />
+
+    <ShellContent
+        Title="Einstellungen"
+        Icon="dotnet_bot.png"
+        ContentTemplate="{DataTemplate local:SettingsPage}"
+        Route="SettingsPage" />
+
 </Shell>

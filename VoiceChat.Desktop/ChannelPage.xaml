@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="VoiceChat.Desktop.ChannelPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:VoiceChat.Shared.Models"
+    xmlns:local="clr-namespace:VoiceChat.Desktop"
+    xmlns:shapes="clr-namespace:Microsoft.Maui.Controls.Shapes;assembly=Microsoft.Maui.Controls"
+    Title="Channels">
+
+    <ContentPage.Resources>
+        <Style TargetType="Frame">
+            <Setter Property="CornerRadius" Value="8" />
+            <Setter Property="HasShadow" Value="True" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="Margin" Value="6" />
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowSpacing="12" ColumnSpacing="12" Padding="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="260" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Left: Channel list -->
+        <StackLayout Grid.Column="0" Spacing="10">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="Start">
+                <Label Text="Channels" FontAttributes="Bold" FontSize="18" VerticalOptions="Center" />
+                <Button Text="+" WidthRequest="40" HeightRequest="36" HorizontalOptions="EndAndExpand" Clicked="OnCreateChannelClicked" />
+            </StackLayout>
+
+            <Frame BackgroundColor="WhiteSmoke" Padding="0" HasShadow="False">
+                <CollectionView x:Name="ChannelsCollection" SelectionMode="Single" ItemsSource="{Binding Channels}" HeightRequest="220" SelectionChanged="ChannelsCollection_SelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="local:ChannelViewModel">
+                            <Grid Padding="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Name}" FontSize="16" VerticalOptions="Center" />
+                                <Frame Grid.Column="1"
+                                       BackgroundColor="#6C5CE7"
+                                       Padding="8"
+                                       CornerRadius="18"
+                                       VerticalOptions="Center"
+                                       IsVisible="{Binding IsSelected}"
+                                       HasShadow="False">
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="OnJoinClicked" NumberOfTapsRequired="1" />
+                                    </Frame.GestureRecognizers>
+                                    <Grid WidthRequest="16" HeightRequest="16" HorizontalOptions="Center" VerticalOptions="Center">
+                                        <shapes:Path Data="M560-131v-82q90-26 145-100t55-168q0-94-55-168T560-749v-82q124 28 202 125.5T840-481q0 127-78 224.5T560-131ZM120-360v-240h160l200-200v640L280-360H120Zm440 40v-322q47 22 73.5 66t26.5 96q0 51-26.5 94.5T560-320ZM400-606l-86 86H200v80h114l86 86v-252ZM300-480Z"
+                                                     Fill="#FFFFFF"
+                                                     Aspect="Uniform" />
+                                    </Grid>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Frame>
+
+            <Frame VerticalOptions="FillAndExpand" BackgroundColor="WhiteSmoke" Padding="10">
+                <StackLayout>
+                    <Label Text="Active Members" FontAttributes="Bold" />
+                    <CollectionView x:Name="MembersList" ItemsSource="{Binding SelectedMembers}" HeightRequest="280">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="8">
+                                    <Label Text="{Binding}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+
+        <!-- Middle: Main content area -->
+        <StackLayout Grid.Column="1" Spacing="12">
+            <Frame VerticalOptions="FillAndExpand" BackgroundColor="White">
+                <StackLayout Spacing="18" Padding="12">
+                    <!-- Placeholder for streams / audio visualizations -->
+                    <BoxView HeightRequest="12" Color="#E8EDF3" CornerRadius="6" />
+                    <BoxView HeightRequest="12" Color="#E8EDF3" CornerRadius="6" />
+                    <BoxView HeightRequest="12" Color="#E8EDF3" CornerRadius="6" />
+                    <BoxView HeightRequest="12" Color="#E8EDF3" CornerRadius="6" />
+
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Spacing="12">
+                        <Frame WidthRequest="80" HeightRequest="80" BackgroundColor="#F6F9FF" CornerRadius="40">
+                            <Label Text="Mic" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Frame>
+                        <Frame WidthRequest="120" HeightRequest="80" BackgroundColor="#F6F9FF" CornerRadius="12">
+                            <Label Text="Levels" HorizontalOptions="Center" VerticalOptions="Center" />
+                        </Frame>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <!-- Input area -->
+            <Grid HeightRequest="80">
+                <Frame BackgroundColor="#FFFFFF" CornerRadius="20" Padding="10" HasShadow="True">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Entry x:Name="MessageEntry" Placeholder="Enter message or command..." BackgroundColor="Transparent" />
+                        <Button Grid.Column="1" Text="Send" Clicked="OnSendClicked" />
+                    </Grid>
+                </Frame>
+            </Grid>
+        </StackLayout>
+
+        <!-- Right: Server info -->
+        <StackLayout Grid.Column="2" Spacing="8">
+            <Frame HeightRequest="140" BackgroundColor="#FFFFFF">
+                <Grid>
+                    <Image Source="dotnet_bot.png" Aspect="AspectFill" />
+                </Grid>
+            </Frame>
+
+            <Frame BackgroundColor="#FFFFFF">
+                <StackLayout>
+                    <Label Text="Server Beschreibung" FontAttributes="Bold" />
+                    <Label Text="Domain / IP" Opacity="0.7" />
+                </StackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="#FFFFFF" VerticalOptions="FillAndExpand">
+                <StackLayout>
+                    <Label Text="Info" FontAttributes="Bold" />
+                    <Label Text="Channel Beschreibung" Opacity="0.8" />
+                    <Label Text="User in dem Channel" Opacity="0.8" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </Grid>
+</ContentPage>

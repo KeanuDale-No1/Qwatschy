@@ -45,6 +45,9 @@
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Register channels service (file-based persistence)
+builder.Services.AddSingleton<ChannelsService>();
+
 var app = builder.Build();
 
 app.UseWebSockets();
@@ -56,6 +59,21 @@ app.Map("/ws", async context =>
         var socket = await context.WebSockets.AcceptWebSocketAsync();
         await WebSocketHandler.Handle(socket);
     }
+});
+
+// Simple HTTP API for channel management (file-backed)
+app.MapGet("/api/channels", (ChannelsService svc) => svc.GetAllAsync());
+
+app.MapPost("/api/channels", async (ChannelsService svc, VoiceChat.Shared.Models.Channel channel) =>
+{
+    var created = await svc.AddAsync(channel);
+    return Results.Created($"/api/channels/{created.Id}", created);
+});
+
+app.MapDelete("/api/channels/{id:guid}", async (ChannelsService svc, Guid id) =>
+{
+    var deleted = await svc.DeleteAsync(id);
+    return deleted ? Results.NoContent() : Results.NotFound();
 });
 
 app.Run();

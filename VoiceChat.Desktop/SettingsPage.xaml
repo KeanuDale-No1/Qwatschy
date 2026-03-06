@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="VoiceChat.Desktop.SettingsPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Einstellungen">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="18">
+                <Label Text="Einstellungen" FontAttributes="Bold" FontSize="20" />
+
+                <Frame CornerRadius="8" Padding="12">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Anzeige Modus" FontAttributes="Bold" />
+                        <Label Text="Wähle den Theme-Modus für die Anwendung." Opacity="0.7" FontSize="12" />
+
+                        <HorizontalStackLayout Spacing="12" Margin="0,8,0,0">
+                            <RadioButton x:Name="RbSystem" Content="System" CheckedChanged="OnRadioChanged" />
+                            <RadioButton x:Name="RbLight" Content="Whitemode" CheckedChanged="OnRadioChanged" />
+                            <RadioButton x:Name="RbDark" Content="Darkmode" CheckedChanged="OnRadioChanged" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Frame CornerRadius="8" Padding="12">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="Über" FontAttributes="Bold" />
+                        <Label Text="VoiceChat - Einstellungen" Opacity="0.7" />
+                    </VerticalStackLayout>
+                </Frame>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
