@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:VoiceChat.Desktop"
     Title="VoiceChat.Desktop">
 
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"

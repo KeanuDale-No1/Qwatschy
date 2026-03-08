@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using VoiceChat.Entities.Auth;
 
-namespace VoiceChat.Entities;
+namespace VoiceChat.Data;
 
 public class VoiceChatDbContext : DbContext
 {

@@ -1,6 +1,6 @@
 using VoiceChat.Domain;
 
-namespace VoiceChat.Entities.Auth;
+namespace VoiceChat.Domain.Auth;
 
 public class User : EntityBase
 {

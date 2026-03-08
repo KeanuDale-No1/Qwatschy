@@ -5,10 +5,18 @@
     <Project Path="VoiceChat.Entities/VoiceChat.Domain.csproj" />
   </Folder>
   <Folder Name="/VoiceChat.Clients/">
+    <Project Path="VoiceChat.Client/VoiceChat.Client.Android/VoiceChat.Client.Android.csproj" Id="0166b89b-225d-4f54-af0e-68e45920c20d">
+      <Deploy />
+    </Project>
+    <Project Path="VoiceChat.Client/VoiceChat.Client.Browser/VoiceChat.Client.Browser.csproj" Id="43e9422a-c390-4cd4-903e-ff770e4d318b" />
+    <Project Path="VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj" Id="4b14884f-c5a0-4916-ae7f-c462627ca7c8" />
+    <Project Path="VoiceChat.Client/VoiceChat.Client.iOS/VoiceChat.Client.iOS.csproj" Id="a3da5b04-e6ef-4ce5-9b75-88c49c425b59">
+      <Deploy />
+    </Project>
+    <Project Path="VoiceChat.Client/VoiceChat.Client/VoiceChat.Client.csproj" Id="7ffd012d-ad10-4ea8-8906-e7af311e444d" />
     <Project Path="VoiceChat.Desktop/VoiceChat.Desktop.csproj">
       <Deploy Solution="Debug|*" />
     </Project>
-    <Project Path="VoiceChat.Web/VoiceChat.Web.csproj" />
   </Folder>
   <Folder Name="/VoiceChat.Shareds/">
     <Project Path="VoiceChat.Shared/VoiceChat.Shared.csproj" />

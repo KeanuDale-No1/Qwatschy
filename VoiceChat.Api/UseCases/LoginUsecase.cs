@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VoiceChat.Api.Services;
 using VoiceChat.Data.Repositories;
-using VoiceChat.Entities.Auth;
+using VoiceChat.Domain.Auth;
 using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Api.UseCases;

@@ -1,0 +1,59 @@
+﻿using VoiceChat.Api.Endpoints;
+
+namespace VoiceChat.Api.Services;
+
+
+
+
+public class TokenValidationMiddleware
+{
+    private readonly RequestDelegate _next;
+
+    public TokenValidationMiddleware(RequestDelegate next)
+    {
+        _next = next;
+    }
+
+    public async Task InvokeAsync(HttpContext context, IAuthService handler)
+    {
+        // Nur prüfen, wenn der Endpoint Auth benötigt
+        if (context.Request.Path.StartsWithSegments("/api"))
+        {
+            var endpoint = context.GetEndpoint();
+
+            if (endpoint?.Metadata.GetMetadata<AllowAnonymousAttribute>() != null)
+            {
+                await _next(context);
+                return;
+            }
+
+
+            if (!context.Request.Headers.TryGetValue("Authorization", out var authHeader))
+            {
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsync("Missing Authorization header");
+                return;
+            }
+
+            try
+            {
+                handler.ValidateToken(authHeader!);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsync("Invalid token");
+                return;
+            }
+            catch (Exception)
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                await context.Response.WriteAsync("Internal error");
+                return;
+            }
+        }
+       
+
+        await _next(context);
+    }
+}

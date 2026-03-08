@@ -1,6 +1,5 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using VoiceChat.Entities;
 
 namespace VoiceChat.Data.Repositories;
 
