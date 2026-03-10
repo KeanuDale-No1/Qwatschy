@@ -4,15 +4,6 @@ using System.Text;
 
 namespace VoiceChat.Shared.Models;
 
-public class LoginRequest
-{
-    public Guid ClientId { get; set; } = Guid.Empty;
-    public string? DisplayName { get; set; }
-}
+public record LoginRequestDTO(Guid ClientId, string Displayname);
+public record LoginResponseDTO(Guid UserId, string DisplayName, string AuthToken);
 
-public class LoginResponse
-{
-    public Guid UserId { get; set; } = Guid.Empty;
-    public string DisplayName { get; set; } = string.Empty;
-    public string AuthToken { get; set; } = string.Empty;
-}

@@ -6,9 +6,9 @@ using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Api.UseCases;
 
-public class LoginUsecase(IRepository<User> repository, IAuthService authService) : IUseCase<LoginRequest, LoginResponse>
+public class LoginUsecase(IRepository<User> repository, IAuthService authService) : IUseCase<LoginRequestDTO, LoginResponseDTO>
 {
-    public async Task<LoginResponse> ExecuteAsync(LoginRequest request)
+    public async Task<LoginResponseDTO> ExecuteAsync(LoginRequestDTO request)
     {
         if (Guid.Empty == request.ClientId)
             throw new ArgumentNullException(nameof(request.ClientId), "Es konnte keine ClientId ermittelt werden");
@@ -19,13 +19,13 @@ public class LoginUsecase(IRepository<User> repository, IAuthService authService
             user = new User
             {
                 Id = request.ClientId,
-                DisplayName = request.DisplayName ?? $"User-{request.ClientId.ToString()}"
+                DisplayName = request.Displayname ?? $"User-{request.ClientId.ToString()}"
             };
             await repository.AddAsync(user);
         }
-        else if (!string.IsNullOrEmpty(request.DisplayName))
+        else if (!string.IsNullOrEmpty(request.Displayname))
         {
-            user.DisplayName = request.DisplayName;
+            user.DisplayName = request.Displayname;
         }
         user.LastActive = DateTime.UtcNow;
 
@@ -33,11 +33,6 @@ public class LoginUsecase(IRepository<User> repository, IAuthService authService
 
         var token = authService.GenerateToken(user.Id.ToString());
 
-        return new LoginResponse
-        {
-            UserId = user.Id,
-            DisplayName = user.DisplayName ?? user.Id.ToString(),
-            AuthToken = token
-        };
+        return new LoginResponseDTO(user.Id, user.DisplayName, token);
     }
 }

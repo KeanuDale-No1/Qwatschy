@@ -8,9 +8,9 @@ namespace VoiceChat.Api.Endpoints
 {
     public static class AuthEndpoints
     {
-        public static void AddEndpoints(this IEndpointRouteBuilder app)
+        public static void AddAuthEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Login", async (IUseCase<LoginRequest,LoginResponse> useCase, LoginRequest loginRequest) =>
+            app.MapPost("api/Login", async (IUseCase<LoginRequestDTO,LoginResponseDTO> useCase, LoginRequestDTO loginRequest) =>
             {
                 return await useCase.ExecuteAsync(loginRequest);
             }).WithMetadata(new AllowAnonymousAttribute()); ;

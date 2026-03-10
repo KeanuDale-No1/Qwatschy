@@ -1,9 +1,10 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using VoiceChat.Domain;
 
 namespace VoiceChat.Data.Repositories;
 
-public class Repository<T> : IRepository<T> where T : class
+public class Repository<T> : IRepository<T> where T : EntityBase
 {
     private readonly VoiceChatDbContext _context;
     private readonly DbSet<T> _dbSet;

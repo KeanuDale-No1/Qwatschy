@@ -12,7 +12,7 @@ namespace VoiceChat.Api.Endpoints
     {
         public static void AddEndpoints(this IEndpointRouteBuilder app)
         {
-           AuthEndpoints.AddEndpoints(app);
+            app.AddAuthEndpoints();
 
 
             // Simple HTTP API for channel management (file-backed)

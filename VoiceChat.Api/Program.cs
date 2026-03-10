@@ -45,6 +45,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using VoiceChat.Api.Endpoints;
 using VoiceChat.Api.Services;
 using VoiceChat.Api.UseCases;
 using VoiceChat.Data;
@@ -69,7 +70,7 @@ var app = builder.Build();
 using var db = new VoiceChatDbContext();
 db.Database.Migrate();
 
-
+app.AddEndpoints();
 app.UseMiddleware<TokenValidationMiddleware>();
 app.UseWebSockets();
 app.Map("/ws", async context =>
