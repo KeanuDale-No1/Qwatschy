@@ -5,7 +5,7 @@ public class ChannelsService
 {
     readonly string _filePath;
     readonly object _lock = new object();
-    List<Channel> _channels = new List<Channel>();
+    List<ChannelDTO> _channels = new List<ChannelDTO>();
     readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, WriteIndented = true };
 
     public ChannelsService()
@@ -21,14 +21,14 @@ public class ChannelsService
             if (System.IO.File.Exists(_filePath))
             {
                 var json = System.IO.File.ReadAllText(_filePath);
-                var list = JsonSerializer.Deserialize<List<Channel>>(json, _jsonOptions);
+                var list = JsonSerializer.Deserialize<List<ChannelDTO>>(json, _jsonOptions);
                 if (list != null) _channels = list;
             }
         }
         catch
         {
             // ignore corrupt file
-            _channels = new List<Channel>();
+            _channels = new List<ChannelDTO>();
         }
     }
 
@@ -47,16 +47,16 @@ public class ChannelsService
         });
     }
 
-    public Task<List<Channel>> GetAllAsync()
+    public Task<List<ChannelDTO>> GetAllAsync()
     {
         lock (_lock)
         {
             // return a copy
-            return Task.FromResult(_channels.Select(c => new Channel { Id = c.Id, Name = c.Name, Description = c.Description }).ToList());
+            return Task.FromResult(_channels.Select(c => new ChannelDTO { Id = c.Id, Name = c.Name, Description = c.Description }).ToList());
         }
     }
 
-    public async Task<Channel> AddAsync(Channel channel)
+    public async Task<ChannelDTO> AddAsync(ChannelDTO channel)
     {
         lock (_lock)
         {

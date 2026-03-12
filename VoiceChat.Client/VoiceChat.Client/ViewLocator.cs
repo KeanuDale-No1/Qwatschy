@@ -2,29 +2,25 @@
 using Avalonia.Controls.Templates;
 using System;
 using VoiceChat.Client.ViewModels;
+using VoiceChat.Client.ViewModels.Base;
 
-namespace VoiceChat.Client
-{
+namespace VoiceChat.Client;
     public class ViewLocator : IDataTemplate
     {
-        public Control? Build(object? data)
+        public Control? Build(object? param)
         {
-            if (data is null)
-            {
-                return new TextBlock { Text = "data was null" };
-            }
+            if (param is null)
+                return null;
 
-            var name = data.GetType().FullName!.Replace("ViewModel", "View");
+            var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
             var type = Type.GetType(name);
 
             if (type != null)
             {
                 return (Control)Activator.CreateInstance(type)!;
             }
-            else
-            {
-                return new TextBlock { Text = "Not Found: " + name };
-            }
+
+            return new TextBlock { Text = "Not Found: " + name };
         }
 
         public bool Match(object? data)
@@ -32,4 +28,3 @@ namespace VoiceChat.Client
             return data is ViewModelBase;
         }
     }
-}

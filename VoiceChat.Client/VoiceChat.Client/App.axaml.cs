@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
+using VoiceChat.Client.Extensions;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.ViewModels;
 using VoiceChat.Client.Views;
@@ -23,9 +24,9 @@ namespace VoiceChat.Client
             var services = collection.BuildServiceProvider();
 
             var appState = services.GetRequiredService<AppState>();
+            appState.ApplicationLifetime = ApplicationLifetime;
             appState.RestoreClientData();
-
-            var vm = services.GetRequiredService<MainWindowViewModel>();
+            var vm = services.GetRequiredService<MainViewModel>();
 
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
@@ -36,10 +37,10 @@ namespace VoiceChat.Client
             }
             else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
             {
-                //singleViewPlatform.MainView = new MainView
-                //{
-                //    DataContext = vm
-                //};
+                singleViewPlatform.MainView = new MainView
+                {
+                    DataContext = vm
+                };
             }
 
             base.OnFrameworkInitializationCompleted();

@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using ReactiveUI.Avalonia;
 using System;
 
 namespace VoiceChat.Client.Desktop
@@ -18,7 +17,6 @@ namespace VoiceChat.Client.Desktop
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
-                .UseReactiveUI()
                 .LogToTrace();
     }
 }

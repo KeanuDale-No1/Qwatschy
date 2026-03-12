@@ -18,7 +18,7 @@ namespace VoiceChat.Api.Endpoints
             // Simple HTTP API for channel management (file-backed)
             app.MapGet("/api/channels", (ChannelsService svc) => svc.GetAllAsync());
 
-            app.MapPost("/api/channels", async (ChannelsService svc, VoiceChat.Shared.Models.Channel channel) =>
+            app.MapPost("/api/channels", async (ChannelsService svc, VoiceChat.Shared.Models.ChannelDTO channel) =>
             {
                 var created = await svc.AddAsync(channel);
                 return Results.Created($"/api/channels/{created.Id}", created);

@@ -1,28 +1,26 @@
 ﻿
-using ReactiveUI;
-using VoiceChat.Client.ViewModels;
 
-namespace VoiceChat.Client.ViewModels
+using CommunityToolkit.Mvvm.ComponentModel;
+using VoiceChat.Client.Services;
+using VoiceChat.Client.ViewModels.Base;
+using VoiceChat.Client.ViewModels.Login;
+
+namespace VoiceChat.Client.ViewModels;
+
+public partial class MainViewModel : ViewModelBase
 {
-    public class MainViewModel : PageViewModelBase
+    private readonly INavigationService _navigationService;
+
+    [ObservableProperty] private ViewModelBase _currentViewModel;
+
+
+    public MainViewModel(INavigationService navigationService)
     {
-        public ChannelSidebarViewModel LeftSidebar { get; } = new();
-        public ChatViewModel Chat { get; } = new();
-        public RightSidebarViewModel RightSidebar { get; }
-
-        private bool isSettingsOpen;
-        public bool IsSettingsOpen
-        {
-            get => isSettingsOpen;
-            set => this.RaiseAndSetIfChanged(ref isSettingsOpen, value);
-        }
-        public override bool CanNavigateNext { get => true; protected set => throw new System.NotImplementedException(); }
-        public override bool CanNavigatePrevious { get => true; protected set => throw new System.NotImplementedException(); }
-
-        public MainViewModel()
-        {
-            RightSidebar = new RightSidebarViewModel(this);
-        }
-
+        _navigationService = navigationService;
+        ((NavigationService)navigationService).SetMainViewModel(this);
+        navigationService.NavigateTo<LoginViewModel>();
     }
+
+    public MainViewModel() : this(null!) { }
+
 }

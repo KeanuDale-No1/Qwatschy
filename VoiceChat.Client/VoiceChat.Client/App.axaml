@@ -10,15 +10,83 @@
     </Application.DataTemplates>
     
 
+    
     <Application.Styles>
-        <FluentTheme/>
+       <FluentTheme>
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Light" />
+                <ColorPaletteResources x:Key="Dark" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        
 
-            <!-- Palette for Light theme variant -->
-    <!--     <ColorPaletteResources x:Key="Light" Accent="Green" RegionColor="White" ErrorText="Red" />
-    -->
-    <!-- Palette for Dark theme variant -->
-    <!-- 
-    <ColorPaletteResources x:Key="Dark" Accent="DarkGreen" RegionColor="Black" ErrorText="Yellow" />
-    -->
+        <Style>
+			<Style.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+
+                            <SolidColorBrush x:Key="PrimaryColor" Color="#71cbfa" />
+                            <SolidColorBrush x:Key="SecondaryColor" Color="#e62f79" />
+
+                            <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="#FFFFFF" />
+                            <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#CCCCCC"/>
+                            <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="#222222"/>
+
+
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Dark">
+                            <SolidColorBrush x:Key="PrimaryColor" Color="#e62f79" />
+                            <SolidColorBrush x:Key="SecondaryColor" Color="#71cbfa" />
+
+                            <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="#2B2D31"/>
+                            <SolidColorBrush x:Key="TextBoxBorderBrush" Color="#3A3C40"/>
+                            <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="#FFFFFF"/>
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </Style.Resources>
+        </Style>
+        
+        <Style Selector="GridSplitter">
+            <Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
+			<Setter Property="MinHeight" Value="0"/>
+			<Setter Property="MinWidth" Value="0"/>
+        </Style>
+
+        <Style Selector="Button">
+            <Setter Property="Background" Value="Transparent" />
+			<Setter Property="MinHeight" Value="0"/>
+			<Setter Property="MinWidth" Value="0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
+        </Style>
+
+        <Style Selector="Button:pointerover">
+			<Setter Property="MinHeight" Value="0"/>
+			<Setter Property="MinWidth" Value="0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}" />
+        </Style>
+
+
+        <Style Selector="TextBox">
+			<Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        <Style Selector="TextBox:pointerover">
+            <Setter Property="BorderBrush" Value="#4C8BF5"/>
+        </Style>
+        <Style Selector="TextBox:focus">
+            <Setter Property="BorderBrush" Value="#4C8BF5"/>
+            <Setter Property="BorderThickness" Value="2"/>
+        </Style>
+
     </Application.Styles>
+
 </Application>

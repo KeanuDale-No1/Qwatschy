@@ -1,6 +1,5 @@
 ﻿using Avalonia;
 using Avalonia.Browser;
-using ReactiveUI.Avalonia;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using VoiceChat.Client;
@@ -9,7 +8,6 @@ internal sealed partial class Program
 {
     private static Task Main(string[] args) => BuildAvaloniaApp()
             .WithInterFont()
-            .UseReactiveUI()
             .StartBrowserAppAsync("out");
 
     public static AppBuilder BuildAvaloniaApp()

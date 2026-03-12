@@ -1,12 +1,14 @@
 ﻿using System.Windows.Input;
+using VoiceChat.Client.ViewModels.Base;
+using VoiceChat.Client.ViewModels.MainArea;
 
 namespace VoiceChat.Client.ViewModels
 {
     public class RightSidebarViewModel : ViewModelBase
     {
-        private readonly MainViewModel _main;
+        private readonly MainAreaViewModel _main;
 
-        public RightSidebarViewModel(MainViewModel main)
+        public RightSidebarViewModel(MainAreaViewModel main)
         {
             _main = main;
 

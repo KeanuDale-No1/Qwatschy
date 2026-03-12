@@ -4,8 +4,8 @@ using System.Text;
 
 namespace VoiceChat.Client
 {
-    public static class VoiceChatConstants
+    public static class QwatschyConstants
     {
-        public const string VoiceChatName = "Clyra";
+        public const string VoiceChatName = "Qwatschy";
     }
 }

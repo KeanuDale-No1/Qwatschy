@@ -1,6 +1,6 @@
 ﻿namespace VoiceChat.Shared.Models;
 
-public class Channel
+public class ChannelDTO
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = "";

@@ -46,6 +46,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using VoiceChat.Api.Endpoints;
+using VoiceChat.Api.Hubs;
 using VoiceChat.Api.Services;
 using VoiceChat.Api.UseCases;
 using VoiceChat.Data;
@@ -53,14 +54,24 @@ using VoiceChat.Data.Repositories;
 
 
 
-var builder = WebApplication.CreateBuilder(args); 
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<VoiceChatDbContext>();
 //builder.Services.AddRepositories();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddUsecases(); // sauber
 builder.Services.AddSingleton<IAuthService, AuthService>();
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .SetIsOriginAllowed(_ => true);
+    });
+});
+builder.Services.AddSignalR();
 // Register channels service (file-based persistence)
 builder.Services.AddSingleton<ChannelsService>();
 var app = builder.Build();
@@ -73,6 +84,10 @@ db.Database.Migrate();
 app.AddEndpoints();
 app.UseMiddleware<TokenValidationMiddleware>();
 app.UseWebSockets();
+app.UseCors();
+
+app.MapHub<ChatHub>("/chat").AllowAnonymous();
+
 app.Map("/ws", async context =>
 {
     if (context.WebSockets.IsWebSocketRequest)
@@ -81,7 +96,6 @@ app.Map("/ws", async context =>
         await WebSocketHandler.Handle(socket);
     }
 });
-
 
 
 

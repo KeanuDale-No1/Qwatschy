@@ -1,0 +1,35 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:VoiceChat.Client.ViewModels.Login"
+    x:DataType="vm:LoginViewModel"
+    x:Class="VoiceChat.Client.Views.Login.LoginView">
+
+    <Design.DataContext>
+        <vm:LoginViewModel />
+    </Design.DataContext>
+
+
+  <StackPanel HorizontalAlignment="Center" 
+              VerticalAlignment="Center" 
+              Spacing="10" >
+
+        <TextBlock Text="Username" FontSize="16"/>
+        <TextBox HorizontalAlignment="Stretch"
+                 Width="200" 
+                 Text="{Binding Username}"/>
+
+        <TextBlock Text="Enter Server IP:" FontSize="16"/>
+        <TextBox HorizontalAlignment="Stretch"
+                 Width="200" 
+                 Text="{Binding  ServerAddress}"/>
+
+        <Button  Classes="modern-btn" 
+                 HorizontalAlignment="Stretch" 
+                 HorizontalContentAlignment="Center"
+                 Content="Verbinden" 
+                 Command="{Binding ConntectCommand}"/>
+ </StackPanel>
+</UserControl>

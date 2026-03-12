@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="using:VoiceChat.Shared.Models"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
+             xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
+             x:Class="VoiceChat.Client.Views.MainArea.ChannelSidebar"
+             x:DataType="vm:ChannelSidebarViewModel">
+    <Design.DataContext>
+        <vm:ChannelSidebarViewModel />
+    </Design.DataContext>
+
+    <Grid RowDefinitions="*,1,*">
+		<StackPanel Grid.Row="0" Margin="5">
+            <TextBlock Text="Channels" 
+                       FontSize="16"
+                       FontWeight="Bold"
+                       Margin="0 0 0 8"
+                       HorizontalAlignment="Center" />
+                <ItemsControl ItemsSource="{Binding Channels}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                                <Button Content="{Binding Name}" 
+                                        CornerRadius="6"
+                                        Padding="8"
+                                        Margin="0 4"
+                                        Background="#2B2D31" 
+                                        BorderThickness="0"
+                                        HorizontalAlignment="Stretch"
+                                        Foreground="White" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl >
+        </StackPanel>
+
+      <GridSplitter Grid.Row="1"  Height="1" ResizeDirection="Rows"/> 
+
+        <StackPanel Grid.Row="2" Margin="20">
+            <TextBlock Margin="0 5">Benutzer online:</TextBlock>
+            <ItemsControl ItemsSource="{Binding OnlineUsers}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding DisplayName}" />
+                            </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl >
+        </StackPanel>
+    </Grid>
+
+  
+</UserControl>

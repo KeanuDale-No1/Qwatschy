@@ -16,9 +16,18 @@
 
    <StackPanel VerticalAlignment="Top" Margin="10" Spacing="20">
 
-        <Button Content="🔌" Command="{Binding ConnectCommand}"/>
+        <Button Content="🔗" Command="{Binding ConnectCommand}"/>
         <Button Content="❌" Command="{Binding DisconnectCommand}"/>
-        <Button Content="⚙️" Command="{Binding OpenSettingsCommand}"/>
+        <ToggleButton IsChecked="True">
+            <Panel>
+                <PathIcon Classes="audio-on"
+                    Data="{StaticResource speaker_regular}" />
+                <PathIcon Classes="audio-mute"
+                    Data="{StaticResource speaker_off_regular}" />
+            </Panel>
+        </ToggleButton>
+       
+       <Button Content="⚙️" Command="{Binding OpenSettingsCommand}"/>
 
     </StackPanel>
 </UserControl>

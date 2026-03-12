@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace VoiceChat.Client.Views
+namespace VoiceChat.Client
 {
     public partial class MainWindow : Window
     {
