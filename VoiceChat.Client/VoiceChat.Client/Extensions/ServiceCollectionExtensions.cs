@@ -17,7 +17,7 @@ namespace VoiceChat.Client.Extensions
             //Services
             collection.AddSingleton<AppState>();
             collection.AddSingleton<INavigationService, NavigationService>();
-            collection.AddSingleton<IHttpClientService, HttpClientService>();
+            collection.AddTransient<IHttpClientService, HttpClientService>();
             collection.AddSingleton<ChatService>();
             //ViewModels
             collection.AddTransient<MainViewModel>();

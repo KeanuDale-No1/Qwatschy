@@ -10,4 +10,6 @@ public interface IHttpClientService
     Task<string> GetAsync(string url);
     Task<T?> GetJsonAsync<T>(string url);
     Task<string> PostAsync<T>(string url, T data);
+    Task<T1> PostAsync<T,T1>(string url, T data);
+
 }

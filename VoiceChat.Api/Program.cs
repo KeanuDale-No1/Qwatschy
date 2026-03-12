@@ -65,10 +65,10 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials()
-              .SetIsOriginAllowed(_ => true);
+        policy
+             .AllowAnyOrigin()
+             .AllowAnyHeader()
+             .AllowAnyMethod();
     });
 });
 builder.Services.AddSignalR();
@@ -80,22 +80,22 @@ var app = builder.Build();
 
 using var db = new VoiceChatDbContext();
 db.Database.Migrate();
+app.UseCors();
 
 app.AddEndpoints();
 app.UseMiddleware<TokenValidationMiddleware>();
 app.UseWebSockets();
-app.UseCors();
 
 app.MapHub<ChatHub>("/chat").AllowAnonymous();
 
-app.Map("/ws", async context =>
-{
-    if (context.WebSockets.IsWebSocketRequest)
-    {
-        var socket = await context.WebSockets.AcceptWebSocketAsync();
-        await WebSocketHandler.Handle(socket);
-    }
-});
+//app.Map("/ws", async context =>
+//{
+//    if (context.WebSockets.IsWebSocketRequest)
+//    {
+//        var socket = await context.WebSockets.AcceptWebSocketAsync();
+//        await WebSocketHandler.Handle(socket);
+//    }
+//});
 
 
 

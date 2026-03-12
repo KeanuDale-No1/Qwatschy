@@ -4,6 +4,8 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	  <PublishTrimmed>false</PublishTrimmed>
+	  <IlcDisableReflection>false</IlcDisableReflection>
   </PropertyGroup>
   
   <ItemGroup>

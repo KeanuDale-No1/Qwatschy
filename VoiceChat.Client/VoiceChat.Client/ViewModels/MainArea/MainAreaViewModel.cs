@@ -14,13 +14,16 @@ namespace VoiceChat.Client.ViewModels.MainArea
         [ObservableProperty]  private bool isSettingsOpen;
         public string? UrlPathSegment => throw new System.NotImplementedException();
 
+        private readonly AppState appState;
 
-        public MainAreaViewModel(IHttpClientService httpClientService,ChatService chatService)
+        public MainAreaViewModel(IHttpClientService httpClientService,ChatService chatService,AppState appState)
         {
+            this.appState = appState;
+
             channelSidebarViewModel = new ChannelSidebarViewModel(httpClientService);
 
             RightSidebar = new RightSidebarViewModel(this);
-            Chat = new ChatViewModel(chatService);
+            Chat = new ChatViewModel(chatService, appState);
         }
 
     }
