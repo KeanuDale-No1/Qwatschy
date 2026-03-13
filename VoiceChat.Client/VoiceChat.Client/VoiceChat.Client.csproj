@@ -37,5 +37,12 @@
     <Compile Update="Views\MainArea\MainAreaView.axaml.cs">
       <DependentUpon>MainAreaView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\StatusBarView.axaml.cs">
+      <DependentUpon>StatusBarView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Converter\" />
   </ItemGroup>
 </Project>

@@ -1,11 +1,14 @@
 using Avalonia.Controls;
+using Avalonia.Interactivity;
+using System;
 
 namespace VoiceChat.Client.Views.MainArea;
 
-public partial class ChannelSidebar : UserControl
+public partial class ChannelSidebarView : UserControl
 {
-    public ChannelSidebar()
+    public ChannelSidebarView()
     {
         InitializeComponent();
     }
+   
 }

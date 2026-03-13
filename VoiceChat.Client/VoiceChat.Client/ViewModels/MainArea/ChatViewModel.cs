@@ -36,16 +36,16 @@ namespace VoiceChat.Client.ViewModels.MainArea
 
         private void OnMessageReceived(ChatMessageDTO message)
         {
-            Messages.Add(new ChatMessage(message.Username, message.Text, message.Timestamp,appState.ClientData.UserData.ClientId == message.ClientId ? HorizontalAlignment.Right : HorizontalAlignment.Left, appState.ClientData.UserData.ClientId == message.ClientId,message.Username.Substring(0, message.Username.Length > 2 ? 2:message.Username.Length)));
+            Messages.Add(new ChatMessage(message.Username, message.Text, message.Timestamp,appState.GetUser().ClientId == message.ClientId ? HorizontalAlignment.Right : HorizontalAlignment.Left, appState.GetUser().ClientId == message.ClientId,message.Username.Substring(0, message.Username.Length > 2 ? 2:message.Username.Length)));
             MessageAdded?.Invoke();
         }
 
         [RelayCommand]
         private async Task SendMessage()
         {
-            if (chatService.Connection.State == HubConnectionState.Connected && String.IsNullOrWhiteSpace(messageInput.ToString())== false)
+            if (chatService.Connection?.State == HubConnectionState.Connected && String.IsNullOrWhiteSpace(MessageInput) == false)
             {
-                await chatService.SendMessage(new ChatMessageDTO() { ClientId = appState.ClientData.UserData.ClientId, Username = "Tester", Text =  messageInput.ToString(), Timestamp = DateTime.UtcNow});
+                await chatService.SendMessage(new ChatMessageDTO() { ClientId = appState.GetUser().ClientId, Username = appState.GetUser().UserName, Text = MessageInput, Timestamp = DateTime.UtcNow });
                 MessageInput = "";
             }
         }

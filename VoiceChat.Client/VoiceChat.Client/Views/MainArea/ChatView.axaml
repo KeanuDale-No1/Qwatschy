@@ -7,8 +7,13 @@
              x:Class="VoiceChat.Client.Views.MainArea.ChatView"
              x:DataType="vm:ChatViewModel">
    
-  <Grid RowDefinitions="*,Auto">
-       <ScrollViewer VerticalScrollBarVisibility="Auto"  x:Name="ChatScrollViewer">
+  <Grid RowDefinitions="60, *,Auto">
+
+      <Border Classes="CurrentChatName" Grid.Row="0">
+		  
+      </Border>
+
+       <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto"  x:Name="ChatScrollViewer">
 		   
          <ItemsControl ItemsSource="{Binding Messages}" VerticalAlignment="Bottom" Classes="Chatbox" >
              <ItemsControl.ItemsPanel>
@@ -16,8 +21,6 @@
                     <StackPanel />
                 </ItemsPanelTemplate>
              </ItemsControl.ItemsPanel>
-
-
              <ItemsControl.ItemTemplate>
                  <DataTemplate>
                      <StackPanel  HorizontalAlignment="{Binding HorizontalAlignment}">
@@ -25,12 +28,8 @@
                             
                             <TextBlock Classes="ChatMessage" 
                                        Text="{Binding Text}" 
-                                       FontSize="16"
-                                        />
-                            
-
+                                       FontSize="16"/>
                         </Border>
-                         
                      </StackPanel>
                  </DataTemplate>
              </ItemsControl.ItemTemplate>
@@ -38,7 +37,7 @@
 
        </ScrollViewer>
 
-      <Border Grid.Row="1" CornerRadius="8"
+      <Border Grid.Row="2" CornerRadius="8"
               Padding="5"
             Background="#2B2B2B"
             BorderBrush="#444"

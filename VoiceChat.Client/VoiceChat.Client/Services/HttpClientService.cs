@@ -11,36 +11,27 @@ namespace VoiceChat.Client.Services;
 
 public class HttpClientService : IHttpClientService
 {
-    private readonly HttpClient _client;
+    private HttpClient _client;
     private readonly AppState _appState;
 
     public HttpClientService(AppState appState)
     {
-        _client = new HttpClient();
         _appState = appState;
+        _client = new HttpClient();
     }
 
-    private void ApplyToken()
-    {
-        try
-        {
-            _client.BaseAddress = new Uri(_appState.ServerAdress);
-            if (_appState?.ClientData?.JwtToken != null && !string.IsNullOrWhiteSpace(_appState?.ClientData?.JwtToken))
-            {
-                _client.DefaultRequestHeaders.Authorization =
-                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _appState.ClientData.JwtToken);
-            }
-        }
-        catch (Exception ex)
-        {
-
-            throw;
+    public async Task CreateClient(string serveradress, string? token) {
+        _client = new HttpClient();
+        _client.BaseAddress = new Uri(serveradress);
+        if (!string.IsNullOrWhiteSpace(token)) {
+            _client.DefaultRequestHeaders.Authorization =
+                       new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
     }
+
 
     public async Task<string> GetAsync(string url)
     {
-        ApplyToken();
         var response = await _client.GetAsync(url);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStringAsync();
@@ -48,13 +39,11 @@ public class HttpClientService : IHttpClientService
 
     public async Task<T?> GetJsonAsync<T>(string url)
     {
-        ApplyToken();
         return await _client.GetFromJsonAsync<T>(url, Json.Options);
     }
 
     public async Task<string> PostAsync<T>(string url, T data)
     {
-        ApplyToken();
         var response = await _client.PostAsJsonAsync(url, data, Json.Options);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStringAsync();
@@ -64,15 +53,14 @@ public class HttpClientService : IHttpClientService
     {
         try
         {
-            ApplyToken();
 
             var result = await _client.PostAsJsonAsync<T>(url, data, Json.Options);
             return await result.Content.ReadFromJsonAsync<T1>();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-
             throw;
         }
     }
+
 }

@@ -2,7 +2,6 @@
 using Android.Content.PM;
 using Avalonia;
 using Avalonia.Android;
-using ReactiveUI.Avalonia;
 
 namespace VoiceChat.Client.Android
 {
@@ -17,8 +16,7 @@ namespace VoiceChat.Client.Android
         protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
         {
             return base.CustomizeAppBuilder(builder)
-                .WithInterFont()
-                .UseReactiveUI();
+                .WithInterFont();
         }
     }
 }

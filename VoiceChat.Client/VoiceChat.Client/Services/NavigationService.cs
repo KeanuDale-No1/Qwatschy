@@ -20,7 +20,7 @@ internal class NavigationService : INavigationService
 
     public Task NavigateTo<T>() where T : ViewModelBase
     {
-        if (_mainWindowViewModel == null == null)
+        if (_mainWindowViewModel == null)
             return Task.CompletedTask;
 
         var vm = _serviceProperty.GetRequiredService<T>();

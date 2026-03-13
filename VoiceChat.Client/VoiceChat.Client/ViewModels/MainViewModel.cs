@@ -13,14 +13,17 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] private ViewModelBase _currentViewModel;
 
+    [ObservableProperty] private StatusBarViewModel statusBarViewModel;
 
-    public MainViewModel(INavigationService navigationService)
+    public MainViewModel(INavigationService navigationService, StatusBarViewModel statusBarViewModel)
     {
+        this.statusBarViewModel = statusBarViewModel;
+
         _navigationService = navigationService;
         ((NavigationService)navigationService).SetMainViewModel(this);
         navigationService.NavigateTo<LoginViewModel>();
     }
 
-    public MainViewModel() : this(null!) { }
+    public MainViewModel() : this(null!,null!) { }
 
 }

@@ -1,22 +1,44 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using VoiceChat.Client.Services;
 using VoiceChat.Client.ViewModels.Base;
 using VoiceChat.Client.ViewModels.MainArea;
 
 namespace VoiceChat.Client.ViewModels
 {
-    public class RightSidebarViewModel : ViewModelBase
+    public partial class RightSidebarViewModel : ViewModelBase
     {
-        private readonly MainAreaViewModel _main;
-
-        public RightSidebarViewModel(MainAreaViewModel main)
+        private readonly ConnectionService connectionService;
+        private readonly StatusService statusService;
+        public RightSidebarViewModel(ConnectionService connectionService, StatusService statusService)
         {
-            _main = main;
+            this.connectionService = connectionService;
+            this.statusService = statusService;
 
-            //OpenSettingsCommand = new RelayCommand(() => _main.IsSettingsOpen = true);
         }
 
+
+
+
+        [RelayCommand]
+        public async Task Disconnect()
+        {
+            try
+            {
+                await connectionService.ServerDisconnect();
+
+            }
+            catch (Exception ex)
+            {
+                statusService.AddReport($"Error {ex}");
+            }
+        }
+
+
+
         public ICommand ConnectCommand { get; }
-        public ICommand DisconnectCommand { get; }
 
         public ICommand OpenSettingsCommand { get; }
     }

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.iOS;
 using Avalonia.Media;
 using Foundation;
-using ReactiveUI.Avalonia;
 using UIKit;
 
 namespace VoiceChat.Client.iOS
@@ -19,8 +18,7 @@ namespace VoiceChat.Client.iOS
         protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
         {
             return base.CustomizeAppBuilder(builder)
-                .WithInterFont()
-                .UseReactiveUI();
+                .WithInterFont();
         }
     }
 }

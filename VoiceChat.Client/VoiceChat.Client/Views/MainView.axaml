@@ -12,8 +12,9 @@
       <Design.DataContext>
         <viewmodels:MainViewModel />
       </Design.DataContext>
-    <Grid Grid.ColumnDefinitions="*,60">
-        <ContentControl Grid.Column="0" Content="{Binding CurrentViewModel}" />
-        <control:RightSidebar Grid.Column="1"/>
+    <Grid Grid.RowDefinitions="*,12" Grid.ColumnDefinitions="*,60">
+        <ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding CurrentViewModel}" />
+        <ContentControl Grid.Column="0" Grid.Row="1" Content="{Binding StatusBarViewModel}" />
+        <control:RightSidebar Grid.Column="1" Grid.Row="0"/>
     </Grid>
 </UserControl>

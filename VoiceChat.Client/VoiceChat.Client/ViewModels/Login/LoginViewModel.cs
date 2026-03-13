@@ -1,6 +1,9 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using Avalonia.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using VoiceChat.Client.Services;
@@ -10,25 +13,30 @@ using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Client.ViewModels.Login;
 
+
 public partial class LoginViewModel : ViewModelBase
 {
+    private readonly StatusService statusService;
+    private readonly AppState appState;
+    private readonly ConnectionService connectionService;
 
-    private readonly IHttpClientService httpClient;
-    private AppState appState;
-    INavigationService navigationService;
-    public string Username { get; set; } = "";
-    public string ServerAddress { get; set; } = "";
+    [ObservableProperty] public string username = "";
+    [ObservableProperty] public string inputserverAddress = "";
+    [ObservableProperty] public bool openLastConnection = false;
+    [ObservableProperty] public string historyButtonText = ">";
+
+    public ObservableCollection<ServerConnection> ServerConnections { get; } = new ObservableCollection<ServerConnection>();
 
 
-    private readonly ChatService chatService;
-    public LoginViewModel(AppState appState, INavigationService navigationService, ChatService chatService, IHttpClientService httpClient)
+
+    public LoginViewModel(AppState appState, ConnectionService connectionService, StatusService statusService)
     {
-        this.httpClient = httpClient;
         this.appState = appState;
-        this.navigationService = navigationService;
-        this.chatService = chatService;
-        Username = appState.ClientData.UserData.UserName;
-        ServerAddress = appState.ClientData.FavServers?.FirstOrDefault()?.ServerAdress ?? "";
+        this.statusService = statusService;
+        this.connectionService = connectionService;
+        Username = appState.GetUser().UserName;
+        InputserverAddress = appState.GetLastServer()?.ServerAdress ?? "";
+        ServerConnections = new ObservableCollection<ServerConnection>(appState.GetLastServers());
     }
 
     [RelayCommand]
@@ -36,27 +44,27 @@ public partial class LoginViewModel : ViewModelBase
     {
         try
         {
-            appState.ClientData.UserData = new AppStateUser(appState.ClientData.UserData.ClientId, Username);
-            appState.ClientData.FavServers = new List<FavServer>() { new FavServer(Username, ServerAddress) };
-            appState.ServerAdress = ServerAddress;
-
-            appState.SaveClientData();
-            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(appState.ClientData.UserData.ClientId, appState.ClientData.UserData.UserName);
-
-            var response = await httpClient.PostAsync<LoginRequestDTO, LoginResponseDTO>("/api/login", loginRequestDTO);
-            if (response != null)
-            {
-                appState.ClientData.JwtToken = response.AuthToken;
-                await chatService.Connect();
-                await navigationService.NavigateTo<MainAreaViewModel>();
-            }
+            await connectionService.ServerConnect(Username, InputserverAddress);
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            statusService.AddReport($"Error {ex}");
         }
     }
 
+    [RelayCommand]
+    public async Task OpenHistory()
+    {
+        OpenLastConnection = !OpenLastConnection;
+        HistoryButtonText = OpenLastConnection ? "<" : ">";
+    }
+    
+    [RelayCommand]
+    public async Task SetHistoryServer(ServerConnection serveradress)
+    {
+        InputserverAddress = serveradress.ServerAdress;
+        Username = serveradress.UserName;
+    }
 
 
 }

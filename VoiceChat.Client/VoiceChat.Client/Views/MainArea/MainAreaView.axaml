@@ -6,17 +6,14 @@
      xmlns:vm="clr-namespace:VoiceChat.Client.ViewModels.MainArea"
      xmlns:views="clr-namespace:VoiceChat.Client.Views.MainArea"
      x:Class="VoiceChat.Client.Views.MainArea.MainAreaView">
-
-    
-    <Design.DataContext>
-        <vm:MainAreaViewModel />
-    </Design.DataContext>
-
-    <Grid ColumnDefinitions="250,1,*,1,200" ShowGridLines="True" >
-        <views:ChannelSidebar Grid.Column="0" DataContext="{Binding ChannelSidebarViewModel}" ></views:ChannelSidebar>
-        <GridSplitter Grid.Column="1" Width="1" Background="#71cbfa" ResizeDirection="Columns"/>
-        <views:ChatView Grid.Column="2" DataContext="{Binding Chat}" MinWidth="200"></views:ChatView>
-        <GridSplitter Grid.Column="3" Width="1" Background="#71cbfa" ResizeDirection="Columns"/>
+ 
+    <Grid ColumnDefinitions="250,1,*,1,200" >
+        <ContentControl Grid.Column="0" Content="{Binding ChannelSidebarViewModel}" />
+        <GridSplitter Grid.Column="1" Width="1" ResizeDirection="Columns"/>
+        
+        <views:ChatView Grid.Column="2" DataContext="{Binding Chat}"></views:ChatView>
+        <GridSplitter Grid.Column="3" Width="1" ResizeDirection="Columns"/>
+        
         <views:ServerInformation Grid.Column="4" ></views:ServerInformation>
     </Grid>
 </UserControl>
