@@ -19,13 +19,13 @@ public class LoginUsecase(IRepository<User> repository, IAuthService authService
             user = new User
             {
                 Id = request.ClientId,
-                DisplayName = request.Displayname ?? $"User-{request.ClientId.ToString()}"
+                DisplayName = request.DisplayName ?? $"User-{request.ClientId.ToString()}"
             };
             await repository.AddAsync(user);
         }
-        else if (!string.IsNullOrEmpty(request.Displayname))
+        else if (!string.IsNullOrEmpty(request.DisplayName))
         {
-            user.DisplayName = request.Displayname;
+            user.DisplayName = request.DisplayName;
         }
         user.LastActive = DateTime.UtcNow;
 

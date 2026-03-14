@@ -8,7 +8,7 @@ namespace VoiceChat.Api.Services;
 public interface IAuthService
 {
     string GenerateToken(string userId);
-    string ValidateToken(string token);
+    ClaimsPrincipal ValidateToken(string token);
 }
 
 public class AuthService : IAuthService
@@ -42,7 +42,7 @@ public class AuthService : IAuthService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    public string ValidateToken(string token)
+    public ClaimsPrincipal ValidateToken(string token)
     {
         try
         {
@@ -59,7 +59,7 @@ public class AuthService : IAuthService
             }, out SecurityToken validatedToken);
 
             var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return userId ?? throw new Exception("Invalid token");
+            return principal ?? throw new Exception("Invalid token");
         }
         catch (Exception ex)
         {

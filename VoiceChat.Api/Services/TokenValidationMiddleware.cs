@@ -1,4 +1,5 @@
-﻿using VoiceChat.Api.Endpoints;
+﻿using System.Security.Claims;
+using VoiceChat.Api.Endpoints;
 
 namespace VoiceChat.Api.Services;
 
@@ -17,7 +18,7 @@ public class TokenValidationMiddleware
     public async Task InvokeAsync(HttpContext context, IAuthService handler)
     {
         // Nur prüfen, wenn der Endpoint Auth benötigt
-        if (context.Request.Path.StartsWithSegments("/api"))
+        if (context.Request.Path.StartsWithSegments(""))
         {
             var endpoint = context.GetEndpoint();
 
@@ -37,7 +38,13 @@ public class TokenValidationMiddleware
 
             try
             {
-                handler.ValidateToken(authHeader!);
+                var principal = handler.ValidateToken(authHeader!);
+                context.User = principal;
+                var ip = context.Connection.RemoteIpAddress?.ToString();
+
+                // Optional: IP als Claim hinzufügen
+                var identity = (ClaimsIdentity)principal.Identity!;
+                identity.AddClaim(new Claim("ip", ip ?? "unknown"));
             }
             catch (UnauthorizedAccessException)
             {
