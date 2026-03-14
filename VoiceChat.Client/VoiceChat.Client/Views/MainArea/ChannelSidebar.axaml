@@ -11,7 +11,7 @@
 	
 	
 	<Grid RowDefinitions="40,*,1,*">
-		<Panel Grid.Row="0" Classes="ChannelPanel" Background="Beige" Margin="5" >
+		<Panel Grid.Row="0" Classes="ChannelPanel" Margin="5" >
 			<TextBlock Text="Channels:"
 					   FontSize="16"
 					   FontWeight="Bold"

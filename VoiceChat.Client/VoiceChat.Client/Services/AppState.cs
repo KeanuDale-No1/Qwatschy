@@ -38,6 +38,8 @@ namespace VoiceChat.Client.Services
 
         public void AddServer(ServerConnection connection)
         {
+            if (ClientData.ServerConnections.Any(c => c.ServerAdress == connection.ServerAdress && c.UserName == connection.UserName))
+                return;
             ClientData.ServerConnections.Add(connection);
             SaveClientData();
         }

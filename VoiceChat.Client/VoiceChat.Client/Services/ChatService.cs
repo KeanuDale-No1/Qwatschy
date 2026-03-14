@@ -20,24 +20,39 @@ public class ChatService(AppState appState, StatusService statusService) : IDisp
 
     public async Task Connect (string serveradress)
     {
-        statusService.AddReport("baue verbindung zum Chat auf.");
-
-        string url = serveradress.TrimEnd("/").ToString() + "/chat";
-
-        Connection = new HubConnectionBuilder()
-            .WithUrl(url)
-            .WithAutomaticReconnect()
-            .Build();
-
-        Connection.On<ChatMessageDTO>("ReceiveMessage", (chatmessage) =>
+        try
         {
-            MessageReceived?.Invoke(chatmessage);
-        });
-        Connection.Closed += Connection_Closed;
-        Connection.Reconnecting += connection_Reconnecting;
-        Connection.Reconnected += connection_Reconnected;
-        await Connection.StartAsync();
-        statusService.AddReport("Verbindung zum Chat aufgebaut.");
+            statusService.AddReport("baue verbindung zum Chat auf.");
+
+            string url = serveradress.TrimEnd("/").ToString() + "/chat";
+
+            Connection = new HubConnectionBuilder()
+                .WithUrl(url)
+                .WithAutomaticReconnect()
+                .Build();
+
+            Connection.On<ChatMessageDTO>("ReceiveMessage", (chatmessage) =>
+            {
+                MessageReceived?.Invoke(chatmessage);
+            });
+            Connection.Closed += Connection_Closed;
+            Connection.Reconnecting += connection_Reconnecting;
+            Connection.Reconnected += connection_Reconnected;
+            try
+            {
+                await Connection.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                statusService.AddReport("SignalR Fehler: " + ex.Message);
+                return;
+            }
+            statusService.AddReport("Verbindung zum Chat aufgebaut.");
+        }
+        catch (Exception ex)
+        {
+            statusService.AddReport(ex.Message);
+        }
     }
 
     private async Task connection_Reconnected(string? arg) => 

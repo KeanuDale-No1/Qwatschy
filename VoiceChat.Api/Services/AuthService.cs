@@ -49,7 +49,7 @@ public class AuthService : IAuthService
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
             var handler = new JwtSecurityTokenHandler();
 
-            var principal = handler.ValidateToken(token, new TokenValidationParameters
+            var principal = handler.ValidateToken(token.Replace("Bearer ",""), new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key,
@@ -61,7 +61,7 @@ public class AuthService : IAuthService
             var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return userId ?? throw new Exception("Invalid token");
         }
-        catch
+        catch (Exception ex)
         {
             throw new UnauthorizedAccessException("Token validation failed");
         }

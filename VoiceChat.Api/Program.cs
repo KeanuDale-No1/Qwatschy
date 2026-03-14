@@ -72,8 +72,7 @@ builder.Services.AddCors(options =>
     });
 });
 builder.Services.AddSignalR();
-// Register channels service (file-based persistence)
-builder.Services.AddSingleton<ChannelsService>();
+
 var app = builder.Build();
 
 

@@ -4,7 +4,9 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Client.Services;
 
@@ -53,6 +55,16 @@ public class HttpClientService : IHttpClientService
     {
         try
         {
+
+            var result1 = await _client.PostAsync(url, JsonContent.Create(data, options: Json.Options));
+            if (!result1.IsSuccessStatusCode)
+            {
+                var errorContent = await result1.Content.ReadAsStringAsync();
+                
+                throw new HttpRequestException($"Request failed with status code {result1.StatusCode}: {errorContent}");
+            }
+            return await result1.Content.ReadFromJsonAsync<T1>(Json.Options) ?? throw new Exception("Failed to deserialize response.");
+
 
             var result = await _client.PostAsJsonAsync<T>(url, data, Json.Options);
             return await result.Content.ReadFromJsonAsync<T1>();

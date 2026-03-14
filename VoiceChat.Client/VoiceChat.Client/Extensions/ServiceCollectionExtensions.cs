@@ -22,7 +22,7 @@ namespace VoiceChat.Client.Extensions
             collection.AddSingleton<ConnectionService>();
             collection.AddSingleton<INavigationService, NavigationService>();
             collection.AddSingleton<StatusService>();
-            collection.AddTransient<IHttpClientService, HttpClientService>();
+            collection.AddSingleton<IHttpClientService, HttpClientService>();
             collection.AddSingleton<ChatService>();
             collection.AddSingleton<IApplicationLifetime>(sp => Application.Current!.ApplicationLifetime!);
 

@@ -39,23 +39,30 @@ namespace VoiceChat.Client.Services
 
         public async Task ServerConnect(string username, string serveradress) 
         {
-            serverAdresss = serveradress;
-            appState.SetUsername(username);
-            var user = appState.GetUser();
-            statusService.AddReport("Versuche zu verbinden...");
-
-            await httpService.CreateClient(serveradress,"");
-            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(user.ClientId, user.UserName);
-            var response = await httpService.PostAsync<LoginRequestDTO, LoginResponseDTO>("/api/login", loginRequestDTO);
-            if (response != null)
+            try
             {
-                statusService.AddReport("Verbindung erfolgreich hergestellt.");
-                appState.AddServer(new ServerConnection(username,serveradress));
-                await httpService.CreateClient(serveradress, response.AuthToken);
-                await chatService.Connect(serveradress);
-                await navigationService.NavigateTo<MainAreaViewModel>();
-            }
+                serverAdresss = serveradress;
+                appState.SetUsername(username);
+                var user = appState.GetUser();
+                statusService.AddReport("Versuche zu verbinden...");
 
+                await httpService.CreateClient(serveradress, "");
+                LoginRequestDTO loginRequestDTO = new LoginRequestDTO(user.ClientId, user.UserName);
+                var response = await httpService.PostAsync<LoginRequestDTO, LoginResponseDTO>("/api/login", loginRequestDTO);
+                if (response != null)
+                {
+                    statusService.AddReport("Verbindung erfolgreich hergestellt.");
+                    appState.AddServer(new ServerConnection(username, serveradress));
+                    await httpService.CreateClient(serveradress, response.AuthToken);
+                    await chatService.Connect(serveradress);
+                    await navigationService.NavigateTo<MainAreaViewModel>();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                statusService.AddReport(ex.Message);
+            }
         }
 
 
