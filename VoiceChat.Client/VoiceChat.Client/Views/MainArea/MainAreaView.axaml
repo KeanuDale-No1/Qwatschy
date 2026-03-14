@@ -8,7 +8,12 @@
      x:Class="VoiceChat.Client.Views.MainArea.MainAreaView">
  
     <Grid ColumnDefinitions="250,1,*,1,200" >
+        
+		<!-- ============================= -->
+		<!-- CHANNEL SIDEBAR -->
+		<!-- ============================= -->
         <ContentControl Grid.Column="0" Content="{Binding ChannelSidebarViewModel}" />
+        
         <GridSplitter Grid.Column="1" Width="1" ResizeDirection="Columns"/>
         
         <views:ChatView Grid.Column="2" DataContext="{Binding Chat}"></views:ChatView>

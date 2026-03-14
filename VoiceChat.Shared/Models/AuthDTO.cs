@@ -4,6 +4,6 @@ using System.Text;
 
 namespace VoiceChat.Shared.Models;
 
-public record LoginRequestDTO(Guid ClientId, string Displayname);
+public record LoginRequestDTO(Guid ClientId, string DisplayName);
 public record LoginResponseDTO(Guid UserId, string DisplayName, string AuthToken);
 

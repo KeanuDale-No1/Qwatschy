@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VoiceChat.Data;
 
@@ -10,9 +11,11 @@ using VoiceChat.Data;
 namespace VoiceChat.Data.Migrations
 {
     [DbContext(typeof(VoiceChatDbContext))]
-    partial class VoiceChatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260314152857_AddUserConnection")]
+    partial class AddUserConnection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");
@@ -23,17 +26,16 @@ namespace VoiceChat.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ChannelId")
+                    b.Property<Guid?>("ConnectedChannel")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ConnectedChannel")
+                    b.Property<Guid?>("ConnectedUserId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DisplayName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastActive")
@@ -41,7 +43,7 @@ namespace VoiceChat.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChannelId");
+                    b.HasIndex("ConnectedUserId");
 
                     b.ToTable("Users");
                 });
@@ -65,6 +67,20 @@ namespace VoiceChat.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Channels");
+                });
+
+            modelBuilder.Entity("VoiceChat.Domain.Channel.ConnectedUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ConnectedUsers");
                 });
 
             modelBuilder.Entity("VoiceChat.Domain.Channel.Message", b =>
@@ -95,9 +111,9 @@ namespace VoiceChat.Data.Migrations
 
             modelBuilder.Entity("VoiceChat.Domain.Auth.User", b =>
                 {
-                    b.HasOne("VoiceChat.Domain.Channel.Channel", null)
+                    b.HasOne("VoiceChat.Domain.Channel.ConnectedUser", null)
                         .WithMany("Users")
-                        .HasForeignKey("ChannelId");
+                        .HasForeignKey("ConnectedUserId");
                 });
 
             modelBuilder.Entity("VoiceChat.Domain.Channel.Message", b =>
@@ -112,7 +128,10 @@ namespace VoiceChat.Data.Migrations
             modelBuilder.Entity("VoiceChat.Domain.Channel.Channel", b =>
                 {
                     b.Navigation("Messages");
+                });
 
+            modelBuilder.Entity("VoiceChat.Domain.Channel.ConnectedUser", b =>
+                {
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

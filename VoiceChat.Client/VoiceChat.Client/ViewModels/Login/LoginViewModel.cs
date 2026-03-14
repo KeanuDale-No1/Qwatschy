@@ -44,7 +44,8 @@ public partial class LoginViewModel : ViewModelBase
     {
         try
         {
-            await connectionService.ServerConnect(Username, InputserverAddress);
+            appState.SetUsername(Username);
+            await connectionService.ServerConnect(InputserverAddress);
         }
         catch (Exception ex)
         {

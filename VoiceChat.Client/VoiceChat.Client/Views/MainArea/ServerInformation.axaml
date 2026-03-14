@@ -4,5 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="VoiceChat.Client.Views.MainArea.ServerInformation">
-  Serverinfo
+  <Border Classes="serverPanel">
+
+        <StackPanel Spacing="8">
+
+            <Image Height="140"
+                   Stretch="UniformToFill"/>
+
+            <TextBlock Classes="serverTitle"
+                       Text="Dev Community"/>
+
+            <TextBlock Classes="serverDescription"
+                       Text="A community for developers to collaborate and chat."/>
+
+        </StackPanel>
+
+    </Border>
 </UserControl>

@@ -23,6 +23,7 @@ public static class Json
     public static readonly JsonSerializerOptions Options =
         new JsonSerializerOptions
         {
-            TypeInfoResolver = AppJsonContext.Default
+            TypeInfoResolver = AppJsonContext.Default,
+            PropertyNameCaseInsensitive = true
         };
 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.ViewModels.Base;
 using VoiceChat.Shared.Models;
@@ -23,10 +24,10 @@ namespace VoiceChat.Client.ViewModels.MainArea
         public ObservableCollection<ChatMessage> Messages { get; set; } = new();
         [ObservableProperty] private string messageInput = "";
 
-        private readonly ChatService chatService;
+        private readonly ServiceHub chatService;
         private readonly AppState appState;
         public event Action? MessageAdded;
-        public ChatViewModel(ChatService chatService, AppState appState)
+        public ChatViewModel(ServiceHub chatService, AppState appState)
         {
             this.appState = appState;
             this.chatService = chatService;
