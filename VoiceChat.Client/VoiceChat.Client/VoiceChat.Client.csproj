@@ -6,8 +6,9 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 	  <PublishTrimmed>false</PublishTrimmed>
 	  <IlcDisableReflection>false</IlcDisableReflection>
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  
+	
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
@@ -24,6 +25,8 @@
     <PackageReference Include="CommunityToolkit.Mvvm" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="NAudio" />
+    <PackageReference Include="Silk.NET.OpenAL" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,9 +43,5 @@
     <Compile Update="Views\StatusBarView.axaml.cs">
       <DependentUpon>StatusBarView.axaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Converter\" />
   </ItemGroup>
 </Project>

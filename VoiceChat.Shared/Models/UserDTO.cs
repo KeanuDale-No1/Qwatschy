@@ -8,5 +8,7 @@ namespace VoiceChat.Shared.Models
     {
         public Guid ClientID { get; set; }
         public string DisplayName { get; set; }
+
+        public Guid? ChannelId { get; set; }
     }
 }

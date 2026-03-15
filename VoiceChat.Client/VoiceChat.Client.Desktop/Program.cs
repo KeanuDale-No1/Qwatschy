@@ -1,5 +1,9 @@
 ﻿using Avalonia;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using VoiceChat.Client.Desktop.Services.SoundPlayer;
+using VoiceChat.Client.Extensions;
+using VoiceChat.Client.Services.SoundPlayer;
 
 namespace VoiceChat.Client.Desktop
 {
@@ -9,14 +13,36 @@ namespace VoiceChat.Client.Desktop
         // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
         // yet and stuff might break.
         [STAThread]
-        public static void Main(string[] args) => BuildAvaloniaApp()
-            .StartWithClassicDesktopLifetime(args);
+        public static void Main(string[] args)
+        {
+            var services = ConfigureServices();
 
+            BuildAvaloniaApp()
+                .AfterSetup(_ =>
+                {
+                    App.Services = services;
+                })
+                .StartWithClassicDesktopLifetime(args);
+        }
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
                 .WithInterFont()
                 .LogToTrace();
+
+        private static IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            // Hier registrierst du deinen Desktop-SoundPlayer
+            services.AddSingleton<ISoundPlayer, DesktopSoundPlayer>();
+            services.AddCommonServices();
+            // weitere Services...
+            // services.AddSingleton<IMyService, MyService>();
+
+            return services.BuildServiceProvider();
+        }
+
     }
 }

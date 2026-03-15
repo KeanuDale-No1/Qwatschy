@@ -6,6 +6,8 @@ using VoiceChat.Shared.Models;
 namespace VoiceChat.Api.Hubs;
 
 public class ChatHub(IUseCase<CreateChannelRequestDTO,CreateChannelResponseDTO> channelCreateUseCase,
+                    IUseCase<DeleteChannelRequestDTO, DeleteChannelResponseDTO> deleteCreateUseCase,
+
                      IUseCase<ConnectChannelRequestDTO, ConnectChannelResponseDTO> joinChannelUseCase):Hub
 {
     public override async Task OnConnectedAsync()
@@ -58,6 +60,8 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO,CreateChannelResponseDTO> 
         // Optional: Validierung
         if (channelId == Guid.Empty)
             throw new ArgumentNullException(nameof(channelId));
+
+        var response = await deleteCreateUseCase.ExecuteAsync(new DeleteChannelRequestDTO(channelId));
 
         await Clients.All.SendAsync("DeleteChannelChange", channelId);
     }

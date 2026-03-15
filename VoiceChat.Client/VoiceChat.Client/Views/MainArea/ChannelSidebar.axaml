@@ -5,10 +5,13 @@
 			 xmlns:models="using:VoiceChat.Shared.Models"
 			 mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
 			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
+			 xmlns:cv="using:VoiceChat.Client.Converters"
 			 x:Class="VoiceChat.Client.Views.MainArea.ChannelSidebarView"
 			 x:DataType="vm:ChannelSidebarViewModel">
 
-
+	<UserControl.Resources>
+		<cv:EqualityMultiConverter x:Key="EqualityMultiConverter" />
+	</UserControl.Resources>
 
 	<!-- ============================= -->
 	<!-- CHANNEL SIDEBAR -->
@@ -34,35 +37,43 @@
 			<ItemsControl ItemsSource="{Binding Channels}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Button Classes="channelItem"
-								Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}" 
-								CommandParameter="{Binding .}">
-							<StackPanel  Orientation="Horizontal" HorizontalAlignment="Stretch" >
-								<TextBlock Text="{Binding Name}"
-										   Margin="8"/>
+						<StackPanel Orientation="Horizontal">
+							<Button HorizontalAlignment="Stretch"
+									Classes="channelItem"
+									Command="{Binding $parent[ItemsControl].DataContext.SelectChannelCommand}"
+									CommandParameter="{Binding .}">
+								<StackPanel  Orientation="Horizontal" HorizontalAlignment="Stretch" >
+									<TextBlock Text="{Binding Name}"
+											   Margin="8"/>
+									<Border Background="Red"
+											CornerRadius="8"
+											Padding="4"
+											IsVisible="{Binding UnreadCount}">
 
-								<Border Grid.Column="1"
-										Background="Red"
-										CornerRadius="8"
-										Padding="4"
-										IsVisible="{Binding UnreadCount}">
-
-									<TextBlock Text="{Binding UnreadCount}"/>
-								</Border>
-							</StackPanel>
-
-							<Button.ContextMenu>
-								<ContextMenu>
-									<MenuItem Header="Löschen" 
-											  Command="{Binding $parent[UserControl].DataContext.DeleteChannelCommand }" 
-											  CommandParameter="{Binding .}"/>
-									<MenuItem Header="-"/>
-									<MenuItem Header="Close"/>
-								</ContextMenu>
-							</Button.ContextMenu>
-
-						</Button>
-
+										<TextBlock Text="{Binding UnreadCount}"/>
+									</Border>
+								</StackPanel>
+								<Button.ContextMenu>
+									<ContextMenu>
+										<MenuItem Header="Löschen"
+												  Command="{Binding $parent[UserControl].DataContext.DeleteChannelCommand }"
+												  CommandParameter="{Binding .}"/>
+										<MenuItem Header="-"/>
+										<MenuItem Header="Close"/>
+									</ContextMenu>
+								</Button.ContextMenu>
+							</Button>
+							<Button Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
+									CommandParameter="{Binding .}"
+									Content="🔉">
+								<Button.IsVisible>
+									<MultiBinding Converter="{StaticResource EqualityMultiConverter}">
+										<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel" />
+										<Binding Path="." />
+									</MultiBinding>
+								</Button.IsVisible>
+							</Button>
+						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 
@@ -74,7 +85,7 @@
 			<TextBlock Text="Online"
 					   FontWeight="Bold"
 					   Margin="10"/>
-			<ItemsControl>
+			<ItemsControl ItemsSource="{Binding SelectedChannelUsers}">
 				<ItemsControl.ItemTemplate>
 
 					<DataTemplate>
@@ -88,7 +99,7 @@
 										 Height="8"
 										 Fill="Lime"/>
 
-								<TextBlock Text="Alice"/>
+								<TextBlock Text="{Binding DisplayName}"/>
 
 							</StackPanel>
 						</StackPanel>

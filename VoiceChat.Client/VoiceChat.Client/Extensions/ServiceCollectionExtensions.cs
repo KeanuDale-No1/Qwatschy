@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels;
 using VoiceChat.Client.ViewModels.Login;
 using VoiceChat.Client.ViewModels.MainArea;
@@ -28,6 +29,7 @@ namespace VoiceChat.Client.Extensions
             //collection.AddSingleton<ChatService>();
             collection.AddSingleton<ChannelService>();
             collection.AddSingleton<IApplicationLifetime>(sp => Application.Current!.ApplicationLifetime!);
+            collection.AddTransient<Sounds>();
 
 
             //ViewModels

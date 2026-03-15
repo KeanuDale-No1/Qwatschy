@@ -15,6 +15,9 @@ public class ServiceHub(StatusService statusService, TokenService tokenService) 
 
     public event Action<ChatMessageDTO>? MessageReceived;
     public event Action<ChannelDTO>? ChannelAdd;
+    public event Action<Guid>? ChannelRemove;
+
+
     public event Action<ConnectChannelResponseDTO>? UserJoinChannel;
 
     public async Task Connect (string serveradress)
@@ -41,9 +44,9 @@ public class ServiceHub(StatusService statusService, TokenService tokenService) 
                 ChannelAdd?.Invoke(channel);
             });
 
-            Connection.On<ChannelDTO>("DeleteChannelChange", (channel) =>
+            Connection.On<Guid>("DeleteChannelChange", (channel) =>
             {
-                ChannelAdd?.Invoke(channel);
+                ChannelRemove?.Invoke(channel);
             });
 
             Connection.On<ConnectChannelResponseDTO>("JoinChannel", (channel) =>
@@ -91,7 +94,10 @@ public class ServiceHub(StatusService statusService, TokenService tokenService) 
         Connection.InvokeAsync("AddChannel", channel);
 
     public Task DeleteChannel(Guid channelId) =>
-        Connection.InvokeAsync("DeleteChannel", channelId); 
+        Connection.InvokeAsync("DeleteChannel", channelId);
+
+    public Task JoinChannel(Guid guid) =>
+        Connection.InvokeAsync("JoinChannel", guid);
 
     public void Dispose()
     {
