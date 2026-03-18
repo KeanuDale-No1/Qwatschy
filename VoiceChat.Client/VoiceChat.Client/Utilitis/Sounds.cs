@@ -1,5 +1,4 @@
-﻿using Silk.NET.OpenAL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,7 +45,6 @@ internal static class SoundGenerator
             buffer[i * 2] = (byte)(sample & 0xFF);
             buffer[i * 2 + 1] = (byte)((sample >> 8) & 0xFF);
         }
-
         return buffer;
     }
     public static byte[] GenerateSmoothUiSound(double duration = 0.25, int sampleRate = 44100)
@@ -65,7 +63,7 @@ internal static class SoundGenerator
             double freq = startFreq + (endFreq - startFreq) * (i / (double)sampleCount);
 
             // Smooth sine
-            double sample = Math.Sin(2 * Math.PI * freq * t) *5;
+            double sample = Math.Sin(2 * Math.PI * freq * t);
 
             // Fade out
             double fade = 1.0 - (i / (double)sampleCount);
@@ -79,6 +77,9 @@ internal static class SoundGenerator
         // Convert to PCM16
         byte[] pcm = new byte[sampleCount * 2];
         Buffer.BlockCopy(samples, 0, pcm, 0, pcm.Length);
+
+
+
         return pcm;
     }
 

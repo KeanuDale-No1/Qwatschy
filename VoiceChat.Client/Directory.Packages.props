@@ -16,14 +16,20 @@
     <PackageVersion Include="Avalonia.Browser" Version="11.3.12" />
     <PackageVersion Include="Avalonia.Android" Version="11.3.11" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Concentus" Version="2.2.2" />
+    <PackageVersion Include="LibVLCSharp" Version="3.9.6" />
     <PackageVersion Include="ManagedBass" Version="4.0.2" />
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.4" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.4" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.3" />
     <PackageVersion Include="Microsoft.JSInterop" Version="10.0.5" />
     <PackageVersion Include="NAudio" Version="2.3.0" />
+    <PackageVersion Include="OpenTK" Version="4.9.4" />
+    <PackageVersion Include="OwnAudioSharp" Version="2.6.1" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
+    <PackageVersion Include="Silk.NET.Core" Version="2.23.0" />
     <PackageVersion Include="Silk.NET.OpenAL" Version="2.23.0" />
+    <PackageVersion Include="Silk.NET.OpenAL.Extensions.Enumeration" Version="2.23.0" />
     <PackageVersion Include="SoundFlow" Version="1.4.0" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
   </ItemGroup>

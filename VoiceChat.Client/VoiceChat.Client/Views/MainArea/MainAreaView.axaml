@@ -16,7 +16,7 @@
         
         <GridSplitter Grid.Column="1" Width="1" ResizeDirection="Columns"/>
         
-        <views:ChatView Grid.Column="2" DataContext="{Binding Chat}"></views:ChatView>
+        <views:ChatView Grid.Column="2" DataContext="{Binding ChatViewModel}"></views:ChatView>
         <GridSplitter Grid.Column="3" Width="1" ResizeDirection="Columns"/>
         
         <views:ServerInformation Grid.Column="4" ></views:ServerInformation>

@@ -5,10 +5,9 @@ using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Api.Hubs;
 
-public class ChatHub(IUseCase<CreateChannelRequestDTO,CreateChannelResponseDTO> channelCreateUseCase,
-                    IUseCase<DeleteChannelRequestDTO, DeleteChannelResponseDTO> deleteCreateUseCase,
-
-                     IUseCase<ConnectChannelRequestDTO, ConnectChannelResponseDTO> joinChannelUseCase):Hub
+public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO> channelCreateUseCase,
+                     IUseCase<DeleteChannelRequestDTO, DeleteChannelResponseDTO> deleteCreateUseCase,
+                     IUseCase<ConnectChannelRequestDTO, ConnectChannelResponseDTO> joinChannelUseCase) : Hub
 {
     public override async Task OnConnectedAsync()
     {
@@ -37,24 +36,17 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO,CreateChannelResponseDTO> 
         // Optional: Validierung
         if (channelId == Guid.Empty)
             throw new ArgumentNullException(nameof(channelId));
-        if (string.IsNullOrEmpty(Context.UserIdentifier ))
+        if (string.IsNullOrEmpty(Context.UserIdentifier))
             throw new UnauthorizedAccessException(nameof(Context.UserIdentifier));
 
         var response = await joinChannelUseCase.ExecuteAsync(new ConnectChannelRequestDTO(Guid.Parse(Context.UserIdentifier!), channelId));
-     
         await Clients.All.SendAsync("JoinChannel", response);
+        await Groups.AddToGroupAsync(Context.ConnectionId, channelId.ToString());
     }
 
+    
 
-
-    public async Task AddChannel(ChannelDTO message)
-    {
-        // Optional: Validierung
-        if (message == null)
-            throw new ArgumentNullException(nameof(message));
-        var respnse =  await channelCreateUseCase.ExecuteAsync(new CreateChannelRequestDTO(message));
-        await Clients.All.SendAsync("AddChannelChange", respnse.Channel);
-    }
+    
     public async Task DeleteChannel(Guid channelId)
     {
         // Optional: Validierung
@@ -66,14 +58,32 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO,CreateChannelResponseDTO> 
         await Clients.All.SendAsync("DeleteChannelChange", channelId);
     }
 
+
+
+    #region Channel and Message Management
+
+    public async Task AddChannel(ChannelDTO message)
+    {
+        // Optional: Validierung
+        if (message == null)
+            throw new ArgumentNullException(nameof(message));
+        var respnse = await channelCreateUseCase.ExecuteAsync(new CreateChannelRequestDTO(message));
+        await Clients.All.SendAsync("AddChannelChange", respnse.Channel);
+    }
+
+    public async Task SendAudioFrame(Guid ChannelId, byte[] audioData)
+    {
+        await Clients.OthersInGroup(ChannelId.ToString()).SendAsync("ReceiveAudioFrame", Context.ConnectionId, audioData);
+    }
     public async Task SendMessage(ChatMessageDTO message)
     {
         // Optional: Validierung
         if (message == null)
             throw new ArgumentNullException(nameof(message));
 
+        await 
+
         await Clients.All.SendAsync("ReceiveMessage", message);
     }
-
-
+    #endregion
 }

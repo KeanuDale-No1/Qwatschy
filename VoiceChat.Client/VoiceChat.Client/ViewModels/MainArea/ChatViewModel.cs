@@ -24,10 +24,10 @@ namespace VoiceChat.Client.ViewModels.MainArea
         public ObservableCollection<ChatMessage> Messages { get; set; } = new();
         [ObservableProperty] private string messageInput = "";
 
-        private readonly ServiceHub chatService;
+        private readonly ServiceHubClient chatService;
         private readonly AppState appState;
         public event Action? MessageAdded;
-        public ChatViewModel(ServiceHub chatService, AppState appState)
+        public ChatViewModel(ServiceHubClient chatService, AppState appState)
         {
             this.appState = appState;
             this.chatService = chatService;

@@ -21,11 +21,10 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     public ObservableCollection<ChannelDTO> Channels { get; }
     public ObservableCollection<UserDTO> SelectedChannelUsers { get; set; } = new ObservableCollection<UserDTO>();
 
-
     [ObservableProperty] public ChannelDTO? selectedChannel;
 
-    [ObservableProperty] public string newChannelName = "";
 
+    [ObservableProperty] public string newChannelName = "";
 
 
     public ChannelSidebarViewModel(StatusService statusService,  ChannelService channelService, Sounds sounds)
@@ -34,13 +33,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
         this.channelService = channelService;
         this.sounds = sounds;
         Channels = channelService.Channels;
-        channelService.Users.CollectionChanged += async (s, e) =>
-        {
-            if (SelectedChannel != null)
-            {
-                await getSelectedChannelUsers();
-            }
-        };
+        SelectedChannelUsers = channelService.ChannelUsers;
     }
 
 
@@ -77,38 +70,6 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     private async Task SelectChannel(ChannelDTO channel)
     {
         SelectedChannel = channel;
-        await getSelectedChannelUsers();
+        channelService.SetSelectChannel(channel);
     }
-
-    private async Task getSelectedChannelUsers()
-    {
-        statusService.AddReport("getSelectedChannelUsers");
-       SelectedChannelUsers.Clear();
-       foreach (var item in channelService.Users.Where(u => u.ChannelId == SelectedChannel?.Id))
-       {
-            statusService.AddReport("getSelectedChannelUsers: "+ item.DisplayName);
-            SelectedChannelUsers.Add(item);
-       }
-    }
-
-
-    private async Task EditChannel()
-    {
-    }
-
-    private async Task LeaveChannel()
-    {
-
-    }
-
-    private async Task LoadOnlineUsers()
-    {
-        // Hier würden Sie die Online-Benutzer von Ihrem Server laden, z.B.:
-        // var users = await httpClientService.GetAsync<List<UserModel>>("api/online-users");
-        // OnlineUsers = new ObservableCollection<UserModel>(users);
-    }
-
-
-
-
 }

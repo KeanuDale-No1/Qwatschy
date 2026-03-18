@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using Concentus;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 using VoiceChat.Client.Services;
@@ -6,7 +7,7 @@ using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Client.Hubs;
 
-public class ServiceHub(StatusService statusService, TokenService tokenService) : IDisposable
+public class ServiceHubClient(StatusService statusService, TokenService tokenService) : IDisposable
 {
     
     private readonly StatusService statusService = statusService;
@@ -19,6 +20,11 @@ public class ServiceHub(StatusService statusService, TokenService tokenService) 
 
 
     public event Action<ConnectChannelResponseDTO>? UserJoinChannel;
+    public event Action<byte[]>? OnReceiveAudioFrame;
+
+
+    //IOpusEncoder encoder = Concentus.Structs.OpusEncoder.Create(48000, 1, Concentus.Enums.OpusApplication.OPUS_APPLICATION_VOIP);
+    //IOpusDecoder decoder = Concentus.Structs.OpusDecoder.Create(48000, 1);
 
     public async Task Connect (string serveradress)
     {
@@ -53,6 +59,14 @@ public class ServiceHub(StatusService statusService, TokenService tokenService) 
             {
                 UserJoinChannel?.Invoke(channel);
             });
+
+            Connection.On<string, byte[]>("ReceiveAudioFrame", (connectionId, opusChunk) =>
+            {
+
+               // byte[] audioData = DecodeOpus(opusChunk);
+                OnReceiveAudioFrame?.Invoke(opusChunk);
+            });
+
 
             Connection.Closed += Connection_Closed;
             Connection.Reconnecting += connection_Reconnecting;
@@ -104,5 +118,10 @@ public class ServiceHub(StatusService statusService, TokenService tokenService) 
         Connection.Closed -= Connection_Closed;
         Connection.Reconnecting -= connection_Reconnecting;
         Connection.Reconnected -= connection_Reconnected;
+    }
+
+    internal void SendAudioFrame(Guid channelId, byte[] opusData)
+    {
+        Connection.InvokeAsync("SendAudioFrame",channelId, opusData);
     }
 }

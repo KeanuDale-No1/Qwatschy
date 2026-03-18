@@ -14,9 +14,6 @@
       <Deploy />
     </Project>
     <Project Path="VoiceChat.Client/VoiceChat.Client/VoiceChat.Client.csproj" Id="7ffd012d-ad10-4ea8-8906-e7af311e444d" />
-    <Project Path="VoiceChat.Desktop/VoiceChat.Desktop.csproj">
-      <Deploy Solution="Debug|*" />
-    </Project>
   </Folder>
   <Folder Name="/VoiceChat.Shareds/">
     <Project Path="VoiceChat.Shared/VoiceChat.Shared.csproj" />

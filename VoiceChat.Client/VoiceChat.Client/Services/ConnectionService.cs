@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.ViewModels.Login;
@@ -13,12 +14,12 @@ namespace VoiceChat.Client.Services
                                  INavigationService navigationService,
                                  AppState appState,
                                  StatusService statusService,
-                                 TokenService tokenService, ServiceHub serviceHub)
+                                 TokenService tokenService, ServiceHubClient serviceHub)
     {
         
 
         private string serverAddress;
-        private Guid channelId;
+        public Guid? ConnectedChannelId { get; internal set; }
         
         public async Task ServerDisconnect()
         {
@@ -59,16 +60,14 @@ namespace VoiceChat.Client.Services
         }
 
 
-        public async Task ChannelConnect(Guid channelId)
+        public void ChannelConnect(Guid channelId)
         {
-           this.channelId = channelId;
-
-
+           this.ConnectedChannelId = channelId;
         }
 
-        public async Task ChannelDisconnect() 
-        { 
-            
+        public void ChannelDisconnect() 
+        {
+            ConnectedChannelId = null;
         }
 
 
