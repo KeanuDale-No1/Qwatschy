@@ -81,7 +81,6 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
         if (message == null)
             throw new ArgumentNullException(nameof(message));
 
-        await 
 
         await Clients.All.SendAsync("ReceiveMessage", message);
     }
