@@ -2,23 +2,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="60" d:DesignHeight="450"
              xmlns:vm="using:VoiceChat.Client.ViewModels"
              x:DataType="vm:RightSidebarViewModel"
              x:Class="VoiceChat.Client.Views.RightSidebar">
 
-      <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) 
-         -->
-    <vm:RightSidebarViewModel />
-  </Design.DataContext> 
+      
 
    <StackPanel VerticalAlignment="Top" Margin="10" Spacing="20">
 
-        <Button Content="🔗" Command="{Binding ConnectCommand}"/>
-        <Button Content="❌" Command="{Binding DisconnectCommand}"/>
-        <ToggleButton IsChecked="True">
+        <Button Classes="Icon" Content="🔗" Command="{Binding ConnectCommand}"/>
+        <Button Classes="Icon" Content="❌" Command="{Binding DisconnectCommand}"/>
+        <ToggleButton Classes="Icon" IsChecked="True">
             <Panel>
                 <PathIcon Classes="audio-on"
                     Data="{StaticResource speaker_regular}" />
@@ -27,7 +22,7 @@
             </Panel>
         </ToggleButton>
        
-       <Button Content="⚙️" Command="{Binding OpenSettingsCommand}"/>
+       <Button Classes="Icon" Content="⚙️" Command="{Binding OpenSettingsCommand}"/>
 
     </StackPanel>
 </UserControl>

@@ -11,12 +11,9 @@ namespace VoiceChat.Client.ViewModels
     public partial class RightSidebarViewModel : ViewModelBase
     {
         private readonly ConnectionService connectionService;
-        private readonly StatusService statusService;
-        public RightSidebarViewModel(ConnectionService connectionService, StatusService statusService)
+        public RightSidebarViewModel(ConnectionService connectionService)
         {
             this.connectionService = connectionService;
-            this.statusService = statusService;
-
         }
 
 
@@ -25,15 +22,7 @@ namespace VoiceChat.Client.ViewModels
         [RelayCommand]
         public async Task Disconnect()
         {
-            try
-            {
-                await connectionService.ServerDisconnect();
-
-            }
-            catch (Exception ex)
-            {
-                statusService.AddReport($"Error {ex}");
-            }
+            await connectionService.ServerDisconnect();
         }
 
 

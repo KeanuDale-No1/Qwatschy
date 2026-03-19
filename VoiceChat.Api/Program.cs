@@ -11,9 +11,8 @@ using VoiceChat.Data.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<VoiceChatDbContext>();
-//builder.Services.AddRepositories();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddUsecases(); // sauber
+builder.Services.AddUsecases(); 
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddCors(options =>
 {

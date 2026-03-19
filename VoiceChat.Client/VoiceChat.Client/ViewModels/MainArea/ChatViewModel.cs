@@ -1,4 +1,5 @@
-﻿using Avalonia.Layout;
+﻿using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -21,32 +22,44 @@ namespace VoiceChat.Client.ViewModels.MainArea
 
     public partial class ChatViewModel:ViewModelBase
     {
-        public ObservableCollection<ChatMessage> Messages { get; set; } = new();
+        public ObservableCollection<ChatMessage> Messages { get; set; } = new() { new ChatMessage("Keanu","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Right, true ,"KD"),
+                                                                                  new ChatMessage("o7","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Left, false ,"O7")};
         [ObservableProperty] private string messageInput = "";
 
         private readonly ServiceHubClient chatService;
         private readonly AppState appState;
         public event Action? MessageAdded;
-        public ChatViewModel(ServiceHubClient chatService, AppState appState)
+        private readonly StateService stateService;
+        public ChatViewModel(ServiceHubClient chatService, AppState appState,StateService stateService )
         {
+            this.stateService = stateService;
             this.appState = appState;
             this.chatService = chatService;
             chatService.MessageReceived += OnMessageReceived;
+        }
+        public ChatViewModel()
+        {
+            if (!Design.IsDesignMode)
+                throw new InvalidOperationException(
+                    "Parameterloser Konstruktor darf nur im Designer verwendet werden.");
+
+            Messages= new() { new ChatMessage("Keanu","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Right, true ,"KD"),
+                                                                                  new ChatMessage("o7","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Left, false ,"O7")};
         }
 
 
         private void OnMessageReceived(ChatMessageDTO message)
         {
-            Messages.Add(new ChatMessage(message.Username, message.Text, message.Timestamp,appState.GetUser().ClientId == message.ClientId ? HorizontalAlignment.Right : HorizontalAlignment.Left, appState.GetUser().ClientId == message.ClientId,message.Username.Substring(0, message.Username.Length > 2 ? 2:message.Username.Length)));
+            Messages.Add(new ChatMessage(message.Username, message.Content, message.Timestamp,appState.GetUser().ClientId == message.SenderId ? HorizontalAlignment.Right : HorizontalAlignment.Left, appState.GetUser().ClientId == message.SenderId, message.Username.Substring(0, message.Username.Length > 2 ? 2:message.Username.Length)));
             MessageAdded?.Invoke();
         }
 
         [RelayCommand]
         private async Task SendMessage()
         {
-            if (chatService.Connection?.State == HubConnectionState.Connected && String.IsNullOrWhiteSpace(MessageInput) == false)
+            if (chatService.Connection?.State == HubConnectionState.Connected && stateService.SelectChannelId.HasValue && String.IsNullOrWhiteSpace(MessageInput) == false)
             {
-                await chatService.SendMessage(new ChatMessageDTO() { ClientId = appState.GetUser().ClientId, Username = appState.GetUser().UserName, Text = MessageInput, Timestamp = DateTime.UtcNow });
+                await chatService.SendMessage(new ChatMessageDTO(appState.GetUser().ClientId, stateService.SelectChannelId.Value, MessageInput, DateTime.UtcNow));
                 MessageInput = "";
             }
         }

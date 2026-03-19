@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using VoiceChat.Api.UseCases;
+using VoiceChat.Api.UseCases.Channels.ChannelMessage;
 using VoiceChat.Shared.Models;
 
 
@@ -7,7 +8,8 @@ namespace VoiceChat.Api.Hubs;
 
 public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO> channelCreateUseCase,
                      IUseCase<DeleteChannelRequestDTO, DeleteChannelResponseDTO> deleteCreateUseCase,
-                     IUseCase<ConnectChannelRequestDTO, ConnectChannelResponseDTO> joinChannelUseCase) : Hub
+                     IUseCase<ConnectChannelRequestDTO, ConnectChannelResponseDTO> joinChannelUseCase,
+                     IUseCase<CreateChatMessageRequestDTO, CreateChatMessageResponseDTO> createChatMessageUseCase) : Hub
 {
     public override async Task OnConnectedAsync()
     {
@@ -80,7 +82,7 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
         // Optional: Validierung
         if (message == null)
             throw new ArgumentNullException(nameof(message));
-
+        await createChatMessageUseCase.ExecuteAsync(new CreateChatMessageRequestDTO(new ChatMessageDTO(message.SenderId, message.ChannelId, message.Content, DateTime.UtcNow, Context?.User?.Identity?.Name)));
 
         await Clients.All.SendAsync("ReceiveMessage", message);
     }

@@ -16,50 +16,45 @@ namespace VoiceChat.Client.ViewModels.Login;
 
 public partial class LoginViewModel : ViewModelBase
 {
-    private readonly StatusService statusService;
     private readonly AppState appState;
     private readonly ConnectionService connectionService;
 
     [ObservableProperty] public string username = "";
     [ObservableProperty] public string inputserverAddress = "";
+    [NotifyPropertyChangedFor(nameof(HistoryButtonText))]
     [ObservableProperty] public bool openLastConnection = false;
-    [ObservableProperty] public string historyButtonText = ">";
+    public string HistoryButtonText =>OpenLastConnection? "Verstecke Historie" : "Zeige Historie";
 
     public ObservableCollection<ServerConnection> ServerConnections { get; } = new ObservableCollection<ServerConnection>();
 
 
 
-    public LoginViewModel(AppState appState, ConnectionService connectionService, StatusService statusService)
+    public LoginViewModel(AppState appState, ConnectionService connectionService)
     {
+        if (appState == null)
+            return;
+
         this.appState = appState;
-        this.statusService = statusService;
         this.connectionService = connectionService;
         Username = appState.GetUser().UserName;
         InputserverAddress = appState.GetLastServer()?.ServerAdress ?? "";
         ServerConnections = new ObservableCollection<ServerConnection>(appState.GetLastServers());
     }
+    public LoginViewModel() :this(null!,null!){ }
 
     [RelayCommand]
     public async Task Conntect()
     {
-        try
-        {
-            appState.SetUsername(Username);
-            await connectionService.ServerConnect(InputserverAddress);
-        }
-        catch (Exception ex)
-        {
-            statusService.AddReport($"Error {ex}");
-        }
+        appState.SetUsername(Username);
+        await connectionService.ServerConnect(InputserverAddress);
     }
 
     [RelayCommand]
     public async Task OpenHistory()
     {
         OpenLastConnection = !OpenLastConnection;
-        HistoryButtonText = OpenLastConnection ? "<" : ">";
     }
-    
+
     [RelayCommand]
     public async Task SetHistoryServer(ServerConnection serveradress)
     {

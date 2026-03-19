@@ -12,7 +12,7 @@ namespace VoiceChat.Api.UseCases.Channels
             user.ConnectedChannel = request.ChannelId;
             await repository.UpdateAsync(user);
             await repository.SaveAsync();
-            return new ConnectChannelResponseDTO(user.Id, user.DisplayName, request.ChannelId);
+            return new ConnectChannelResponseDTO(user.Id, user.Username, request.ChannelId);
         }
     }
 }

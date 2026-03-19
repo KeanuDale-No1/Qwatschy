@@ -19,13 +19,13 @@ public class LoginUsecase(IRepository<User> repository, IAuthService authService
             user = new User
             {
                 Id = request.ClientId,
-                DisplayName = request.DisplayName ?? $"User-{request.ClientId.ToString()}"
+                Username = request.DisplayName ?? $"User-{request.ClientId.ToString()}"
             };
             await repository.AddAsync(user);
         }
         else if (!string.IsNullOrEmpty(request.DisplayName))
         {
-            user.DisplayName = request.DisplayName;
+            user.Username = request.DisplayName;
         }
         user.LastActive = DateTime.UtcNow;
 
@@ -33,6 +33,6 @@ public class LoginUsecase(IRepository<User> repository, IAuthService authService
 
         var token = authService.GenerateToken(user.Id.ToString());
 
-        return new LoginResponseDTO(user.Id, user.DisplayName, token);
+        return new LoginResponseDTO(user.Id, user.Username, token);
     }
 }

@@ -1,13 +1,17 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl Padding="10" xmlns="https://github.com/avaloniaui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:models="using:VoiceChat.Shared.Models"
 			 mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
 			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
 			 xmlns:cv="using:VoiceChat.Client.Converters"
 			 x:Class="VoiceChat.Client.Views.MainArea.ChannelSidebarView"
 			 x:DataType="vm:ChannelSidebarViewModel">
+
+	<Design.DataContext>
+		<vm:ChannelSidebarViewModel />
+	</Design.DataContext>
+
 
 	<UserControl.Resources>
 		<cv:EqualityMultiConverter x:Key="EqualityMultiConverter" />
@@ -18,42 +22,65 @@
 	<!-- ============================= -->
 
 	<Grid Grid.Column="1" RowDefinitions="Auto,*" Classes="sidebar">
-		<StackPanel Grid.Row="0">
-			<TextBlock Text="Channels"
-					   FontWeight="Bold"
-					   Margin="10"/>
+		<StackPanel  Grid.Row="0">
+				<TextBlock Text="Channels:"
+						   FontSize="16"
+						   FontWeight="Bold"
+						   />
 
 
-			<StackPanel Orientation="Horizontal"
-						Spacing="4">
-				<TextBox Width="140"
+			<DockPanel Margin="0 10 0 10" >
+				<Button DockPanel.Dock="Right"
+						Margin="6 0 0 0"
+						Content="+"
+						Command="{Binding CreateChannelCommand}"/>
+				<TextBox DockPanel.Dock="Left"
 						 Watermark="new channel"
 						 Text="{Binding NewChannelName}"/>
-				<Button Content="+"
-						Command="{Binding CreateChannelCommand}"/>
-			</StackPanel>
+
+			</DockPanel>
 
 
 			<ItemsControl ItemsSource="{Binding Channels}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Spacing="5"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<DockPanel>
-							<Button DockPanel.Dock="Left" IsEnabled="True"
-									HorizontalAlignment="Stretch"
+						<StackPanel>
+							<Button HorizontalAlignment="Stretch"
 									Command="{Binding $parent[ItemsControl].DataContext.SelectChannelCommand}"
 									CommandParameter="{Binding .}">
-								
-								<StackPanel  Orientation="Horizontal" HorizontalAlignment="Stretch" >
-									<TextBlock Text="{Binding Name}"
-											   Margin="8"/>
-									<Border Background="Red"
-											CornerRadius="8"
-											Padding="4"
-											IsVisible="{Binding UnreadCount}">
 
-										<TextBlock Text="{Binding UnreadCount}"/>
-									</Border>
-								</StackPanel>
+								<DockPanel>
+									<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+										<Label IsVisible="{Binding Unread}"
+											   CornerRadius="8"
+											   Background="Orange"
+											   HorizontalAlignment="Center"
+											   VerticalAlignment="Center"
+											   HorizontalContentAlignment="Center"
+											   VerticalContentAlignment="Center"
+											   FontSize="6"
+											   Content="{Binding UnreadCount}"/>
+
+
+										<Button Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
+												CommandParameter="{Binding .}"
+												Content="🔉">
+											<Button.IsVisible>
+												<MultiBinding Converter="{StaticResource EqualityMultiConverter}">
+													<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel" />
+													<Binding Path="." />
+												</MultiBinding>
+											</Button.IsVisible>
+										</Button>
+									</StackPanel>
+									<TextBlock  Text="{Binding Name}"
+												Margin="8"/>
+								</DockPanel>
 								<Button.ContextMenu>
 									<ContextMenu>
 										<MenuItem Header="Löschen"
@@ -64,17 +91,8 @@
 									</ContextMenu>
 								</Button.ContextMenu>
 							</Button>
-							<Button DockPanel.Dock="Right" Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
-									CommandParameter="{Binding .}"
-									Content="🔉">
-								<Button.IsVisible>
-									<MultiBinding Converter="{StaticResource EqualityMultiConverter}">
-										<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel" />
-										<Binding Path="." />
-									</MultiBinding>
-								</Button.IsVisible>
-							</Button>
-						</DockPanel>
+
+						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 

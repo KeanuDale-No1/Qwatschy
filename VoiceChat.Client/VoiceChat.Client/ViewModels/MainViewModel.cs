@@ -1,5 +1,6 @@
 ﻿
 
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.ViewModels.Base;
@@ -13,17 +14,17 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty] private ViewModelBase _currentViewModel;
 
-    [ObservableProperty] private StatusBarViewModel statusBarViewModel;
 
-    public MainViewModel(INavigationService navigationService, StatusBarViewModel statusBarViewModel)
+    public MainViewModel(INavigationService navigationService)
     {
-        this.statusBarViewModel = statusBarViewModel;
-
-        _navigationService = navigationService;
-        ((NavigationService)navigationService).SetMainViewModel(this);
-        navigationService.NavigateTo<LoginViewModel>();
+        if (!Design.IsDesignMode)
+        {
+            _navigationService = navigationService;
+            ((NavigationService)navigationService).SetMainViewModel(this);
+            navigationService.NavigateTo<LoginViewModel>();
+        }
     }
 
-    public MainViewModel() : this(null!,null!) { }
+    public MainViewModel() : this(null!) { }
 
 }

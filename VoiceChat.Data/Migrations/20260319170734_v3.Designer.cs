@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VoiceChat.Data;
 
@@ -10,9 +11,11 @@ using VoiceChat.Data;
 namespace VoiceChat.Data.Migrations
 {
     [DbContext(typeof(VoiceChatDbContext))]
-    partial class VoiceChatDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260319170734_v3")]
+    partial class v3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.3");

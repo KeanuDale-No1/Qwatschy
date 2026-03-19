@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,10 +25,13 @@ public partial class App : Application
         //var collection = new ServiceCollection();
         //collection.AddCommonServices();
         //var services = collection.BuildServiceProvider();
+        if (!Design.IsDesignMode)
+        {
+            var appState = Services.GetRequiredService<AppState>();
+            appState.ApplicationLifetime = ApplicationLifetime;
+        }
 
-        var appState = Services.GetRequiredService<AppState>();
-        appState.ApplicationLifetime = ApplicationLifetime;
-        var vm = Services.GetRequiredService<MainViewModel>();
+        var vm = Design.IsDesignMode ? new MainViewModel() : Services.GetRequiredService<MainViewModel>();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

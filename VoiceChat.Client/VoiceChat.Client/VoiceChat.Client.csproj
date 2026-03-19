@@ -26,6 +26,7 @@
     <PackageReference Include="Concentus" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,9 +39,6 @@
     </Compile>
     <Compile Update="Views\MainArea\MainAreaView.axaml.cs">
       <DependentUpon>MainAreaView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\StatusBarView.axaml.cs">
-      <DependentUpon>StatusBarView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

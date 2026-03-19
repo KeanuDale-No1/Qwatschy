@@ -13,7 +13,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
         [ObservableProperty] public ChatViewModel chatViewModel;
 
 
-        public MainAreaViewModel(IHttpClientService httpClientService, ChannelSidebarViewModel channelSidebarViewModel, ChatViewModel chatViewModel)
+        public MainAreaViewModel(ApiService httpClientService, ChannelSidebarViewModel channelSidebarViewModel, ChatViewModel chatViewModel)
         {
             this.channelSidebarViewModel = channelSidebarViewModel;
             this.chatViewModel = chatViewModel;

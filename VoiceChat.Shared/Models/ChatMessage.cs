@@ -1,10 +1,8 @@
 ﻿namespace VoiceChat.Shared.Models;
 
-public class ChatMessageDTO
-{
-    public Guid ClientId { get; set; } = Guid.Empty;
-    public Guid ChannelId { get; set; }
-    public string Username { get; set; } = "";
-    public string Text { get; set; } = "";
-    public DateTime Timestamp { get; set; }
-}
+
+
+public record CreateChatMessageRequestDTO(ChatMessageDTO message);
+public record CreateChatMessageResponseDTO(ChatMessageDTO message);
+
+public record ChatMessageDTO(Guid SenderId, Guid ChannelId, string Content, DateTime Timestamp, string? Username = "");

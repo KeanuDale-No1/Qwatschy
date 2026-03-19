@@ -9,120 +9,147 @@
 	<Application.DataTemplates>
 		<local:ViewLocator/>
 	</Application.DataTemplates>
+	<Application.Resources>
 
-
+</Application.Resources>
 	<Application.Styles>
 		<FluentTheme>
 			<FluentTheme.Palettes>
-				<ColorPaletteResources x:Key="Light" />
-				<ColorPaletteResources x:Key="Dark" />
+				<ColorPaletteResources x:Key="Light" Accent="#ff8961cc" AltHigh="White" AltLow="White" AltMedium="White" AltMediumHigh="White" AltMediumLow="White" BaseHigh="Black" BaseLow="#ffeeceff" BaseMedium="#ffa987bc" BaseMediumHigh="#ff7b5890" BaseMediumLow="#ff9270a6" ChromeAltLow="#ff7b5890" ChromeBlackHigh="Black" ChromeBlackLow="#ffeeceff" ChromeBlackMedium="#ff7b5890" ChromeBlackMediumLow="#ffa987bc" ChromeDisabledHigh="#ffeeceff" ChromeDisabledLow="#ffa987bc" ChromeGray="#ff9270a6" ChromeHigh="#ffeeceff" ChromeLow="#fffeeaff" ChromeMedium="#fffbe4ff" ChromeMediumLow="#fffeeaff" ChromeWhite="White" ListLow="#fffbe4ff" ListMedium="#ffeeceff" RegionColor="#fffef6ff" />
+				<ColorPaletteResources x:Key="Dark" Accent="#ff8961cc" AltHigh="Black" AltLow="Black" AltMedium="Black" AltMediumHigh="Black" AltMediumLow="Black" BaseHigh="White" BaseLow="#ff64576b" BaseMedium="#ffb6aabc" BaseMediumHigh="#ffcbbfd0" BaseMediumLow="#ff8d8193" ChromeAltLow="#ffcbbfd0" ChromeBlackHigh="Black" ChromeBlackLow="#ffcbbfd0" ChromeBlackMedium="Black" ChromeBlackMediumLow="Black" ChromeDisabledHigh="#ff64576b" ChromeDisabledLow="#ffb6aabc" ChromeGray="#ffa295a8" ChromeHigh="#ffa295a8" ChromeLow="#ff332041" ChromeMedium="#ff3f2e4b" ChromeMediumLow="#ff584960" ChromeWhite="White" ListLow="#ff3f2e4b" ListMedium="#ff64576b" RegionColor="#ff262738" />
 			</FluentTheme.Palettes>
 		</FluentTheme>
 
-		<Style>
-			<Style.Resources>
-				<ResourceDictionary>
-					<ResourceDictionary.ThemeDictionaries>
-						<ResourceDictionary x:Key="Light">
-
-							<SolidColorBrush x:Key="ColorBackground">#F4F6FA</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorSidebar">#FFFFFF</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorChat">#FFFFFF</SolidColorBrush>
-
-							<SolidColorBrush x:Key="ColorBorder">#E5E7EB</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorHover">#F1F3F7</SolidColorBrush>
-
-							<SolidColorBrush x:Key="ColorTextPrimary">#111827</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorTextSecondary">#6B7280</SolidColorBrush>
-
-							<SolidColorBrush x:Key="ColorAccent">#5865F2</SolidColorBrush>
-						</ResourceDictionary>
-						<ResourceDictionary x:Key="Dark">
-							<SolidColorBrush x:Key="ColorBackground">#1E1F22</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorSidebar">#2B2D31</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorChat">#313338</SolidColorBrush>
-
-							<SolidColorBrush x:Key="ColorBorder">#3F4147</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorHover">#383A40</SolidColorBrush>
-
-							<SolidColorBrush x:Key="ColorTextPrimary">#F2F3F5</SolidColorBrush>
-							<SolidColorBrush x:Key="ColorTextSecondary">#B5BAC1</SolidColorBrush>
-
-							<SolidColorBrush x:Key="ColorAccent">#5865F2</SolidColorBrush>
-						</ResourceDictionary>
-					</ResourceDictionary.ThemeDictionaries>
-				</ResourceDictionary>
-			</Style.Resources>
+		<Style Selector="Button">
+			<Setter Property="CornerRadius" Value="0"/>
 		</Style>
 
+		<Style Selector="TextBox">
+			<Setter Property="CornerRadius" Value="0"/>
+		</Style>
 
+		<Style Selector="Button:pointerover /template/ ContentPresenter">
+			<Setter Property="CornerRadius" Value="0"/>
+			<Setter Property="Background" Value="purple"/>
+			<Setter Property="Foreground" Value="white"/>
+		</Style>
+
+		<!--
+		<FluentTheme>
+		<FluentTheme.Palettes>
+		<ColorPaletteResources x:Key="Light" />
+		<ColorPaletteResources x:Key="Dark" />
+		</FluentTheme.Palettes>
+		</FluentTheme>
+		-->
+
+
+		<!--
+		<Style>
+		<Style.Resources>
+		<ResourceDictionary>
+		<ResourceDictionary.ThemeDictionaries>
+		<ResourceDictionary x:Key="Light">
+
+		<SolidColorBrush x:Key="ColorBackground">#F4F6FA</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorSidebar">#FFFFFF</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorChat">#FFFFFF</SolidColorBrush>
+
+		<SolidColorBrush x:Key="ColorBorder">#E5E7EB</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorHover">#F1F3F7</SolidColorBrush>
+
+		<SolidColorBrush x:Key="ColorTextPrimary">#111827</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorTextSecondary">#6B7280</SolidColorBrush>
+
+		<SolidColorBrush x:Key="ColorAccent">#5865F2</SolidColorBrush>
+		</ResourceDictionary>
+		<ResourceDictionary x:Key="Dark">
+		<SolidColorBrush x:Key="ColorBackground">#1E1F22</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorSidebar">#2B2D31</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorChat">#313338</SolidColorBrush>
+
+		<SolidColorBrush x:Key="ColorBorder">#3F4147</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorHover">#383A40</SolidColorBrush>
+
+		<SolidColorBrush x:Key="ColorTextPrimary">#F2F3F5</SolidColorBrush>
+		<SolidColorBrush x:Key="ColorTextSecondary">#B5BAC1</SolidColorBrush>
+
+		<SolidColorBrush x:Key="ColorAccent">#5865F2</SolidColorBrush>
+		</ResourceDictionary>
+		</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+		</Style.Resources>
+		</Style> -->
+
+		<!--
 		<Style Selector="GridSplitter">
-			<Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
-			<Setter Property="MinHeight" Value="0"/>
-			<Setter Property="MinWidth" Value="0"/>
-			<Setter Property="Margin" Value="1"/>
+		<Setter Property="Background" Value="{DynamicResource SecondaryColor}" />
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="Margin" Value="1"/>
 		</Style>
 
 		<Style Selector="Button">
-			<Setter Property="Background" Value="Transparent" />
-			<Setter Property="MinHeight" Value="0"/>
-			<Setter Property="MinWidth" Value="0"/>
-			<Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource PrimaryColor}"/>
 		</Style>
 
 		<Style Selector="Button:pointerover">
-			<Setter Property="MinHeight" Value="0"/>
-			<Setter Property="MinWidth" Value="0"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
-			<Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}" />
+		<Setter Property="MinHeight" Value="0"/>
+		<Setter Property="MinWidth" Value="0"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}" />
 		</Style>
 
 
 		<Style Selector="TextBox">
-			<Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrush}"/>
-			<Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
-			<Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrush}"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="CornerRadius" Value="6"/>
-			<Setter Property="Padding" Value="8"/>
-			<Setter Property="FontSize" Value="14"/>
+		<Setter Property="Background" Value="{DynamicResource TextBoxBackgroundBrush}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource TextBoxBorderBrush}"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrush}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="CornerRadius" Value="6"/>
+		<Setter Property="Padding" Value="8"/>
+		<Setter Property="FontSize" Value="14"/>
 		</Style>
 
 		<Style Selector="TextBox:focus">
-			<Setter Property="BorderBrush" Value="#4C8BF5"/>
-			<Setter Property="BorderThickness" Value="2"/>
+		<Setter Property="BorderBrush" Value="#4C8BF5"/>
+		<Setter Property="BorderThickness" Value="2"/>
 		</Style>
 
 
 		<Style Selector="TextBlock.ChatMessage">
-			<Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrush}"/>
-			<Setter Property="Background" Value="Transparent"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBoxForegroundBrush}"/>
+		<Setter Property="Background" Value="Transparent"/>
 		</Style>
 		<Style Selector="Border.ChatMessageBorderBox">
-			<Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}"/>
-			<Setter Property="Padding" Value="10"/>
-			<Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
-			<Setter Property="CornerRadius" Value="8"/>
-			<Setter Property="Margin" Value="5"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}"/>
+		<Setter Property="Padding" Value="10"/>
+		<Setter Property="Background" Value="{DynamicResource SecondaryColor}"/>
+		<Setter Property="CornerRadius" Value="8"/>
+		<Setter Property="Margin" Value="5"/>
 		</Style>
 
 		<Style Selector="Panel.ChannelPanel">
-			<Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
+		<Setter Property="Background" Value="{DynamicResource PrimaryColor}"/>
 		</Style>
 
 
 
 		<Style Selector="ItemsControl.ChatBox">
-			<Setter Property="Padding" Value="10" />
+		<Setter Property="Padding" Value="10" />
 		</Style>
 
 
 
 		<Style Selector="Border.CurrentChatName">
-			<Setter Property="BorderThickness" Value="0 0 0 1" />
-			<Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}"/>
+		<Setter Property="BorderThickness" Value="0 0 0 1" />
+		<Setter Property="BorderBrush" Value="{DynamicResource SecondaryColor}"/>
 		</Style>
+		-->
 
 
 
@@ -130,159 +157,159 @@
 		<!-- ========================= -->
 		<!-- ROOT BACKGROUND -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="Grid.appRoot">
 
-			<Setter Property="Background"
-					Value="{DynamicResource ColorBackground}"/>
+		<Setter Property="Background"
+		Value="{DynamicResource ColorBackground}"/>
 
 		</Style>
+		-->
 
 		<!-- ========================= -->
 		<!-- SIDEBAR -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="Border.sidebar">
 
-			<Setter Property="Background"
-					Value="{DynamicResource ColorSidebar}"/>
+		<Setter Property="Background"
+		Value="{DynamicResource ColorSidebar}"/>
 
-			<Setter Property="Padding" Value="12"/>
+		<Setter Property="Padding" Value="12"/>
 
 		</Style>
 
 
 		<Style Selector="Button.channelItem">
 
-			<Setter Property="HorizontalAlignment" Value="Stretch"/>
-			<Setter Property="Margin" Value="2"/>
-			<Setter Property="Padding" Value="8"/>
-			<Setter Property="CornerRadius" Value="8"/>
+		<Setter Property="HorizontalAlignment" Value="Stretch"/>
+		<Setter Property="Margin" Value="2"/>
+		<Setter Property="Padding" Value="8"/>
+		<Setter Property="CornerRadius" Value="8"/>
 
 		</Style>
 
 		<Style Selector="Button.channelItem:pointerover">
 
-			<Setter Property="Background"
-					Value="{DynamicResource ColorHover}"/>
+		<Setter Property="Background"
+		Value="{DynamicResource ColorHover}"/>
 
 		</Style>
-
+		-->
 		<!-- ========================= -->
 		<!-- MEMBER ITEM -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="StackPanel.memberItem">
 
-			<Setter Property="Margin" Value="4"/>
+		<Setter Property="Margin" Value="4"/>
 
 		</Style>
 
-
+		-->
 		<!-- ========================= -->
 		<!-- CHAT HEADER -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="TextBlock.chatHeader">
 
-			<Setter Property="FontSize" Value="18"/>
-			<Setter Property="FontWeight" Value="Bold"/>
-			<Setter Property="Margin" Value="12"/>
+		<Setter Property="FontSize" Value="18"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="Margin" Value="12"/>
 
 		</Style>
-
+		-->
 
 		<!-- ========================= -->
 		<!-- MESSAGE BUBBLE -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="Border.messageBubble">
 
-			<Setter Property="Background"
-					Value="{DynamicResource ColorHover}"/>
+		<Setter Property="Background"
+		Value="{DynamicResource ColorHover}"/>
 
-			<Setter Property="CornerRadius" Value="10"/>
-			<Setter Property="Padding" Value="10"/>
-			<Setter Property="Margin" Value="4"/>
+		<Setter Property="CornerRadius" Value="10"/>
+		<Setter Property="Padding" Value="10"/>
+		<Setter Property="Margin" Value="4"/>
 
 		</Style>
-
+		-->
 		<!-- ========================= -->
 		<!-- MESSAGE USERNAME -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="TextBlock.messageUser">
 
-			<Setter Property="FontWeight" Value="Bold"/>
-			<Setter Property="Foreground"
-					Value="{DynamicResource ColorTextPrimary}"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="Foreground"
+		Value="{DynamicResource ColorTextPrimary}"/>
 
 		</Style>
-
+		-->
 
 		<!-- ========================= -->
 		<!-- MESSAGE TEXT -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="TextBlock.messageText">
 
-			<Setter Property="Foreground"
-					Value="{DynamicResource ColorTextPrimary}"/>
+		<Setter Property="Foreground"
+		Value="{DynamicResource ColorTextPrimary}"/>
 
 		</Style>
-
+		-->
 		<!-- ========================= -->
 		<!-- MESSAGE INPUT -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="TextBox.messageInput">
 
-			<Setter Property="CornerRadius" Value="10"/>
-			<Setter Property="Padding" Value="10"/>
-			<Setter Property="Margin" Value="8"/>
+		<Setter Property="CornerRadius" Value="10"/>
+		<Setter Property="Padding" Value="10"/>
+		<Setter Property="Margin" Value="8"/>
 
 		</Style>
 
-
+		-->
 
 		<!-- ========================= -->
 		<!-- SERVER PANEL -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="Border.serverPanel">
 
-			<Setter Property="Background"
-					Value="{DynamicResource ColorSidebar}"/>
+		<Setter Property="Background"
+		Value="{DynamicResource ColorSidebar}"/>
 
-			<Setter Property="Padding" Value="12"/>
+		<Setter Property="Padding" Value="12"/>
 
 		</Style>
-
+		-->
 		<!-- ========================= -->
 		<!-- SERVER TITLE -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="TextBlock.serverTitle">
 
-			<Setter Property="FontSize" Value="20"/>
-			<Setter Property="FontWeight" Value="Bold"/>
-			<Setter Property="Margin" Value="0,10,0,0"/>
+		<Setter Property="FontSize" Value="20"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="Margin" Value="0,10,0,0"/>
 
 		</Style>
-
+		-->
 		<!-- ========================= -->
 		<!-- SERVER DESCRIPTION -->
 		<!-- ========================= -->
-
+		<!--
 		<Style Selector="TextBlock.serverDescription">
 
-			<Setter Property="TextWrapping" Value="Wrap"/>
-			<Setter Property="Foreground"
-					Value="{DynamicResource ColorTextSecondary}"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+		<Setter Property="Foreground"
+		Value="{DynamicResource ColorTextSecondary}"/>
 
 		</Style>
 
-
+		-->
 	</Application.Styles>
-
 </Application>

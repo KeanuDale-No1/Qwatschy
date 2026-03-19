@@ -1,9 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
@@ -15,10 +17,21 @@ namespace VoiceChat.Client.ViewModels.MainArea;
 
 public partial class ChannelSidebarViewModel : ViewModelBase
 {
-    private readonly StatusService statusService;
     private readonly ChannelService channelService;
     private readonly Sounds sounds;
-    public ObservableCollection<ChannelDTO> Channels { get; }
+    public ObservableCollection<ChannelDTO> Channels { get; } = new ObservableCollection<ChannelDTO>
+            {
+                new ChannelDTO() {
+                    Id = Guid.NewGuid(),
+                    Description = "",
+                    Name = "Room1",
+                    UnreadCount = 1 },
+                new ChannelDTO() {
+                    Id = Guid.NewGuid(),
+                    Name = "Room 2",
+                    UnreadCount = 0,
+                    Description = "test"
+                }};
     public ObservableCollection<UserDTO> SelectedChannelUsers { get; set; } = new ObservableCollection<UserDTO>();
 
     [ObservableProperty] public ChannelDTO? selectedChannel;
@@ -27,20 +40,43 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     [ObservableProperty] public string newChannelName = "";
 
 
-    public ChannelSidebarViewModel(StatusService statusService,  ChannelService channelService, Sounds sounds)
+    public ChannelSidebarViewModel(ChannelService channelService, Sounds sounds)
     {
-        this.statusService = statusService;
+
         this.channelService = channelService;
         this.sounds = sounds;
         Channels = channelService.Channels;
         SelectedChannelUsers = channelService.ChannelUsers;
     }
+    public ChannelSidebarViewModel()
+    {
+
+        if (!Design.IsDesignMode)
+            throw new InvalidOperationException(
+                "Parameterloser Konstruktor darf nur im Designer verwendet werden.");
+
+        // Dummy-Daten für Designer
+        Channels = new ObservableCollection<ChannelDTO>
+            {
+                new ChannelDTO() {
+                    Id = Guid.NewGuid(),
+                    Description = "",
+                    Name = "Room1",
+                    UnreadCount = 1 },
+                new ChannelDTO() {
+                    Id = Guid.NewGuid(),
+                    Name = "Room 2",
+                    UnreadCount = 0,
+                    Description = "test"
+                }};
+    }
+
 
 
     [RelayCommand]
     private async Task JoinChannel(ChannelDTO channel)
     {
-        sounds.PlayJoinSound();  
+        sounds.PlayJoinSound();
 
         await channelService.JoinChannel(channel);
     }
@@ -49,15 +85,10 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     [RelayCommand]
     public async Task CreateChannel()
     {
-        try
-        {
-            await channelService.AddChannel(new ChannelDTO() { Id = Guid.NewGuid(), Name = NewChannelName, Description = "" });
-            NewChannelName = "";
-        }
-        catch (Exception ex)
-        {
-            statusService.AddReport($"Channel konnte nicht erstellt werden:{ex.Message}");
-        }
+
+        await channelService.AddChannel(new ChannelDTO() { Id = Guid.NewGuid(), Name = NewChannelName, Description = "" });
+        NewChannelName = "";
+
     }
 
 

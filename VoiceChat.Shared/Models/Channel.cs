@@ -22,5 +22,7 @@ public class ChannelDTO
     public Guid Id { get; set; }
     public string Name { get; set; } = "";
     public string? Description { get; set; }
-    public bool UnreadCount { get; set; }
+
+    public bool Unread { get { return UnreadCount > 0; }  set { } }
+    public int UnreadCount { get; set; }
 }

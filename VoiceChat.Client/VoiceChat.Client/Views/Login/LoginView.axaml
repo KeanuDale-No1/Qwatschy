@@ -4,62 +4,70 @@ xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:vm="using:VoiceChat.Client.ViewModels.Login"
+			 mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+
 x:DataType="vm:LoginViewModel"
 x:Class="VoiceChat.Client.Views.Login.LoginView">
+ <!--	<UserControl.Background>
+		<ImageBrush Source="avares://VoiceChat.Client/Assets/qwatschi_logo.jpeg" Opacity="0.5"/>
+	</UserControl.Background>
+	-->
 
-
-
-	<SplitView IsPaneOpen="{Binding OpenLastConnection}" DisplayMode="Inline" OpenPaneLength="300">
+	<SplitView IsPaneOpen="{Binding OpenLastConnection}" PanePlacement="Bottom" DisplayMode="Inline" OpenPaneLength="300">
 		<SplitView.Pane>
 			<StackPanel>
-			<TextBlock Text="History"></TextBlock>
-			<ItemsControl ItemsSource="{Binding ServerConnections}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                                <Button Content="{Binding ServerAdress}" 
-										Command="{Binding $parent[ItemsControl].DataContext.SetHistoryServerCommand}"
-										CommandParameter="{Binding .}"
-                                        CornerRadius="6"
-                                        Padding="8"
-                                        Margin="0 4"
-                                        Background="#2B2D31" 
-                                        BorderThickness="0"
-                                        HorizontalAlignment="Stretch"
-                                        Foreground="White" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+				<ItemsControl ItemsSource="{Binding ServerConnections}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Button Content="{Binding ServerAdress}"
+									Command="{Binding $parent[ItemsControl].DataContext.SetHistoryServerCommand}"
+									CommandParameter="{Binding .}"
+									CornerRadius="6"
+									Padding="8"
+									Margin="0 4"
+									Background="#2B2D31"
+									BorderThickness="0"
+									HorizontalAlignment="Stretch"
+									Foreground="White" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</StackPanel>
 		</SplitView.Pane>
 
+		<Grid RowDefinitions="*, auto" >
+			<StackPanel Grid.Row="0"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Spacing="10" MinWidth="250" >
 
-		<StackPanel HorizontalAlignment="Center"
-					VerticalAlignment="Center"
-					Spacing="10" >
-			<Border>
-				<Button Command="{Binding OpenHistoryCommand}" Content="{Binding HistoryButtonText}"/>
-			</Border>
-			<Image Margin="20"
-				   Height="200"
-				   Width="200"
-				   Source="avares://VoiceChat.Client/Assets/qwatschi_logo.jpeg"/>
+				<Image Margin="20"
+					   Height="200"
+					   Width="200"
+					   Source="avares://VoiceChat.Client/Assets/qwatschi_logo.jpeg"/>
+					   
 
+				<TextBlock Text="Username" FontSize="16"/>
+				<TextBox HorizontalAlignment="Stretch"
+						 Text="{Binding Username}"/>
 
-			<TextBlock Text="Username" FontSize="16"/>
-			<TextBox HorizontalAlignment="Stretch"
-					 Width="200"
-					 Text="{Binding Username}"/>
+				<TextBlock Text="Enter Server IP:" FontSize="16"/>
+				<TextBox HorizontalAlignment="Stretch"
+						 Text="{Binding InputserverAddress}"/>
 
-			<TextBlock Text="Enter Server IP:" FontSize="16"/>
-			<TextBox HorizontalAlignment="Stretch"
-					 Width="200"
-					 Text="{Binding InputserverAddress}"/>
+				<Button  Classes="modern-btn"
+						 HorizontalAlignment="Stretch"
+						 HorizontalContentAlignment="Center"
+						 Content="Verbinden"
+						 Command="{Binding ConntectCommand}"/>
+			</StackPanel>
+			<Button Grid.Row="1" 
+					HorizontalAlignment="Center" 
+					HorizontalContentAlignment="Center"
+					Command="{Binding OpenHistoryCommand}" 
+					Content="{Binding HistoryButtonText}"/>
 
-			<Button  Classes="modern-btn"
-					 HorizontalAlignment="Stretch"
-					 HorizontalContentAlignment="Center"
-					 Content="Verbinden"
-					 Command="{Binding ConntectCommand}"/>
-		</StackPanel>
+		</Grid>
+
 	</SplitView>
 </UserControl>

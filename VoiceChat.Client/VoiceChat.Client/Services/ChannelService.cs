@@ -1,10 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services.VoiceService;
@@ -24,11 +22,10 @@ namespace VoiceChat.Client.Services
 
     public class ChannelService
     {
-        private readonly StatusService statusService;
         private readonly AppState appState;
-        private readonly ConnectionService connectionService;
+        private readonly StateService stateService;
 
-        private readonly IHttpClientService httpClientService;
+        private readonly ApiService httpClientService;
 
         private readonly ServiceHubClient serviceHub;
         private readonly VoiceChatService voiceService;
@@ -37,21 +34,17 @@ namespace VoiceChat.Client.Services
         public List<UserDTO> Users = new List<UserDTO>();
         public NotifyingCollection<UserDTO> ChannelUsers = new NotifyingCollection<UserDTO> { };
 
-
-        public ChannelDTO? SelectedChannel { get; internal set; }
-        public Guid? CurrentActiveChannel { get; internal set;  }
-        public ChannelService(StatusService statusService, IHttpClientService httpClientService,
-                              ServiceHubClient serviceHub, 
-                              VoiceChatService voiceChatService, 
-                              ConnectionService connectionService,
-                              AppState appState)
+        public ChannelService(ApiService httpClientService,
+                              ServiceHubClient serviceHub,
+                              VoiceChatService voiceChatService,
+                              AppState appState,
+                              StateService stateService)
         {
-            this.connectionService = connectionService;
             this.appState = appState;
-            this.statusService = statusService;
             this.httpClientService = httpClientService;
             this.serviceHub = serviceHub;
             this.voiceService = voiceChatService;
+            this.stateService = stateService;
             LoadChannelInitial();
             serviceHub.ChannelAdd += ServiceHub_ChannelAdd;
             serviceHub.UserJoinChannel += ServiceHub_UserJoinChannel;
@@ -71,8 +64,7 @@ namespace VoiceChat.Client.Services
         {
             if (obj.UserId == appState.GetUser().ClientId)
             {
-                CurrentActiveChannel = obj.ChannelId;
-                connectionService.ChannelConnect(obj.ChannelId);
+                stateService.SetConnectedChannel(obj.ChannelId);
                 voiceService.Start();
             }
             var user = Users.SingleOrDefault(x => x.ClientID == obj.UserId);
@@ -83,9 +75,9 @@ namespace VoiceChat.Client.Services
             else
                 Users.Add(new UserDTO() { ClientID = obj.UserId, DisplayName = obj.Username, ChannelId = obj.ChannelId });
 
-            foreach (var item in Users.Where(u => u.ChannelId == SelectedChannel?.Id))
+            foreach (var item in Users.Where(u => u.ChannelId == stateService.SelectChannelId))
             {
-                if (ChannelUsers.Select(x=>x.ClientID).Contains(item.ClientID))
+                if (ChannelUsers.Select(x => x.ClientID).Contains(item.ClientID))
                     continue;
                 ChannelUsers.Add(item);
             }
@@ -111,26 +103,17 @@ namespace VoiceChat.Client.Services
 
         public async void LoadChannelInitial()
         {
-            try
-            {
-                statusService.AddReport("Lade Kanäle...");
-                var response = await httpClientService.PostAsync<GetChannelsRequestDTO, GetChannelsResponseDTO>("api/GetChannels", new GetChannelsRequestDTO());
-                Channels.Clear();
-                foreach (var c in response.Channels)
-                    Channels.Add(c);
-                statusService.AddReport("Kanäle geladen");
-            }
-            catch (Exception ex)
-            {
-                statusService.AddReport($"Fehler beim laden der Channels {ex.Message}");
-            }
+            var response = await httpClientService.PostAsync<GetChannelsRequestDTO, GetChannelsResponseDTO>("api/GetChannels", new GetChannelsRequestDTO());
+            Channels.Clear();
+            foreach (var c in response.Channels)
+                Channels.Add(c);
         }
 
         internal void SetSelectChannel(ChannelDTO channel)
         {
-            SelectedChannel = channel;
+            stateService.SetSelectedChannel(channel.Id);
             ChannelUsers.Clear();
-            foreach (var item in Users.Where(u => u.ChannelId == SelectedChannel?.Id))
+            foreach (var item in Users.Where(u => u.ChannelId == stateService.SelectChannelId))
             {
                 ChannelUsers.Add(item);
             }

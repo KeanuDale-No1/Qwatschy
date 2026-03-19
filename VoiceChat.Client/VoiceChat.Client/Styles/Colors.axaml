@@ -1,0 +1,19 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<!-- Add Resources Here -->
+
+	<Design.PreviewWith>
+		<Border Margin="20">
+			<Button Content="Das ist test"></Button>
+		</Border>
+	</Design.PreviewWith>
+
+	<Color x:Key="BrandPrimaryColor">#2563EB</Color>
+	<Color x:Key="BrandPrimaryHover">#1D4ED8</Color>
+
+	<SolidColorBrush x:Key="BrandPrimaryBrush"
+                   Color="{DynamicResource BrandPrimaryColor}"/>
+  <SolidColorBrush x:Key="BrandPrimaryHoverBrush"
+                   Color="{DynamicResource BrandPrimaryHover}"/>
+
+</ResourceDictionary>
