@@ -1,24 +1,30 @@
-<UserControl Padding="10"
+<UserControl Padding="0"
     xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="VoiceChat.Client.Views.MainArea.ServerInformation">
-  <Border Classes="serverPanel">
+             x:Class="VoiceChat.Client.Views.MainArea.ServerInformation"
+             Background="{DynamicResource SurfaceBrush}">
 
-        <StackPanel Spacing="8">
+    <Border Classes="panel">
+        <StackPanel Spacing="12">
+            <Border Height="120" Background="{DynamicResource PrimaryBrush}">
+                <Image Height="100"
+                       Width="100"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+            </Border>
 
-            <Image Height="140"
-                   Stretch="UniformToFill"/>
-
-            <TextBlock Classes="serverTitle"
+            <TextBlock Classes="title"
                        Text="Dev Community"/>
 
-            <TextBlock Classes="serverDescription"
-                       Text=""/>
+            <Separator/>
 
+            <TextBlock Classes="caption"
+                       TextWrapping="Wrap"
+                       Text="Willkommen beim Voice Chat Server!"/>
         </StackPanel>
-
     </Border>
 </UserControl>

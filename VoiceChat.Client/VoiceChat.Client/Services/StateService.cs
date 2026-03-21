@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
 namespace VoiceChat.Client.Services;
 
 public class StateService
 {
-    //public Guid UserId { get; private set; }
-    //public string? UserName { get; private set; }
+    public event Action<Guid?>? SelectedChannelChanged;
 
     public string? ServerAddress { get; private set; }
     public bool IsServerConnected { get; private set; }
@@ -33,6 +30,7 @@ public class StateService
     public void SetSelectedChannel(Guid? channelId)
     {
         SelectChannelId = channelId;
+        SelectedChannelChanged?.Invoke(channelId);
     }
 
     public void SetConnectedChannel(Guid? channelId)

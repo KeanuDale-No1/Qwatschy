@@ -1,0 +1,268 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Design.PreviewWith>
+        <Border Padding="20" Background="{DynamicResource BackgroundBrush}">
+            <StackPanel Spacing="10">
+                <Button Classes="win81">Button</Button>
+                <TextBox Text="TextBox" Width="200"/>
+                <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Window">
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
+    </Style>
+
+    <Style Selector="UserControl">
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+    </Style>
+
+    <Style Selector="Grid.splitter">
+        <Setter Property="Background" Value="{DynamicResource DividerBrush}"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="MinWidth" Value="0"/>
+    </Style>
+
+    <Style Selector="GridSplitter">
+        <Setter Property="Background" Value="{DynamicResource DividerBrush}"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="MinWidth" Value="0"/>
+    </Style>
+
+    <Style Selector="Separator">
+        <Setter Property="Background" Value="{DynamicResource DividerBrush}"/>
+        <Setter Property="Height" Value="1"/>
+        <Setter Property="Margin" Value="0,8"/>
+    </Style>
+
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Padding" Value="12,8"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+    </Style>
+
+    <Style Selector="Button:pointerover">
+        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="Button:pressed">
+        <Setter Property="Background" Value="{DynamicResource SelectedBrush}"/>
+    </Style>
+
+    <Style Selector="Button.primary">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="Button.primary:pointerover">
+        <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryHoverBrush}"/>
+    </Style>
+
+    <Style Selector="Button.primary:pressed">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="Button.icon">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="8"/>
+        <Setter Property="MinWidth" Value="40"/>
+        <Setter Property="MinHeight" Value="40"/>
+    </Style>
+
+    <Style Selector="Button.icon:pointerover">
+        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+    </Style>
+
+    <Style Selector="TextBox">
+        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+    </Style>
+
+    <Style Selector="TextBox:focus">
+        <Setter Property="BorderBrush" Value="#e62f79"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
+    <Style Selector="TextBox:pointerover">
+        <Setter Property="BorderBrush" Value="#e62f79"/>
+    </Style>
+
+    <Style Selector="TextBlock">
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFontFamily}"/>
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeBody}"/>
+    </Style>
+
+    <Style Selector="TextBlock.header">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeHeader}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <Style Selector="TextBlock.title">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeTitle}"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <Style Selector="TextBlock.caption">
+        <Setter Property="FontSize" Value="{DynamicResource FontSizeCaption}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+    </Style>
+
+    <Style Selector="TextBlock.ChatMessage">
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+    </Style>
+
+    <Style Selector="Border.panel">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="12"/>
+    </Style>
+
+    <Style Selector="Border.sidebar">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="Padding" Value="8"/>
+    </Style>
+
+    <Style Selector="Border.messageBubble">
+        <Setter Property="Background" Value="{DynamicResource MessageBubbleBrush}"/>
+        <Setter Property="CornerRadius" Value="2"/>
+        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="Margin" Value="0,2"/>
+    </Style>
+
+    <Style Selector="Border.inputBox">
+        <Setter Property="Background" Value="{DynamicResource InputBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Padding" Value="8"/>
+    </Style>
+
+    <Style Selector="Border.ChatHeader">
+        <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DividerBrush}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+        <Setter Property="Padding" Value="12,8"/>
+    </Style>
+
+    <Style Selector="StackPanel.channelItem">
+        <Setter Property="Spacing" Value="4"/>
+    </Style>
+
+    <Style Selector="Border.channelItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Margin" Value="0,2"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="MinHeight" Value="32"/>
+    </Style>
+
+    <Style Selector="Border.channelItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+    </Style>
+
+    <Style Selector="Border.channelItem:pointerover > Grid > Button.channelJoinButton">
+        <Setter Property="Opacity" Value="1"/>
+    </Style>
+
+    <Style Selector="Border.channelItem:pressed">
+        <Setter Property="Background" Value="{DynamicResource SelectedBrush}"/>
+    </Style>
+
+    <Style Selector="Grid.channelRow">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Grid.channelRow:pointerover">
+        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+    </Style>
+
+    <Style Selector="Grid.channelRow:pointerover > Button.channelJoinButton">
+        <Setter Property="Opacity" Value="1"/>
+    </Style>
+
+    <Style Selector="Button.channelJoinButton">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="8,0"/>
+        <Setter Property="MinWidth" Value="32"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+
+    <Style Selector="Button.channelJoinButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        <Setter Property="Opacity" Value="1"/>
+    </Style>
+
+    <Style Selector="Border:pointerover > Button.channelJoinButton">
+        <Setter Property="Opacity" Value="1"/>
+    </Style>
+
+    <Style Selector="StackPanel.memberItem">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="8"/>
+        <Setter Property="Margin" Value="4,2"/>
+    </Style>
+
+    <Style Selector="Ellipse.statusIndicator">
+        <Setter Property="Width" Value="8"/>
+        <Setter Property="Height" Value="8"/>
+    </Style>
+
+    <Style Selector="Ellipse.statusOnline">
+        <Setter Property="Fill" Value="#4CAF50"/>
+    </Style>
+
+    <Style Selector="Ellipse.statusOffline">
+        <Setter Property="Fill" Value="#9E9E9E"/>
+    </Style>
+
+    <Style Selector="Label.unreadBadge">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="CornerRadius" Value="8"/>
+        <Setter Property="Padding" Value="6,2"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="MinWidth" Value="16"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="SplitView">
+        <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+    </Style>
+
+    <Style Selector="ScrollViewer">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="ItemsControl">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+</Styles>

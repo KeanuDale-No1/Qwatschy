@@ -14,12 +14,16 @@ namespace VoiceChat.Client.Services
                                  INavigationService navigationService,
                                  AppState appState,
                                  StateService stateService,
-                                 TokenService tokenService, ServiceHubClient serviceHub)
+                                 TokenService tokenService, 
+                                 ServiceHubClient serviceHub)
     {
 
 
         public async Task ServerDisconnect()
         {
+            await serviceHub.Disconnect();
+            tokenService.WriteNewToken("");
+            stateService.SetDisconnectedServer();
             await navigationService.NavigateTo<LoginViewModel>();
         }
 
@@ -34,10 +38,6 @@ namespace VoiceChat.Client.Services
             {
                 appState.AddServer(new ServerConnection(appState.GetUser().UserName, serveraddress));
                 tokenService.WriteNewToken(response.AuthToken);
-
-                
-
-
                 await serviceHub.Connect();
                 await navigationService.NavigateTo<MainAreaViewModel>();
             }

@@ -1,4 +1,4 @@
-<UserControl Padding="10" xmlns="https://github.com/avaloniaui"
+<UserControl Padding="0" xmlns="https://github.com/avaloniaui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,82 +6,74 @@
 			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
 			 xmlns:cv="using:VoiceChat.Client.Converters"
 			 x:Class="VoiceChat.Client.Views.MainArea.ChannelSidebarView"
-			 x:DataType="vm:ChannelSidebarViewModel">
+			 x:DataType="vm:ChannelSidebarViewModel"
+			 Background="{DynamicResource SurfaceBrush}">
 
 	<Design.DataContext>
 		<vm:ChannelSidebarViewModel />
 	</Design.DataContext>
 
-
 	<UserControl.Resources>
 		<cv:EqualityMultiConverter x:Key="EqualityMultiConverter" />
+		<cv:IsSelectedConverter x:Key="IsSelectedConverter" />
 	</UserControl.Resources>
 
-	<!-- ============================= -->
-	<!-- CHANNEL SIDEBAR -->
-	<!-- ============================= -->
+	<Grid RowDefinitions="Auto,*">
+		<StackPanel Grid.Row="0">
+			<Border Classes="ChatHeader">
+				<TextBlock Classes="header" Text="Channels"/>
+			</Border>
 
-	<Grid Grid.Column="1" RowDefinitions="Auto,*" Classes="sidebar">
-		<StackPanel  Grid.Row="0">
-				<TextBlock Text="Channels:"
-						   FontSize="16"
-						   FontWeight="Bold"
-						   />
-
-
-			<DockPanel Margin="0 10 0 10" >
+			<DockPanel Margin="8,8,8,8" LastChildFill="True">
 				<Button DockPanel.Dock="Right"
-						Margin="6 0 0 0"
-						Content="+"
+						Margin="0,0,0,0"
+						Content="➕"
+						FontSize="12"
+						VerticalContentAlignment="Center"
+						HorizontalContentAlignment="Center"
+						Classes="icon"
 						Command="{Binding CreateChannelCommand}"/>
-				<TextBox DockPanel.Dock="Left"
+				<TextBox x:Name="NewChannelTextBox"
+						 DockPanel.Dock="Left"
 						 Watermark="new channel"
+						 MinWidth="80"
 						 Text="{Binding NewChannelName}"/>
-
 			</DockPanel>
 
-
-			<ItemsControl ItemsSource="{Binding Channels}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<StackPanel Spacing="5"/>
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<StackPanel>
-							<Button HorizontalAlignment="Stretch"
-									Command="{Binding $parent[ItemsControl].DataContext.SelectChannelCommand}"
-									CommandParameter="{Binding .}">
-
-								<DockPanel>
-									<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-										<Label IsVisible="{Binding Unread}"
-											   CornerRadius="8"
-											   Background="Orange"
-											   HorizontalAlignment="Center"
-											   VerticalAlignment="Center"
-											   HorizontalContentAlignment="Center"
-											   VerticalContentAlignment="Center"
-											   FontSize="6"
-											   Content="{Binding UnreadCount}"/>
-
-
-										<Button Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
-												CommandParameter="{Binding .}"
-												Content="🔉">
-											<Button.IsVisible>
-												<MultiBinding Converter="{StaticResource EqualityMultiConverter}">
-													<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel" />
-													<Binding Path="." />
-												</MultiBinding>
-											</Button.IsVisible>
-										</Button>
-									</StackPanel>
-									<TextBlock  Text="{Binding Name}"
-												Margin="8"/>
-								</DockPanel>
-								<Button.ContextMenu>
+			<ScrollViewer>
+				<ItemsControl ItemsSource="{Binding Channels}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<VirtualizingStackPanel/>
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Border Classes="channelItem"
+									PointerPressed="OnChannelClick"
+									Margin="0,2">
+								<Border.Background>
+									<MultiBinding Converter="{StaticResource IsSelectedConverter}">
+										<Binding Path="Id"/>
+										<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel"/>
+									</MultiBinding>
+								</Border.Background>
+								<Grid Classes="channelRow" ColumnDefinitions="*,Auto">
+									<TextBlock Grid.Column="0"
+											   Text="{Binding Name}"
+											   Margin="8,0"
+											   VerticalAlignment="Center"/>
+									<Button Grid.Column="1"
+											Classes="channelJoinButton"
+											Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
+											CommandParameter="{Binding .}"
+											VerticalContentAlignment="Center"
+											HorizontalContentAlignment="Center"
+											Padding="0"
+											FontSize="16"
+											Content="🔉"/>
+								</Grid>
+								<Border.ContextMenu>
 									<ContextMenu>
 										<MenuItem Header="Löschen"
 												  Command="{Binding $parent[UserControl].DataContext.DeleteChannelCommand }"
@@ -89,38 +81,25 @@
 										<MenuItem Header="-"/>
 										<MenuItem Header="Close"/>
 									</ContextMenu>
-								</Button.ContextMenu>
-							</Button>
-
-						</StackPanel>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-
-			</ItemsControl>
+								</Border.ContextMenu>
+							</Border>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
 		</StackPanel>
-		<!-- Memberbox-->
+
 		<StackPanel Grid.Row="1">
-			<Separator Margin="0,10"/>
-			<TextBlock Text="Online"
-					   FontWeight="Bold"
-					   Margin="10"/>
+			<Separator/>
+			<Border Classes="ChatHeader">
+				<TextBlock Classes="header" Text="Online"/>
+			</Border>
 			<ItemsControl ItemsSource="{Binding SelectedChannelUsers}">
 				<ItemsControl.ItemTemplate>
-
 					<DataTemplate>
-						<StackPanel>
-
-							<StackPanel Classes="memberItem"
-										Orientation="Horizontal"
-										Spacing="6">
-
-								<Ellipse Width="8"
-										 Height="8"
-										 Fill="Lime"/>
-
-								<TextBlock Text="{Binding DisplayName}"/>
-
-							</StackPanel>
+						<StackPanel Classes="memberItem">
+							<Ellipse Classes="statusIndicator statusOnline"/>
+							<TextBlock Text="{Binding DisplayName}"/>
 						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>

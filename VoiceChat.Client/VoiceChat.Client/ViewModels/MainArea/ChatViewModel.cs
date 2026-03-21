@@ -25,17 +25,22 @@ namespace VoiceChat.Client.ViewModels.MainArea
         public ObservableCollection<ChatMessage> Messages { get; set; } = new() { new ChatMessage("Keanu","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Right, true ,"KD"),
                                                                                   new ChatMessage("o7","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Left, false ,"O7")};
         [ObservableProperty] private string messageInput = "";
+        [ObservableProperty] private bool isInputEnabled = false;
+        [ObservableProperty] private string channelTitle = "";
 
         private readonly ServiceHubClient chatService;
         private readonly AppState appState;
+        private readonly ChannelService channelService;
         public event Action? MessageAdded;
         private readonly StateService stateService;
-        public ChatViewModel(ServiceHubClient chatService, AppState appState,StateService stateService )
+        public ChatViewModel(ServiceHubClient chatService, AppState appState, StateService stateService, ChannelService channelService)
         {
             this.stateService = stateService;
             this.appState = appState;
             this.chatService = chatService;
+            this.channelService = channelService;
             chatService.MessageReceived += OnMessageReceived;
+            stateService.SelectedChannelChanged += OnSelectedChannelChanged;
         }
         public ChatViewModel()
         {
@@ -43,9 +48,25 @@ namespace VoiceChat.Client.ViewModels.MainArea
                 throw new InvalidOperationException(
                     "Parameterloser Konstruktor darf nur im Designer verwendet werden.");
 
-            Messages= new() { new ChatMessage("Keanu","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Right, true ,"KD"),
+            Messages = new() { new ChatMessage("Keanu","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Right, true ,"KD"),
                                                                                   new ChatMessage("o7","Das ist ein Test Text", new DateTime(2026,03,19),HorizontalAlignment.Left, false ,"O7")};
         }
+
+        private void OnSelectedChannelChanged(Guid? channelId)
+        {
+            IsInputEnabled = stateService.SelectChannelId.HasValue;
+            if (stateService.SelectChannelId.HasValue)
+            {
+                var channel = channelService.Channels.FirstOrDefault(c => c.Id == stateService.SelectChannelId.Value);
+                ChannelTitle = channel?.Name ?? "";
+            }
+            else
+            {
+                ChannelTitle = "";
+            }
+        }
+
+        
 
 
         private void OnMessageReceived(ChatMessageDTO message)

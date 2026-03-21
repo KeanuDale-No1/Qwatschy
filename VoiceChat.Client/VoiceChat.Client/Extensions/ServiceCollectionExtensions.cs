@@ -41,6 +41,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<MainAreaViewModel>();
         services.AddTransient<ChannelSidebarViewModel>();
         services.AddTransient<ChatViewModel>();
+        services.AddTransient<RightSidebarViewModel>();
 
     }
 }

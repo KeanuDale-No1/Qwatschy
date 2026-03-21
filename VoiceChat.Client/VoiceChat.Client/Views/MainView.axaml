@@ -1,19 +1,23 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:viewmodels="using:VoiceChat.Client.ViewModels"
-			 xmlns:control="using:VoiceChat.Client.Views"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="using:VoiceChat.Client.ViewModels"
+             xmlns:control="using:VoiceChat.Client.Views"
 
-			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 x:Class="VoiceChat.Client.Views.MainView"
-			 x:DataType="viewmodels:MainViewModel">
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="VoiceChat.Client.Views.MainView"
+             x:DataType="viewmodels:MainViewModel"
+             Background="{DynamicResource BackgroundBrush}">
 
-	<Design.DataContext>
-		<viewmodels:MainViewModel />
-	</Design.DataContext>
-	<Grid Classes="appRoot" Grid.RowDefinitions="*,12" Grid.ColumnDefinitions="*,60">
-		<ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding CurrentViewModel}" />
-		<control:RightSidebar Grid.Column="1" Grid.Row="0"/>
-	</Grid>
+    <Design.DataContext>
+        <viewmodels:MainViewModel />
+    </Design.DataContext>
+
+    <Grid Background="{DynamicResource BackgroundBrush}" 
+          Grid.RowDefinitions="*" 
+          Grid.ColumnDefinitions="*,auto">
+        <ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding CurrentViewModel}" />
+        <control:RightSidebar Grid.Column="1" Grid.Row="0"/>
+    </Grid>
 </UserControl>

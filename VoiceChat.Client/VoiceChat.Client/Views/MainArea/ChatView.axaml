@@ -1,92 +1,108 @@
-<UserControl Padding="10 0 10 0" xmlns="https://github.com/avaloniaui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
+<UserControl Padding="0" xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
 
-			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-			 x:Class="VoiceChat.Client.Views.MainArea.ChatView"
-			 x:DataType="vm:ChatViewModel">
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="VoiceChat.Client.Views.MainArea.ChatView"
+             x:DataType="vm:ChatViewModel"
+             Background="{DynamicResource BackgroundBrush}">
 
-	<Design.DataContext>
-		<vm:ChatViewModel/>
-	</Design.DataContext>
+    <Design.DataContext>
+        <vm:ChatViewModel/>
+    </Design.DataContext>
 
-	<UserControl.Background>
-		<ImageBrush Source="avares://VoiceChat.Client/Assets/qwatschi_logo.jpeg" Opacity="0.5"/>
-	</UserControl.Background>
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Border Grid.Row="0" Classes="ChatHeader">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="💬 "
+                           IsVisible="{Binding IsInputEnabled}"/>
+                <TextBlock Classes="header"
+                           Text="{Binding ChannelTitle}"
+                           IsVisible="{Binding IsInputEnabled}"/>
+                <TextBlock Classes="header"
+                           Text="Wähle einen Channel aus"
+                           FontStyle="Italic"
+                           IsVisible="{Binding !IsInputEnabled}"/>
+            </StackPanel>
+        </Border>
 
-	<Grid>
+        <Grid Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          x:Name="ChatScrollViewer"
+                          IsVisible="{Binding !IsInputEnabled}">
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        Padding="20"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center" Spacing="8">
+                        <TextBlock Text="💬" FontSize="48" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Wähle einen Channel aus"
+                                   Classes="header"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Du musst erst einen Channel auswählen,"
+                                   Classes="caption"
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="bevor du Nachrichten senden kannst."
+                                   Classes="caption"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
 
-		<Border>
-			<Border.Effect>
-				<BlurEffect Radius="30"/>
-			</Border.Effect>
-		</Border>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          x:Name="ChatScrollViewerMessages"
+                          IsVisible="{Binding IsInputEnabled}">
+                <ItemsControl ItemsSource="{Binding Messages}"
+                              VerticalAlignment="Bottom"
+                              Margin="8">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Spacing="4"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Classes="messageBubble"
+                                    HorizontalAlignment="{Binding HorizontalAlignment}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Username}"
+                                               Classes="caption"
+                                               IsVisible="{Binding !IsOwnMessage}"/>
+                                    <TextBlock Classes="ChatMessage"
+                                               Text="{Binding Text}"
+                                               FontSize="14"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
 
-
-		<Grid RowDefinitions="60, *,Auto" >
-			<Border Margin="-10 0 -10 0" Classes="CurrentChatName" Grid.Row="0" Background="Black">
-				<TextBlock Text="Platzhalter Channelname"/>
-			</Border>
-
-			<ScrollViewer Grid.Row="1"
-						  VerticalScrollBarVisibility="Auto"
-						  x:Name="ChatScrollViewer">
-				<ItemsControl ItemsSource="{Binding Messages}" VerticalAlignment="Bottom" Classes="Chatbox" >
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border HorizontalAlignment="{Binding HorizontalAlignment}" 
-									Background="#5b667199"
-									Padding="8 2 8 2"
-									ToolTip.Tip="{Binding Timestamp}"
-									CornerRadius="12">
-								
-								<StackPanel>
-									<TextBlock IsVisible="{Binding !IsOwnMessage}" Text="{Binding Username}"
-											   HorizontalAlignment="{Binding HorizontalAlignment}"
-											   FontSize="10"/>
-									<TextBlock Classes="ChatMessage"
-											   Text="{Binding Text}"
-											   FontSize="15"/>
-								</StackPanel>
-							</Border>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl >
-			</ScrollViewer>
-
-			<Border Grid.Row="2"
-					Padding="5"
-					Margin="0 10 0 0 "
-					Background="#2B2B2B"
-					BorderBrush="#444"
-					BorderThickness="1">
-				<Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
-					<TextBox Text="{Binding MessageInput}"
-							 BorderBrush="Transparent"
-							 Watermark="...Message...">
-						<TextBox.KeyBindings>
-							<KeyBinding Gesture="Enter"
-										Command="{Binding SendMessageCommand}" />
-						</TextBox.KeyBindings>
-					</TextBox>
-					<Button Command="{Binding SendMessageCommand}"
-							Grid.Column="1"
-							Content="⮞"
-							Background="Transparent"
-							/>
-				</Grid>
-			</Border>
-		</Grid>
-
-
-	</Grid>
-
+        <Border Grid.Row="2"
+                Classes="inputBox"
+                Margin="8">
+            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                <TextBox Text="{Binding MessageInput}"
+                         Watermark="...Message..."
+                         Background="Transparent"
+                         BorderThickness="0"
+                         Padding="4"
+                         IsEnabled="{Binding IsInputEnabled}">
+                    <TextBox.KeyBindings>
+                        <KeyBinding Gesture="Enter"
+                                    Command="{Binding SendMessageCommand}" />
+                    </TextBox.KeyBindings>
+                </TextBox>
+                <Button Grid.Column="1"
+                        Classes="icon"
+                        Command="{Binding SendMessageCommand}"
+                        IsEnabled="{Binding IsInputEnabled}"
+                        Content="⮞"/>
+            </Grid>
+        </Border>
+    </Grid>
 
 </UserControl>

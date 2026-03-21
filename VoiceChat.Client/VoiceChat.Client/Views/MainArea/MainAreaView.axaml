@@ -1,35 +1,32 @@
-<UserControl  xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
      x:DataType="vm:MainAreaViewModel"
-			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 
      xmlns:vm="clr-namespace:VoiceChat.Client.ViewModels.MainArea"
      xmlns:views="clr-namespace:VoiceChat.Client.Views.MainArea"
-     x:Class="VoiceChat.Client.Views.MainArea.MainAreaView">
- 
-    <Grid >
+     x:Class="VoiceChat.Client.Views.MainArea.MainAreaView"
+     Background="{DynamicResource BackgroundBrush}">
+
+    <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" MinWidth="200" />
+            <ColumnDefinition Width="220" MinWidth="180" />
             <ColumnDefinition Width="1"/>
             <ColumnDefinition Width="*" MinWidth="250"/>
             <ColumnDefinition Width="1"/>
-            <ColumnDefinition Width="250" MinWidth="200"/>
+            <ColumnDefinition Width="220" MinWidth="180"/>
         </Grid.ColumnDefinitions>
-        
-		<!-- ============================= -->
-		<!-- CHANNEL SIDEBAR -->
-		<!-- ============================= -->
+
         <ContentControl Grid.Column="0" Content="{Binding ChannelSidebarViewModel}" />
-        
-        <GridSplitter Grid.Column="1" Width="1" ResizeDirection="Columns"/>
-        <!-- ============================= -->
-		<!-- ChatView SIDEBAR -->
-		<!-- ============================= -->
-        <views:ChatView  Grid.Column="2" DataContext="{Binding ChatViewModel}"></views:ChatView>
-        <GridSplitter Grid.Column="3" Width="1" ResizeDirection="Columns"/>
-        
-        <views:ServerInformation  Grid.Column="4" ></views:ServerInformation>
+
+        <GridSplitter Grid.Column="1" Classes="splitter" ResizeDirection="Columns"/>
+
+        <views:ChatView Grid.Column="2" DataContext="{Binding ChatViewModel}"/>
+
+        <GridSplitter Grid.Column="3" Classes="splitter" ResizeDirection="Columns"/>
+
+        <views:ServerInformation Grid.Column="4"/>
     </Grid>
 </UserControl>

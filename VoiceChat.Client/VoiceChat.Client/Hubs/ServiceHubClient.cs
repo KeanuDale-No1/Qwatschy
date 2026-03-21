@@ -70,7 +70,11 @@ public class ServiceHubClient(TokenService tokenService, StateService stateServi
         {
         }
     }
-
+    public async Task Disconnect()
+    {
+        await Connection.StopAsync();
+        await Connection.DisposeAsync();
+    }
     private async Task connection_Reconnected(string? arg) {}
 
     private async Task connection_Reconnecting(Exception? exception) {}
