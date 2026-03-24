@@ -38,7 +38,6 @@ namespace VoiceChat.Client.ViewModels.MainArea
         public event Action? ScrollToBottom;
         private readonly StateService stateService;
         
-        private Guid currentChannelId;
         private int loadedCount = 0;
         private const int InitialLoad = 40;
         private const int LoadMoreCount = 50;
@@ -73,14 +72,12 @@ namespace VoiceChat.Client.ViewModels.MainArea
             {
                 var channel = channelService.Channels.FirstOrDefault(c => c.Id == stateService.SelectChannelId.Value);
                 ChannelTitle = channel?.Name ?? "";
-                currentChannelId = stateService.SelectChannelId.Value;
-                _ = LoadMessagesForChannel(currentChannelId);
+                _ = LoadMessagesForChannel(stateService.SelectChannelId.Value);
             }
             else
             {
                 ChannelTitle = "";
                 Messages.Clear();
-                currentChannelId = Guid.Empty;
             }
         }
 
@@ -94,7 +91,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
                 
                 Debug.WriteLine($"[Chat] Loading messages for channel {channelId}");
                 var response = await chatService.GetMessages(channelId, 0, InitialLoad);
-                Debug.WriteLine($"[Chat] Received {response.Messages.Count} messages, Total: {response.TotalCount}");
+                Debug.WriteLine($"[Chat] Received {response?.Messages?.Count} messages, Total: {response?.TotalCount}");
                 
                 Messages.Clear();
                 
@@ -121,7 +118,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
         [RelayCommand]
         public async Task LoadMoreMessages()
         {
-            if (IsLoadingMore || !HasMoreMessages || currentChannelId == Guid.Empty)
+            if (IsLoadingMore || !HasMoreMessages ||  !stateService.SelectChannelId.HasValue|| stateService.SelectChannelId == Guid.Empty)
                 return;
 
             try
@@ -129,7 +126,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
                 IsLoadingMore = true;
                 
                 var skip = loadedCount;
-                var response = await chatService.GetMessages(currentChannelId, skip, LoadMoreCount);
+                var response = await chatService.GetMessages(stateService.SelectChannelId.Value, skip, LoadMoreCount);
                 
                 foreach (var msg in response.Messages)
                 {

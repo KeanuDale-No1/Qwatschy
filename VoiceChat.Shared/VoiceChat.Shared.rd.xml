@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Directives xmlns="http://schemas.microsoft.com/netfx/2013/01/monodirector">
+  <Application>
+    <Assembly Name="VoiceChat.Shared">
+      <Type Name="VoiceChat.Shared.Models.ChatMessageDTO" Dynamic="Required All" />
+      <Type Name="VoiceChat.Shared.Models.GetMessagesResponseDTO" Dynamic="Required All" />
+      <Type Name="VoiceChat.Shared.Models.ChannelDTO" Dynamic="Required All" />
+      <Type Name="VoiceChat.Shared.Models.ConnectChannelResponseDTO" Dynamic="Required All" />
+    </Assembly>
+  </Application>
+</Directives>

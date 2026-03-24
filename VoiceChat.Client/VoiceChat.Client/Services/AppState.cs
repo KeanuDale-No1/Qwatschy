@@ -14,12 +14,30 @@ namespace VoiceChat.Client.Services
         public IApplicationLifetime? ApplicationLifetime { get; set; }
         private string folder = "";
         private string filePath = "";
-        public AppState(IApplicationLifetime applicationLifetime)
+        private bool isDesktop = false;
+        
+        public AppState(IApplicationLifetime? applicationLifetime)
         {
             ApplicationLifetime= applicationLifetime;
-            folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), QwatschyConstants.VoiceChatName);
-            filePath = System.IO.Path.Combine(folder, "usersettings.dat");
-            RestoreClientData();
+            isDesktop = applicationLifetime is IClassicDesktopStyleApplicationLifetime;
+            
+            if (isDesktop)
+            {
+                try
+                {
+                    folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), QwatschyConstants.VoiceChatName);
+                    filePath = System.IO.Path.Combine(folder, "usersettings.dat");
+                }
+                catch
+                {
+                    isDesktop = false;
+                }
+            }
+            
+            if (isDesktop)
+            {
+                RestoreClientData();
+            }
         }
 
         private ClientData ClientData { get; set; } = new ClientData();
@@ -56,18 +74,23 @@ namespace VoiceChat.Client.Services
 
         private void SaveClientData()
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (!isDesktop) return;
+            
+            try
             {
                 var json = JsonSerializer.Serialize(ClientData, ClientDataContext.Default.ClientData);
                 if (!Directory.Exists(folder))
                     Directory.CreateDirectory(folder);
                 File.WriteAllText(filePath, json);
             }
+            catch { }
         }
 
         private void RestoreClientData()
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            if (!isDesktop) return;
+            
+            try
             {
                 if (!File.Exists(filePath))
                     return;
@@ -76,6 +99,7 @@ namespace VoiceChat.Client.Services
                 if (clientData != null)
                     ClientData = clientData;
             }
+            catch { }
         }
     }
 

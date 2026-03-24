@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using VoiceChat.Client.Hubs;
@@ -10,6 +10,8 @@ namespace VoiceChat.Client.Services.VoiceService
         private readonly IVoiceService voiceService;
         private readonly ServiceHubClient serviceHub;
         private readonly StateService stateService;
+        private bool isRecording = false;
+        private bool isInitialized = false;
 
         public VoiceChatService(IVoiceService voiceService, StateService stateService, ServiceHubClient serviceHub)
         {
@@ -27,8 +29,26 @@ namespace VoiceChat.Client.Services.VoiceService
 
         public void Start()
         {
-            voiceService.InitializeAsync();
-            voiceService.StartRecording();
+            if (!isInitialized)
+            {
+                voiceService.InitializeAsync();
+                isInitialized = true;
+            }
+            
+            if (!isRecording)
+            {
+                voiceService.StartRecording();
+                isRecording = true;
+            }
+        }
+
+        public void Stop()
+        {
+            if (isRecording)
+            {
+                voiceService.StopRecording();
+                isRecording = false;
+            }
         }
 
 
@@ -38,9 +58,12 @@ namespace VoiceChat.Client.Services.VoiceService
             if (stateService.IsMuted)
             {
                 voiceService.StopRecording();
+                isRecording = false;
             }
-            else {
+            else if (!isRecording)
+            {
                 voiceService.StartRecording();
+                isRecording = true;
             }
         }
 

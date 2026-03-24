@@ -78,7 +78,7 @@
 											HorizontalContentAlignment="Center"
 											Padding="0"
 											FontSize="16"
-											Content="🔉"/>
+											Content="🔊"/>
 								</Grid>
 								<Border.ContextMenu>
 									<ContextMenu>

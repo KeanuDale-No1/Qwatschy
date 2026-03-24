@@ -7,13 +7,6 @@ using VoiceChat.Client.ViewModels.Base;
 namespace VoiceChat.Client;
     public class ViewLocator : IDataTemplate
     {
-
-    private readonly IServiceProvider _services;
-
-    public ViewLocator(IServiceProvider services)
-    {
-        _services = services;
-    }
     public Control? Build(object? param)
         {
             if (param is null)

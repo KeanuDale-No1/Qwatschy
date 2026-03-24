@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using VoiceChat.Shared.Models;
 
@@ -13,6 +14,15 @@ namespace VoiceChat.Client;
 [JsonSerializable(typeof(GetChannelsResponseDTO))]
 [JsonSerializable(typeof(DeleteChannelRequestDTO))]
 [JsonSerializable(typeof(DeleteChannelResponseDTO))]
+[JsonSerializable(typeof(GetMessagesRequestDTO))]
+[JsonSerializable(typeof(GetMessagesResponseDTO))]
+[JsonSerializable(typeof(List<ChatMessageDTO>))]
+[JsonSerializable(typeof(ChatMessageDTO))]
+[JsonSerializable(typeof(ChannelDTO))]
+[JsonSerializable(typeof(ConnectChannelRequestDTO))]
+[JsonSerializable(typeof(ConnectChannelResponseDTO))]
+[JsonSerializable(typeof(CreateChatMessageRequestDTO))]
+[JsonSerializable(typeof(CreateChatMessageResponseDTO))]
 public partial class AppJsonContext : JsonSerializerContext
 { }
 

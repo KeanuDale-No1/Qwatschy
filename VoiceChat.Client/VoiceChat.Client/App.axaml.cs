@@ -21,20 +21,25 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-
-        //var collection = new ServiceCollection();
-        //collection.AddCommonServices();
-        //var services = collection.BuildServiceProvider();
+        if (Services == null)
+        {
+            base.OnFrameworkInitializationCompleted();
+            return;
+        }
+        Console.WriteLine(ApplicationLifetime);
         if (!Design.IsDesignMode)
         {
-            var appState = Services.GetRequiredService<AppState>();
-            appState.ApplicationLifetime = ApplicationLifetime;
+            try
+            {
+                var appState = Services.GetRequiredService<AppState>();
+                appState.ApplicationLifetime = ApplicationLifetime;
+            }
+            catch { }
         }
-
-        var vm = Design.IsDesignMode ? new MainViewModel() : Services.GetRequiredService<MainViewModel>();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var vm = Services.GetRequiredService<MainViewModel>();
             desktop.MainWindow = new MainWindow
             {
                 DataContext = vm
@@ -42,6 +47,7 @@ public partial class App : Application
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
+            var vm = Design.IsDesignMode ? new MainViewModel() : Services.GetRequiredService<MainViewModel>();
             singleViewPlatform.MainView = new MainView
             {
                 DataContext = vm

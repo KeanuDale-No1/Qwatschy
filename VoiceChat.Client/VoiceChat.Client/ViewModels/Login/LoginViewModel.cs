@@ -45,8 +45,22 @@ public partial class LoginViewModel : ViewModelBase
     [RelayCommand]
     public async Task Conntect()
     {
+        if (string.IsNullOrWhiteSpace(InputserverAddress))
+        {
+            Console.WriteLine("serveradresse nicht eingegeben");
+            Console.WriteLine($"serveradresse: {InputserverAddress}");
+            return;
+        }
+            
         appState.SetUsername(Username);
-        await connectionService.ServerConnect(InputserverAddress);
+        try
+        {
+            await connectionService.ServerConnect(InputserverAddress);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Fehler bei {nameof(LoginViewModel).ToString()} Conntect: {ex.Message}");
+        }
     }
 
     [RelayCommand]

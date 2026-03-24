@@ -26,8 +26,18 @@ public class ApiService
                 client.DefaultRequestHeaders.Authorization =
                            new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", tokenService.ReadToken());
             }
-        
-            var result = await client.PostAsync(url, JsonContent.Create(data, options: Json.Options));
+            HttpResponseMessage? result = null;
+            try
+            {
+
+                 result = await client.PostAsync(url, JsonContent.Create(data, options: Json.Options));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Fehler {nameof(ApiService)} PostAsync json: {ex}");
+
+                throw;
+            }
             if (!result.IsSuccessStatusCode)
             {
                 var errorContent = await result.Content.ReadAsStringAsync();
@@ -36,8 +46,9 @@ public class ApiService
             }
             return await result.Content.ReadFromJsonAsync<T1>(Json.Options) ?? throw new Exception("Failed to deserialize response.");
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Console.WriteLine($"Fehler {nameof(ApiService)} PostAsync: {ex}");
             throw;
         }
     }

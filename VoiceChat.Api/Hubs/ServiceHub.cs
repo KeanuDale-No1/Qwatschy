@@ -45,6 +45,7 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
         var response = await joinChannelUseCase.ExecuteAsync(new ConnectChannelRequestDTO(Guid.Parse(Context.UserIdentifier!), channelId));
         await Clients.All.SendAsync("JoinChannel", response);
         await Groups.AddToGroupAsync(Context.ConnectionId, channelId.ToString());
+        
     }
 
     
@@ -87,7 +88,7 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
         await Clients.All.SendAsync("ReceiveMessage", message);
     }
 
-    public async Task<GetMessagesResponseDTO> GetMessages(Guid channelId, int skip = 0, int take = 40)
+    public async Task<GetMessagesResponseDTO> GetMessages(Guid channelId, int skip = 0, int take = 50)
     {
         return await getMessagesUseCase.ExecuteAsync(new GetMessagesRequestDTO(channelId, skip, take));
     }

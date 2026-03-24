@@ -129,7 +129,7 @@ namespace VoiceChat.Client.Services
                     Description = channel.Description,
                     UnreadCount = 0
                 };
-                Channels[index] = updated;
+                Channels[index].UnreadCount = 0;// = updated;
             }
             
             stateService.SetSelectedChannel(channel.Id);

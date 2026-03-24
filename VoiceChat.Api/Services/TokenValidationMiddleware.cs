@@ -17,6 +17,13 @@ public class TokenValidationMiddleware
 
     public async Task InvokeAsync(HttpContext context, IAuthService handler)
     {
+        // Skip auth for SignalR hub connections (they use query string token)
+        //if (context.Request.Path.StartsWithSegments("/connection"))
+        //{
+        //    await _next(context);
+        //    return;
+        //}
+
         // Nur prüfen, wenn der Endpoint Auth benötigt
         if (context.Request.Path.StartsWithSegments(""))
         {

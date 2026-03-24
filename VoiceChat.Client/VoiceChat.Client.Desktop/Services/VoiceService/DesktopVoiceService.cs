@@ -1,4 +1,4 @@
-﻿using ManagedBass;
+using ManagedBass;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -12,9 +12,10 @@ namespace VoiceChat.Client.Desktop.Services.VoiceService
     public class DesktopVoiceService : IVoiceService
     {
         private int playStream;
-        private RecordProcedure recordProcedure;
+        private RecordProcedure? recordProcedure;
         private int recordHandle;
         private OpusCodec codec = new OpusCodec();
+        private readonly object recordingLock = new object();
 
         public event Action<byte[]>? AudioFrameReceived;
         public void InitializeAsync()
@@ -29,6 +30,8 @@ namespace VoiceChat.Client.Desktop.Services.VoiceService
         bool isPreBuffering = true;
         public void PlayOpusChunk(byte[] opusdata)
         {
+            if (playStream == 0) return;
+            
             var pcmShort = codec.Decode(opusdata);
             byte[] pcmBytes = new byte[pcmShort.Length *2] ;
             Buffer.BlockCopy(pcmShort, 0, pcmBytes, 0, pcmBytes.Length);
@@ -36,9 +39,8 @@ namespace VoiceChat.Client.Desktop.Services.VoiceService
             Bass.StreamPutData(playStream, pcmBytes, pcmBytes.Length);
 
             long buffered = Bass.ChannelGetData(playStream, IntPtr.Zero, (int)DataFlags.Available);
-            double msAvailable = buffered / (48000.0 * 2) * 1000; // Verfügbare Zeit in ms
-            double msAvailable2 = Bass.ChannelBytes2Seconds(playStream,(int)DataFlags.Available) * 1000;
-            if (isPreBuffering) // weniger als 50ms gepuffert
+            double msAvailable = buffered / (48000.0 * 2) * 1000;
+            if (isPreBuffering)
             {
                 if (msAvailable > 60)
                 {
@@ -54,38 +56,66 @@ namespace VoiceChat.Client.Desktop.Services.VoiceService
 
         public void StartRecording()
         {
-
-            List<byte> recordingBuffer = new List<byte>();
-            recordProcedure = (handle, buffer, length, user) =>
+            lock (recordingLock)
             {
-                if (length > 0)
+                StopRecordingInternal();
+                
+                var recordingBuffer = new List<byte>();
+                recordProcedure = (handle, buffer, length, user) =>
                 {
-                    byte[] temp = new byte[length];
-                    Marshal.Copy(buffer, temp, 0, length);
-                    recordingBuffer.AddRange(temp);
-                    while (recordingBuffer.Count >= 1920)
+                    if (length > 0)
                     {
-                        byte[] frame = recordingBuffer.GetRange(0, 1920).ToArray();
-                        recordingBuffer.RemoveRange(0, 1920);
+                        byte[] temp = new byte[length];
+                        Marshal.Copy(buffer, temp, 0, length);
+                        recordingBuffer.AddRange(temp);
+                        while (recordingBuffer.Count >= 1920)
+                        {
+                            byte[] frame = recordingBuffer.GetRange(0, 1920).ToArray();
+                            recordingBuffer.RemoveRange(0, 1920);
 
+                            if (frame.Length < 1920) continue;
 
-                        short[] pcmShort = new short[frame.Length / 2];
-                        Buffer.BlockCopy(frame, 0, pcmShort, 0, frame.Length);
+                            short[] pcmShort = new short[960];
+                            Buffer.BlockCopy(frame, 0, pcmShort, 0, 1920);
 
-                        byte[] opusData = codec.Encode(pcmShort);
-
-                        AudioFrameReceived?.Invoke(opusData);
+                            try
+                            {
+                                byte[] opusData = codec.Encode(pcmShort);
+                                AudioFrameReceived?.Invoke(opusData);
+                            }
+                            catch
+                            {
+                            }
+                        }
                     }
-
-                }
-                return true;
-            };
-            recordHandle = Bass.RecordStart(48000, 1, BassFlags.Default,recordProcedure);
+                    return true;
+                };
+                recordHandle = Bass.RecordStart(48000, 1, BassFlags.Default, recordProcedure);
+            }
         }
 
         public void StopRecording()
         {
-            Bass.ChannelStop(recordHandle);
+            lock (recordingLock)
+            {
+                StopRecordingInternal();
+            }
+        }
+
+        private void StopRecordingInternal()
+        {
+            try
+            {
+                if (recordHandle != 0)
+                {
+                    Bass.ChannelStop(recordHandle);
+                    recordHandle = 0;
+                }
+            }
+            catch
+            {
+            }
+            recordProcedure = null;
         }
     }
 }

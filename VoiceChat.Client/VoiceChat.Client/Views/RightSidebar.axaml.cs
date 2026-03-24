@@ -11,9 +11,13 @@ public partial class RightSidebar : UserControl
     public RightSidebar()
     {
         InitializeComponent();
-        if (!Design.IsDesignMode)
+        if (!Design.IsDesignMode && App.Services != null)
         {
-            DataContext = App.Services.GetRequiredService<RightSidebarViewModel>();
+            try
+            {
+                DataContext = App.Services.GetRequiredService<RightSidebarViewModel>();
+            }
+            catch { }
         }
     }
 }

@@ -21,12 +21,16 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(policy =>
     {
         policy
-             .AllowAnyOrigin()
+             .SetIsOriginAllowed(_ => true)
              .AllowAnyHeader()
-             .AllowAnyMethod();
+             .AllowAnyMethod()
+             .AllowCredentials();
     });
 });
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 
 Console.WriteLine("Building app...");
 

@@ -9,7 +9,7 @@ using VoiceChat.Client.Services.SoundPlayer;
 
 namespace VoiceChat.Client.Utilitis;
 
-public class Sounds(ISoundPlayer soundPlayer)
+public class Sounds()//ISoundPlayer soundPlayer)
 {
     public void PlayJoinSound()
     {
@@ -21,7 +21,7 @@ public class Sounds(ISoundPlayer soundPlayer)
 
         var wav = WavHelper.CreateWav(pcm);
 
-        soundPlayer.Play(wav);
+       // soundPlayer.Play(wav);
     }
 
 }

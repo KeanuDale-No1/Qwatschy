@@ -5,9 +5,18 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
+    <Content Remove="wwwroot\qwatschy_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="wwwroot\favicon.ico" />
+    <AvaloniaResource Include="wwwroot\qwatschy_logo.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.JSInterop" />
   </ItemGroup>
 
