@@ -31,7 +31,6 @@ public class ServiceHubClient(TokenService tokenService, StateService stateServi
                 {
                     options.AccessTokenProvider = () => Task.FromResult(tokenService.ReadToken());
                 })
-                
                 .AddJsonProtocol(options =>
                 {
                     options.PayloadSerializerOptions = Json.Options;
