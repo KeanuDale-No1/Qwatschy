@@ -9,7 +9,8 @@ namespace VoiceChat.Api.Hubs;
 public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO> channelCreateUseCase,
                      IUseCase<DeleteChannelRequestDTO, DeleteChannelResponseDTO> deleteCreateUseCase,
                      IUseCase<ConnectChannelRequestDTO, ConnectChannelResponseDTO> joinChannelUseCase,
-                     IUseCase<CreateChatMessageRequestDTO, CreateChatMessageResponseDTO> createChatMessageUseCase) : Hub
+                     IUseCase<CreateChatMessageRequestDTO, CreateChatMessageResponseDTO> createChatMessageUseCase,
+                     IUseCase<GetMessagesRequestDTO, GetMessagesResponseDTO> getMessagesUseCase) : Hub
 {
     public override async Task OnConnectedAsync()
     {
@@ -79,12 +80,16 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
     }
     public async Task SendMessage(ChatMessageDTO message)
     {
-        // Optional: Validierung
         if (message == null)
             throw new ArgumentNullException(nameof(message));
         await createChatMessageUseCase.ExecuteAsync(new CreateChatMessageRequestDTO(new ChatMessageDTO(message.SenderId, message.ChannelId, message.Content, DateTime.UtcNow, Context?.User?.Identity?.Name)));
 
         await Clients.All.SendAsync("ReceiveMessage", message);
+    }
+
+    public async Task<GetMessagesResponseDTO> GetMessages(Guid channelId, int skip = 0, int take = 40)
+    {
+        return await getMessagesUseCase.ExecuteAsync(new GetMessagesRequestDTO(channelId, skip, take));
     }
     #endregion
 }

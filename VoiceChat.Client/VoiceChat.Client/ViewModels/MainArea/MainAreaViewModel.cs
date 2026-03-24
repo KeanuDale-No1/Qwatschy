@@ -13,10 +13,11 @@ namespace VoiceChat.Client.ViewModels.MainArea
         [ObservableProperty] public ChatViewModel chatViewModel;
 
 
-        public MainAreaViewModel(ApiService httpClientService, ChannelSidebarViewModel channelSidebarViewModel, ChatViewModel chatViewModel)
+        public MainAreaViewModel(ChannelSidebarViewModel channelSidebarViewModel, ChatViewModel chatViewModel, ChannelService channelService)
         {
             this.channelSidebarViewModel = channelSidebarViewModel;
             this.chatViewModel = chatViewModel;
+            _ = channelService.LoadChannelInitial();
         }
 
     }

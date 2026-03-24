@@ -6,7 +6,7 @@
         xmlns:views="using:VoiceChat.Client.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="VoiceChat.Client.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/qwatschy_logo.ico"
         Title="Qwatschy">
         <views:MainView />
 </Window>

@@ -6,9 +6,11 @@ using VoiceChat.Api.UseCases;
 using VoiceChat.Data;
 using VoiceChat.Data.Repositories;
 
-
+Console.WriteLine("Starting API...");
 
 var builder = WebApplication.CreateBuilder(args);
+
+Console.WriteLine("Configuring services...");
 
 builder.Services.AddDbContext<VoiceChatDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -26,10 +28,35 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddSignalR();
 
+Console.WriteLine("Building app...");
+
 var app = builder.Build();
 
-using var db = new VoiceChatDbContext();
-db.Database.Migrate();
+Console.WriteLine("Running migrations...");
+try
+{
+    using var db = new VoiceChatDbContext();
+    Console.WriteLine("Database path: " + Path.Combine(Directory.GetCurrentDirectory(), "voicechat.db"));
+    
+    if (db.Database.GetPendingMigrations().Any())
+    {
+        Console.WriteLine("Executing migrate...");
+        db.Database.Migrate();
+        Console.WriteLine("Migrations complete.");
+    }
+    else
+    {
+        Console.WriteLine("No pending migrations, skipping.");
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Migration error: {ex.Message}");
+    Console.WriteLine(ex.StackTrace);
+}
+
+Console.WriteLine("Continuing...");
+
 app.UseCors();
 
 app.AddEndpoints();
@@ -38,15 +65,6 @@ app.UseWebSockets();
 
 app.MapHub<ChatHub>("/connection");
 
-//app.Map("/ws", async context =>
-//{
-//    if (context.WebSockets.IsWebSocketRequest)
-//    {
-//        var socket = await context.WebSockets.AcceptWebSocketAsync();
-//        await WebSocketHandler.Handle(socket);
-//    }
-//});
-
-
+Console.WriteLine("API ready. Listening on http://localhost:5000");
 
 app.Run();

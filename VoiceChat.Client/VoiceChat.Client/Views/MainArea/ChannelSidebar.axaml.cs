@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -21,6 +22,29 @@ public partial class ChannelSidebarView : UserControl
         {
             var viewModel = this.DataContext as ChannelSidebarViewModel;
             viewModel?.SelectChannelCommand.Execute(channel);
+        }
+    }
+
+    private void OnUserClick(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsRightButtonPressed && 
+            sender is Border border && 
+            border.DataContext is UserDTO user)
+        {
+            var viewModel = this.DataContext as ChannelSidebarViewModel;
+            if (viewModel == null) return;
+
+            var menu = new ContextMenu();
+
+            var kickItem = new MenuItem { Header = "Kick" };
+            kickItem.Click += (_, _) => viewModel.KickUserCommand.Execute(user);
+            menu.Items.Add(kickItem);
+
+            var banItem = new MenuItem { Header = "Ban" };
+            banItem.Click += (_, _) => viewModel.BanUserCommand.Execute(user);
+            menu.Items.Add(banItem);
+
+            menu.Open(border);
         }
     }
 }

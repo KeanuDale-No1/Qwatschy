@@ -6,14 +6,21 @@
 
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="VoiceChat.Client.Views.MainArea.ChatView"
-             x:DataType="vm:ChatViewModel"
-             Background="{DynamicResource BackgroundBrush}">
+             x:DataType="vm:ChatViewModel">
 
     <Design.DataContext>
         <vm:ChatViewModel/>
     </Design.DataContext>
 
     <Grid RowDefinitions="Auto,*,Auto">
+        <Image Grid.Row="0" Grid.RowSpan="3"
+               Source="avares://VoiceChat.Client/Assets/qwatschy_logo.png"
+               Stretch="Uniform"
+               Opacity="0.1"
+               MaxWidth="600"
+               MaxHeight="600"
+               IsHitTestVisible="False"/>
+
         <Border Grid.Row="0" Classes="ChatHeader">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <TextBlock Text="💬 "
@@ -51,34 +58,64 @@
                 </Border>
             </ScrollViewer>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto"
-                          x:Name="ChatScrollViewerMessages"
-                          IsVisible="{Binding IsInputEnabled}">
-                <ItemsControl ItemsSource="{Binding Messages}"
-                              VerticalAlignment="Bottom"
-                              Margin="8">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Spacing="4"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Classes="messageBubble"
-                                    HorizontalAlignment="{Binding HorizontalAlignment}">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Username}"
-                                               Classes="caption"
-                                               IsVisible="{Binding !IsOwnMessage}"/>
-                                    <TextBlock Classes="ChatMessage"
-                                               Text="{Binding Text}"
-                                               FontSize="14"/>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+            <Grid IsVisible="{Binding IsInputEnabled}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              x:Name="ChatScrollViewerMessages"
+                              ScrollChanged="OnScrollChanged">
+                    
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        <Button Grid.Row="0"
+                                Content="Mehr laden..."
+                                HorizontalAlignment="Center"
+                                Margin="0,8,0,8"
+                                Padding="12,6"
+                                Command="{Binding LoadMoreMessagesCommand}"
+                                IsVisible="{Binding HasMoreMessages}"
+                                IsEnabled="{Binding !IsLoadingMore}"/>
+                        
+                        <ItemsControl Grid.Row="2"
+                                      ItemsSource="{Binding Messages}"
+                                      x:Name="MessagesItemsControl"
+                                      Margin="8">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="4"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Classes="messageBubble"
+                                            HorizontalAlignment="{Binding HorizontalAlignment}">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Username}"
+                                                       Classes="caption"
+                                                       IsVisible="{Binding !IsOwnMessage}"/>
+                                            <TextBlock Classes="ChatMessage"
+                                                       Text="{Binding Text}"
+                                                       FontSize="14"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </ScrollViewer>
+
+                <Border Background="{DynamicResource SurfaceBrush}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Padding="16,8"
+                        CornerRadius="8"
+                        BoxShadow="0 2 8 0 #40000000"
+                        IsVisible="{Binding IsLoading}">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <ProgressBar IsIndeterminate="True" Width="20" Height="20"/>
+                        <TextBlock Text="Lädt Nachrichten..." 
+                                   VerticalAlignment="Center"
+                                   FontWeight="SemiBold"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </Grid>
 
         <Border Grid.Row="2"

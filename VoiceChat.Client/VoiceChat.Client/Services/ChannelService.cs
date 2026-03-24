@@ -45,7 +45,6 @@ namespace VoiceChat.Client.Services
             this.serviceHub = serviceHub;
             this.voiceService = voiceChatService;
             this.stateService = stateService;
-            LoadChannelInitial();
             serviceHub.ChannelAdd += ServiceHub_ChannelAdd;
             serviceHub.UserJoinChannel += ServiceHub_UserJoinChannel;
             serviceHub.ChannelRemove += ServiceHub_ChannelRemove;
@@ -101,21 +100,87 @@ namespace VoiceChat.Client.Services
         }
 
 
-        public async void LoadChannelInitial()
+        public async Task LoadChannelInitial()
         {
-            var response = await httpClientService.PostAsync<GetChannelsRequestDTO, GetChannelsResponseDTO>("api/GetChannels", new GetChannelsRequestDTO());
-            Channels.Clear();
-            foreach (var c in response.Channels)
-                Channels.Add(c);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(stateService.ServerAddress))
+                    return;
+
+                var response = await httpClientService.PostAsync<GetChannelsRequestDTO, GetChannelsResponseDTO>("api/GetChannels", new GetChannelsRequestDTO());
+                Channels.Clear();
+                foreach (var c in response.Channels)
+                    Channels.Add(c);
+            }
+            catch
+            {
+            }
         }
 
         internal void SetSelectChannel(ChannelDTO channel)
         {
+            var index = Channels.IndexOf(channel);
+            if (index >= 0)
+            {
+                var updated = new ChannelDTO
+                {
+                    Id = channel.Id,
+                    Name = channel.Name,
+                    Description = channel.Description,
+                    UnreadCount = 0
+                };
+                Channels[index] = updated;
+            }
+            
             stateService.SetSelectedChannel(channel.Id);
             ChannelUsers.Clear();
             foreach (var item in Users.Where(u => u.ChannelId == stateService.SelectChannelId))
             {
                 ChannelUsers.Add(item);
+            }
+        }
+
+        public async Task KickUser(Guid channelId, Guid userId)
+        {
+            await serviceHub.KickUser(channelId, userId);
+        }
+
+        public async Task BanUser(Guid channelId, Guid userId)
+        {
+            await serviceHub.BanUser(channelId, userId);
+        }
+
+        public void MarkChannelAsUnread(Guid channelId)
+        {
+            var channel = Channels.FirstOrDefault(c => c.Id == channelId);
+            if (channel != null)
+            {
+                var index = Channels.IndexOf(channel);
+                var updated = new ChannelDTO
+                {
+                    Id = channel.Id,
+                    Name = channel.Name,
+                    Description = channel.Description,
+                    UnreadCount = channel.UnreadCount + 1
+                };
+                Channels[index] = updated;
+            }
+        }
+
+        public void ClearUnread(Guid channelId)
+        {
+            var channel = Channels.FirstOrDefault(c => c.Id == channelId);
+            if (channel != null)
+            {
+                var index = Channels.IndexOf(channel);
+                var updated = new ChannelDTO
+                {
+                    Id = channel.Id,
+                    Name = channel.Name,
+                    Description = channel.Description,
+                    UnreadCount = 0
+                };
+                Channels[index] = updated;
             }
         }
     }

@@ -20,7 +20,7 @@ namespace VoiceChat.Api.UseCases.Channels.ChannelMessage
 
             var user = await userRepository.GetByIdAsync(message.SenderId);
 
-            return new CreateChatMessageResponseDTO(new ChatMessageDTO(message.SenderId, message.SenderId,message.Content,message.CreatedAt, user.Username));
+            return new CreateChatMessageResponseDTO(new ChatMessageDTO(message.SenderId, message.ChannelId, message.Content, message.CreatedAt, user.Username));
         }
     }
 }

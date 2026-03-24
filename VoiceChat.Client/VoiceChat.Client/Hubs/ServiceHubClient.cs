@@ -104,4 +104,15 @@ public class ServiceHubClient(TokenService tokenService, StateService stateServi
     {
         Connection.InvokeAsync("SendAudioFrame",channelId, opusData);
     }
+
+    public Task KickUser(Guid channelId, Guid userId) =>
+        Connection.InvokeAsync("KickUser", channelId, userId);
+
+    public Task BanUser(Guid channelId, Guid userId) =>
+        Connection.InvokeAsync("BanUser", channelId, userId);
+
+    public async Task<GetMessagesResponseDTO> GetMessages(Guid channelId, int skip = 0, int take = 40)
+    {
+        return await Connection.InvokeAsync<GetMessagesResponseDTO>("GetMessages", channelId, skip, take);
+    }
 }

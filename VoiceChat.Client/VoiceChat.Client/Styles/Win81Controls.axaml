@@ -230,6 +230,14 @@
         <Setter Property="Margin" Value="4,2"/>
     </Style>
 
+    <Style Selector="Border.userItem">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style Selector="Border.userItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+    </Style>
+
     <Style Selector="Ellipse.statusIndicator">
         <Setter Property="Width" Value="8"/>
         <Setter Property="Height" Value="8"/>

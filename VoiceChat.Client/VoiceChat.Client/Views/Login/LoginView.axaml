@@ -39,9 +39,9 @@
                         MinWidth="300">
 
                 <Image Margin="20"
-                       Height="150"
-                       Width="150"
-                       Source="avares://VoiceChat.Client/Assets/qwatschi_logo.jpeg"
+                       Height="256"
+                       Width="256"
+                       Source="avares://VoiceChat.Client/Assets/qwatschy_logo.ico"
                        Stretch="Uniform"/>
 
                 <TextBlock Classes="header"

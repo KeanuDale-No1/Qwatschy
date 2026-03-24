@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using System;
+using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.ViewModels.Base;
@@ -18,7 +17,6 @@ namespace VoiceChat.Client.ViewModels
         [RelayCommand]
         public async Task Connect()
         {
-            // Connection logic placeholder
         }
 
         [RelayCommand]
@@ -30,7 +28,6 @@ namespace VoiceChat.Client.ViewModels
         [RelayCommand]
         public void OpenSettings()
         {
-            // Settings logic placeholder
         }
     }
 }

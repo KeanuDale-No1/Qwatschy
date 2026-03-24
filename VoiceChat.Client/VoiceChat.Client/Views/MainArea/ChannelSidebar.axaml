@@ -2,9 +2,9 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
 			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
 			 xmlns:cv="using:VoiceChat.Client.Converters"
+			 mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
 			 x:Class="VoiceChat.Client.Views.MainArea.ChannelSidebarView"
 			 x:DataType="vm:ChannelSidebarViewModel"
 			 Background="{DynamicResource SurfaceBrush}">
@@ -58,12 +58,19 @@
 										<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel"/>
 									</MultiBinding>
 								</Border.Background>
-								<Grid Classes="channelRow" ColumnDefinitions="*,Auto">
+								<Grid Classes="channelRow" ColumnDefinitions="*,Auto,Auto">
 									<TextBlock Grid.Column="0"
 											   Text="{Binding Name}"
 											   Margin="8,0"
 											   VerticalAlignment="Center"/>
-									<Button Grid.Column="1"
+									<TextBlock Grid.Column="1"
+											   Text="{Binding UnreadCount}"
+											   IsVisible="{Binding UnreadCount}"
+											   Margin="4,0"
+											   VerticalAlignment="Center"
+											   FontWeight="Bold"
+											   Foreground="{DynamicResource PrimaryBrush}"/>
+									<Button Grid.Column="2"
 											Classes="channelJoinButton"
 											Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
 											CommandParameter="{Binding .}"
@@ -94,13 +101,18 @@
 			<Border Classes="ChatHeader">
 				<TextBlock Classes="header" Text="Online"/>
 			</Border>
-			<ItemsControl ItemsSource="{Binding SelectedChannelUsers}">
+			<ItemsControl ItemsSource="{Binding SelectedChannelUsers}"
+						  x:Name="UsersItemsControl">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<StackPanel Classes="memberItem">
-							<Ellipse Classes="statusIndicator statusOnline"/>
-							<TextBlock Text="{Binding DisplayName}"/>
-						</StackPanel>
+						<Border Classes="userItem"
+								Padding="8,4"
+								PointerPressed="OnUserClick">
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<Ellipse Classes="statusIndicator statusOnline" Width="8" Height="8"/>
+								<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+							</StackPanel>
+						</Border>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

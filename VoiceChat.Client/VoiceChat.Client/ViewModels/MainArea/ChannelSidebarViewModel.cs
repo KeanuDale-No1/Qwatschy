@@ -103,4 +103,22 @@ public partial class ChannelSidebarViewModel : ViewModelBase
         SelectedChannel = channel;
         channelService.SetSelectChannel(channel);
     }
+
+    [RelayCommand]
+    private async Task KickUser(UserDTO user)
+    {
+        if (SelectedChannel != null)
+        {
+            await channelService.KickUser(SelectedChannel.Id, user.ClientID);
+        }
+    }
+
+    [RelayCommand]
+    private async Task BanUser(UserDTO user)
+    {
+        if (SelectedChannel != null)
+        {
+            await channelService.BanUser(SelectedChannel.Id, user.ClientID);
+        }
+    }
 }
