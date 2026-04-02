@@ -70,15 +70,17 @@
 											   VerticalAlignment="Center"
 											   FontWeight="Bold"
 											   Foreground="{DynamicResource PrimaryBrush}"/>
-									<Button Grid.Column="2"
-											Classes="channelJoinButton"
-											Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
-											CommandParameter="{Binding .}"
-											VerticalContentAlignment="Center"
-											HorizontalContentAlignment="Center"
-											Padding="0"
-											FontSize="16"
-											Content="🔊"/>
+								<Button Grid.Column="2"
+										Classes="channelJoinButton"
+										Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
+										CommandParameter="{Binding .}"
+
+										VerticalContentAlignment="Center"
+										HorizontalContentAlignment="Center"
+										Padding="0"
+										FontSize="16"
+										Content="V"
+										ToolTip.Tip="Voice Channel"/>
 								</Grid>
 								<Border.ContextMenu>
 									<ContextMenu>

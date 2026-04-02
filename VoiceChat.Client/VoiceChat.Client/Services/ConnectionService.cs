@@ -15,7 +15,7 @@ namespace VoiceChat.Client.Services
                                  AppState appState,
                                  StateService stateService,
                                  TokenService tokenService, 
-                                 ServiceHubClient serviceHub)
+                                 ChatHubClient serviceHub)
     {
 
 
@@ -38,7 +38,7 @@ namespace VoiceChat.Client.Services
             {
                 appState.AddServer(new ServerConnection(appState.GetUser().UserName, serveraddress));
                 tokenService.WriteNewToken(response.AuthToken);
-                await serviceHub.Connect();
+                await serviceHub.OnConnectedAsync();
                 await navigationService.NavigateTo<MainAreaViewModel>();
             }
         }

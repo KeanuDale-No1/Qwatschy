@@ -27,7 +27,7 @@ namespace VoiceChat.Client.Services
 
         private readonly ApiService httpClientService;
 
-        private readonly ServiceHubClient serviceHub;
+        private readonly ChatHubClient serviceHub;
         private readonly VoiceChatService voiceService;
         public ObservableCollection<ChannelDTO> Channels = new ObservableCollection<ChannelDTO> { };
 
@@ -35,7 +35,7 @@ namespace VoiceChat.Client.Services
         public NotifyingCollection<UserDTO> ChannelUsers = new NotifyingCollection<UserDTO> { };
 
         public ChannelService(ApiService httpClientService,
-                              ServiceHubClient serviceHub,
+                              ChatHubClient serviceHub,
                               VoiceChatService voiceChatService,
                               AppState appState,
                               StateService stateService)

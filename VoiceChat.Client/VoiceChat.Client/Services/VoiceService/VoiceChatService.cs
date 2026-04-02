@@ -8,23 +8,21 @@ namespace VoiceChat.Client.Services.VoiceService
     public class VoiceChatService
     {
         private readonly IVoiceService voiceService;
-        private readonly ServiceHubClient serviceHub;
+      
         private readonly StateService stateService;
         private bool isRecording = false;
         private bool isInitialized = false;
 
-        public VoiceChatService(IVoiceService voiceService, StateService stateService, ServiceHubClient serviceHub)
+        public VoiceChatService(IVoiceService voiceService, StateService stateService
+            )
         {
             this.stateService = stateService;
-            this.serviceHub = serviceHub;
             this.voiceService = voiceService;
             voiceService.AudioFrameReceived += OnAudioFrameReceived;
-            serviceHub.OnReceiveAudioFrame += ServiceHub_OnReceiveAudioFrame;
         }
 
-        private void ServiceHub_OnReceiveAudioFrame(byte[] opusdata)
+        private void OnReceiveAudioFrame(byte[] opusdata)
         {
-            voiceService.PlayOpusChunk(opusdata);
         }
 
         public void Start()
@@ -71,7 +69,7 @@ namespace VoiceChat.Client.Services.VoiceService
         {
             if (stateService.ConnectedChannelId.HasValue && stateService.ConnectedChannelId != Guid.Empty)
             {
-                serviceHub.SendAudioFrame(stateService.ConnectedChannelId.Value, opusdata);
+
             }
         }
 

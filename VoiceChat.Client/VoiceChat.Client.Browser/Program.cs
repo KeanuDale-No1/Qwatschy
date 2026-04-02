@@ -2,20 +2,26 @@
 using Avalonia.Browser;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using VoiceChat.Client;
 using VoiceChat.Client.Extensions;
+using VoiceChat.Client.Services.Audio;
+using VoiceChat.Client.Browser.Services.Audio;
 using VoiceChat.Client.Services.SoundPlayer;
 using VoiceChat.Client.Services.VoiceService;
+using VoiceChat.Client.Browser.Services;
 
 internal sealed partial class Program
 {
-    private static Task Main(string[] args)
+    private static async Task Main(string[] args)
     {
+        await JSHost.ImportAsync("audioService", "../js/audioService.js");
+        
         var services = ConfigureServices();
         
-        return BuildAvaloniaApp()
+        await BuildAvaloniaApp()
             .AfterSetup(_ =>
             {
                 App.Services = services;
@@ -31,7 +37,8 @@ internal sealed partial class Program
     {
         var services = new ServiceCollection();
         //services.AddSingleton<ISoundPlayer, BrowserSoundPlayer>();
-        services.AddSingleton<IVoiceService, NullVoiceService>();
+        services.AddSingleton<IVoiceService, BrowserVoiceService>();
+        services.AddSingleton<IAudioStreamService, BrowserAudioService>();
         services.AddCommonServices();
         return services.BuildServiceProvider();
     }

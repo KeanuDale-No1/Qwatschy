@@ -13,6 +13,12 @@
     <AvaloniaResource Include="wwwroot\favicon.ico" />
     <AvaloniaResource Include="wwwroot\qwatschy_logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\js\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="wwwroot\main.js" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="wwwroot\app.css" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="wwwroot\index.html" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />
@@ -23,4 +29,9 @@
   <ItemGroup>
     <ProjectReference Include="..\VoiceChat.Client\VoiceChat.Client.csproj" />
   </ItemGroup>
+
+  <Target Name="CopyJsToFramework" AfterTargets="Build">
+    <Exec Command="if not exist &quot;$(OutputPath)wwwroot\_framework\js&quot; mkdir &quot;$(OutputPath)wwwroot\_framework\js&quot;" />
+    <Exec Command="copy &quot;$(MSBuildProjectDirectory)\wwwroot\js\audioService.js&quot; &quot;$(OutputPath)wwwroot\_framework\js&quot;" />
+  </Target>
 </Project>

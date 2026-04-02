@@ -1,11 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -31,7 +29,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
         [ObservableProperty] private bool hasMoreMessages = true;
         [ObservableProperty] private bool isLoadingMore = false;
 
-        private readonly ServiceHubClient chatService;
+        private readonly ChatHubClient chatService;
         private readonly AppState appState;
         private readonly ChannelService channelService;
         public event Action? MessageAdded;
@@ -42,7 +40,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
         private const int InitialLoad = 40;
         private const int LoadMoreCount = 50;
 
-        public ChatViewModel(ServiceHubClient chatService, AppState appState, StateService stateService, ChannelService channelService)
+        public ChatViewModel(ChatHubClient chatService, AppState appState, StateService stateService, ChannelService channelService)
         {
             this.stateService = stateService;
             this.appState = appState;

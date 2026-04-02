@@ -2,6 +2,7 @@
 using VoiceChat.Api.UseCases;
 using VoiceChat.Api.UseCases.Channels.ChannelMessage;
 using VoiceChat.Shared.Models;
+using VoiceChat.Shared.Networking;
 
 
 namespace VoiceChat.Api.Hubs;
@@ -10,7 +11,7 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
                      IUseCase<DeleteChannelRequestDTO, DeleteChannelResponseDTO> deleteCreateUseCase,
                      IUseCase<ConnectChannelRequestDTO, ConnectChannelResponseDTO> joinChannelUseCase,
                      IUseCase<CreateChatMessageRequestDTO, CreateChatMessageResponseDTO> createChatMessageUseCase,
-                     IUseCase<GetMessagesRequestDTO, GetMessagesResponseDTO> getMessagesUseCase) : Hub
+                     IUseCase<GetMessagesRequestDTO, GetMessagesResponseDTO> getMessagesUseCase) : Hub, IChatHubExchange
 {
     public override async Task OnConnectedAsync()
     {
@@ -34,23 +35,8 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
     }
 
 
-    public async Task JoinChannel(Guid channelId)
-    {
-        // Optional: Validierung
-        if (channelId == Guid.Empty)
-            throw new ArgumentNullException(nameof(channelId));
-        if (string.IsNullOrEmpty(Context.UserIdentifier))
-            throw new UnauthorizedAccessException(nameof(Context.UserIdentifier));
 
-        var response = await joinChannelUseCase.ExecuteAsync(new ConnectChannelRequestDTO(Guid.Parse(Context.UserIdentifier!), channelId));
-        await Clients.All.SendAsync("JoinChannel", response);
-        await Groups.AddToGroupAsync(Context.ConnectionId, channelId.ToString());
-        
-    }
-
-    
-
-    
+    //Channel Management
     public async Task DeleteChannel(Guid channelId)
     {
         // Optional: Validierung
@@ -62,10 +48,6 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
         await Clients.All.SendAsync("DeleteChannelChange", channelId);
     }
 
-
-
-    #region Channel and Message Management
-
     public async Task AddChannel(ChannelDTO message)
     {
         // Optional: Validierung
@@ -75,10 +57,22 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
         await Clients.All.SendAsync("AddChannelChange", respnse.Channel);
     }
 
-    public async Task SendAudioFrame(Guid ChannelId, byte[] audioData)
+    public async Task JoinChannel(Guid channelId)
     {
-        await Clients.OthersInGroup(ChannelId.ToString()).SendAsync("ReceiveAudioFrame", Context.ConnectionId, audioData);
+        // Optional: Validierung
+        if (channelId == Guid.Empty)
+            throw new ArgumentNullException(nameof(channelId));
+        if (string.IsNullOrEmpty(Context.UserIdentifier))
+            throw new UnauthorizedAccessException(nameof(Context.UserIdentifier));
+
+        var response = await joinChannelUseCase.ExecuteAsync(new ConnectChannelRequestDTO(Guid.Parse(Context.UserIdentifier!), channelId));
+        await Clients.All.SendAsync("JoinChannel", response);
+        await Groups.AddToGroupAsync(Context.ConnectionId, channelId.ToString());
     }
+
+
+
+    //Chat Managment 
     public async Task SendMessage(ChatMessageDTO message)
     {
         if (message == null)
@@ -87,10 +81,21 @@ public class ChatHub(IUseCase<CreateChannelRequestDTO, CreateChannelResponseDTO>
 
         await Clients.All.SendAsync("ReceiveMessage", message);
     }
-
     public async Task<GetMessagesResponseDTO> GetMessages(Guid channelId, int skip = 0, int take = 50)
     {
         return await getMessagesUseCase.ExecuteAsync(new GetMessagesRequestDTO(channelId, skip, take));
     }
-    #endregion
+
+
+
+    //User Management
+    public Task KickUser(Guid channelId, Guid userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task BanUser(Guid channelId, Guid userId)
+    {
+        throw new NotImplementedException();
+    }
 }

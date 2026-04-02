@@ -31,7 +31,7 @@ public partial class ChatView : UserControl
         {
             ChatScrollViewerMessages.ScrollToEnd();
             _userScrolledUp = false;
-        }, DispatcherPriority.Background);
+        }, DispatcherPriority.Loaded);
     }
 
     private void OnScrollToBottom()
@@ -40,7 +40,7 @@ public partial class ChatView : UserControl
         {
             ChatScrollViewerMessages.ScrollToEnd();
             _userScrolledUp = false;
-        }, DispatcherPriority.Background);
+        }, DispatcherPriority.Loaded);
     }
 
     private void OnScrollChanged(object? sender, ScrollChangedEventArgs e)

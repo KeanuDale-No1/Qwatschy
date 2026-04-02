@@ -63,7 +63,7 @@
                               x:Name="ChatScrollViewerMessages"
                               ScrollChanged="OnScrollChanged">
                     
-                    <Grid RowDefinitions="Auto,*,Auto">
+                    <Grid RowDefinitions="Auto,*">
                         <Button Grid.Row="0"
                                 Content="Mehr laden..."
                                 HorizontalAlignment="Center"
@@ -73,19 +73,15 @@
                                 IsVisible="{Binding HasMoreMessages}"
                                 IsEnabled="{Binding !IsLoadingMore}"/>
                         
-                        <ItemsControl Grid.Row="2"
+                        <ItemsControl Grid.Row="1"
                                       ItemsSource="{Binding Messages}"
                                       x:Name="MessagesItemsControl"
                                       Margin="8">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Spacing="4"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Classes="messageBubble"
-                                            HorizontalAlignment="{Binding HorizontalAlignment}">
+                                            HorizontalAlignment="{Binding HorizontalAlignment}"
+                                            Margin="0,2">
                                         <StackPanel>
                                             <TextBlock Text="{Binding Username}"
                                                        Classes="caption"
@@ -97,6 +93,11 @@
                                     </Border>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Spacing="4" VerticalAlignment="Bottom"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
                         </ItemsControl>
                     </Grid>
                 </ScrollViewer>

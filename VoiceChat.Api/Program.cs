@@ -1,10 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using VoiceChat.Api.Endpoints;
 using VoiceChat.Api.Hubs;
 using VoiceChat.Api.Services;
 using VoiceChat.Api.UseCases;
+using VoiceChat.Api.WebSockets;
 using VoiceChat.Data;
 using VoiceChat.Data.Repositories;
+using VoiceChat.Shared.Models;
 
 Console.WriteLine("Starting API...");
 
@@ -14,7 +17,9 @@ Console.WriteLine("Configuring services...");
 
 builder.Services.AddDbContext<VoiceChatDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddUsecases(); 
+builder.Services.AddUsecases();
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtOptions>>().Value);
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddCors(options =>
 {
@@ -41,7 +46,7 @@ try
 {
     using var db = new VoiceChatDbContext();
     Console.WriteLine("Database path: " + Path.Combine(Directory.GetCurrentDirectory(), "voicechat.db"));
-    
+
     if (db.Database.GetPendingMigrations().Any())
     {
         Console.WriteLine("Executing migrate...");
@@ -68,6 +73,28 @@ app.UseMiddleware<TokenValidationMiddleware>();
 app.UseWebSockets();
 
 app.MapHub<ChatHub>("/connection");
+
+var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()!;
+
+// Audio WebSocket endpoint
+var audioHandler = new AudioWebSocketHandler();
+
+app.Map("/audio", async context =>
+{
+    Console.WriteLine($"[/audio] Request received from: {context.Connection.RemoteIpAddress}");
+    Console.WriteLine($"[/audio] IsWebSocketRequest: {context.WebSockets.IsWebSocketRequest}");
+    Console.WriteLine($"[/audio] Headers: {string.Join(", ", context.Request.Headers.Select(h => $"{h.Key}={h.Value}"))}");
+
+    if (!context.WebSockets.IsWebSocketRequest)
+    {
+        Console.WriteLine($"[/audio] Not a WebSocket request, returning 400");
+        context.Response.StatusCode = 400;
+    }
+
+    var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+    var channelId = context.Request.Query["channelId"].ToString();
+    await audioHandler.HandleWebSocketAsync(channelId, webSocket, context.RequestAborted);
+});//.AllowAnonymous();
 
 Console.WriteLine("API ready. Listening on http://localhost:5000");
 

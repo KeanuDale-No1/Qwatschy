@@ -35,6 +35,11 @@ public class TokenValidationMiddleware
                 return;
             }
 
+            if (context.Request.Path.StartsWithSegments("/audio"))
+            {
+                var token = context.Request.Query.FirstOrDefault(x => x.Key == "token").Value.ToString();
+                context.Request.Headers.TryAdd("Authorization", "Bearer "+token);
+            }
 
             if (!context.Request.Headers.TryGetValue("Authorization", out var authHeader))
             {
@@ -42,6 +47,8 @@ public class TokenValidationMiddleware
                 await context.Response.WriteAsync("Missing Authorization header");
                 return;
             }
+
+           
 
             try
             {

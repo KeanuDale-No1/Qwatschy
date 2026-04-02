@@ -5,6 +5,7 @@ using System;
 using System.Net.Http;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.Audio;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels;
@@ -19,7 +20,8 @@ public static class ServiceCollectionExtensions
         //Services
         services.AddSingleton<TokenService>();
         services.AddSingleton<AppState>();
-        services.AddSingleton<ServiceHubClient>();
+        services.AddSingleton<ChatHubClient>();
+        services.AddSingleton<VoiceHubClient>();
         services.AddSingleton<ConnectionService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<StateService>();

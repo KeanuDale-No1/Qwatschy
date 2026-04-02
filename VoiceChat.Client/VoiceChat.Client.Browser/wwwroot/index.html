@@ -1735,18 +1735,6 @@ AAAASUVORK5CYII=" />
         </div>
     </div>
     <script type='module' src="./main.js"></script>
-
-    <script>
-        window.playWav = async function (base64) {
-            const bytes = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
-            const ctx = new AudioContext();
-            const buffer = await ctx.decodeAudioData(bytes.buffer);
-            const src = ctx.createBufferSource();
-            src.buffer = buffer;
-            src.connect(ctx.destination);
-            src.start();
-        };
-    </script>
 </body>
 
 </html>

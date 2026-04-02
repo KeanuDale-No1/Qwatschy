@@ -19,6 +19,9 @@ public partial class ChannelSidebarViewModel : ViewModelBase
 {
     private readonly ChannelService channelService;
     private readonly Sounds sounds;
+    private readonly VoiceHubClient voiceHubClient;
+    //private readonly VoiceChannelViewModel voiceChannelViewModel;
+
     public ObservableCollection<ChannelDTO> Channels { get; } = new ObservableCollection<ChannelDTO>
             {
                 new ChannelDTO() {
@@ -36,15 +39,19 @@ public partial class ChannelSidebarViewModel : ViewModelBase
 
     [ObservableProperty] public ChannelDTO? selectedChannel;
 
-
+ 
     [ObservableProperty] public string newChannelName = "";
 
+    [ObservableProperty] public bool isInVoiceChannel;
 
-    public ChannelSidebarViewModel(ChannelService channelService, Sounds sounds)
+
+    public ChannelSidebarViewModel(ChannelService channelService, Sounds sounds, VoiceHubClient voiceHubClient ) //  VoiceChannelViewModel voiceChannelViewModel)
     {
 
         this.channelService = channelService;
         this.sounds = sounds;
+        //this.voiceChannelViewModel = voiceChannelViewModel;
+        this.voiceHubClient = voiceHubClient;
         Channels = channelService.Channels;
         SelectedChannelUsers = channelService.ChannelUsers;
     }
@@ -76,9 +83,21 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     [RelayCommand]
     private async Task JoinChannel(ChannelDTO channel)
     {
-        sounds.PlayJoinSound();
+        try
+        {
+            sounds.PlayJoinSound();
 
-        await channelService.JoinChannel(channel);
+            await channelService.JoinChannel(channel);
+            await voiceHubClient.LeaveChannelAsync();
+            await voiceHubClient.ConnectAsync();
+
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex);
+        }
+
     }
 
 
@@ -121,4 +140,31 @@ public partial class ChannelSidebarViewModel : ViewModelBase
             await channelService.BanUser(SelectedChannel.Id, user.ClientID);
         }
     }
+
+    //[RelayCommand]
+    //public async Task ToggleVoiceChannel()
+    //{
+    //    Console.WriteLine("[ChannelSidebar] ToggleVoiceChannelCommand called");
+    //    Console.WriteLine($"[ChannelSidebar] SelectedChannel: {SelectedChannel?.Name ?? "null"}");
+        
+    //    if (SelectedChannel == null)
+    //    {
+    //        Console.WriteLine("[ChannelSidebar] No channel selected, returning");
+    //        return;
+    //    }
+
+    //    if (IsInVoiceChannel)
+    //    {
+    //        Console.WriteLine("[ChannelSidebar] Leaving voice channel");
+    //        await voiceChannelViewModel.LeaveVoiceChannel();
+    //        IsInVoiceChannel = false;
+    //    }
+    //    else
+    //    {
+    //        Console.WriteLine($"[ChannelSidebar] Joining voice channel: {SelectedChannel.Name}");
+    //        await channelService.JoinChannel(SelectedChannel);
+    //        await voiceChannelViewModel.JoinVoiceChannel(SelectedChannel.Id, SelectedChannel.Name);
+    //        IsInVoiceChannel = true;
+    //    }
+    //}
 }

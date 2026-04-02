@@ -28,10 +28,12 @@
     <PackageVersion Include="OpenTK" Version="4.9.4" />
     <PackageVersion Include="OwnAudioSharp" Version="2.6.1" />
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.3.8" />
+    <PackageVersion Include="RNNoiseSharp" Version="1.0.0" />
     <PackageVersion Include="Silk.NET.Core" Version="2.23.0" />
     <PackageVersion Include="Silk.NET.OpenAL" Version="2.23.0" />
     <PackageVersion Include="Silk.NET.OpenAL.Extensions.Enumeration" Version="2.23.0" />
     <PackageVersion Include="SoundFlow" Version="1.4.0" />
     <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
+    <PackageVersion Include="YellowDogMan.RRNoise.NET" Version="0.1.9" />
   </ItemGroup>
 </Project>

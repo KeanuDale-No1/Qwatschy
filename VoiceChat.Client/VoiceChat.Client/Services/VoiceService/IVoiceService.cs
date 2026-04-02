@@ -11,10 +11,8 @@ namespace VoiceChat.Client.Services.VoiceService
         void InitializeAsync();
         void StopRecording();
         void StartRecording();
+
         event Action<byte[]> AudioFrameReceived;
-
-
-
 
 
         void PlayOpusChunk(byte[] pcmData);

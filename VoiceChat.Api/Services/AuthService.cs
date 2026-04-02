@@ -1,9 +1,11 @@
-﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Api.Services;
+
 
 public interface IAuthService
 {
@@ -11,18 +13,11 @@ public interface IAuthService
     ClaimsPrincipal ValidateToken(string token);
 }
 
-public class AuthService : IAuthService
+public class AuthService(JwtOptions options) : IAuthService
 {
-    private readonly string _secretKey;
-
-    public AuthService(IConfiguration config)
-    {
-        _secretKey = config["Auth:SecretKey"] ?? "super-secret-key-minimum-32-characters-long!!!";
-    }
-
     public string GenerateToken(string userId)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SecretKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
@@ -32,10 +27,10 @@ public class AuthService : IAuthService
         };
 
         var token = new JwtSecurityToken(
-            issuer: "CommunicationService",
-            audience: "CommunicationService",
+            issuer: options.Issuer,
+            audience: options.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(30),
+            expires: DateTime.UtcNow.AddDays(options.Expires),
             signingCredentials: credentials
         );
 
@@ -46,10 +41,10 @@ public class AuthService : IAuthService
     {
         try
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.SecretKey));
             var handler = new JwtSecurityTokenHandler();
 
-            var principal = handler.ValidateToken(token.Replace("Bearer ",""), new TokenValidationParameters
+            var principal = handler.ValidateToken(token.Replace("Bearer ", ""), new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = key,
@@ -67,5 +62,3 @@ public class AuthService : IAuthService
         }
     }
 }
-
-
