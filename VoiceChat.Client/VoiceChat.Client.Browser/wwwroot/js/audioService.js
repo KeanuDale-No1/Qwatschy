@@ -28,8 +28,7 @@ export async function startRecording() {
 
         const { getAssemblyExports } = await globalThis.getDotnetRuntime(0);
         const exports = await getAssemblyExports("VoiceChat.Client.Browser.dll");
-        console.log(exports);
-        exports.OnPcmFrame(bytes);
+        exports.VoiceChat.Client.Browser.Services.BrowserVoiceService.OnPcmFrame(bytes);
     };
 
     source.connect(processor);

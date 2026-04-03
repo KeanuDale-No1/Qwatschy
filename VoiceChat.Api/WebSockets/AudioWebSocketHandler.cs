@@ -40,7 +40,7 @@ public class AudioWebSocketHandler
 
                 if (result.MessageType == WebSocketMessageType.Binary && result.Count > 0)
                 {
-                    foreach (var client in channels[channelId])//.Where(c => c != socket))
+                    foreach (var client in channels[channelId].Where(c => c != socket))
                     {
                         await client.SendAsync(
                             buffer.AsMemory(0, result.Count),
