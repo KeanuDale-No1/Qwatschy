@@ -27,10 +27,10 @@ namespace VoiceChat.Client.Services
             await navigationService.NavigateTo<LoginViewModel>();
         }
 
-        public async Task ServerConnect(string serveraddress)
+        public async Task ServerConnect(string username, string serveraddress)
         {
-
-            stateService.SetConnectedServer(appState.GetUser().ClientId, appState.GetUser().UserName, serveraddress);
+            appState.SetUsername(username);
+            stateService.SetConnectedServer(appState.GetUser().ClientId, username, serveraddress);
             LoginRequestDTO loginRequestDTO = new LoginRequestDTO(appState.GetUser().ClientId, appState.GetUser().UserName);
             var response = await apiService.PostAsync<LoginRequestDTO, LoginResponseDTO>("/api/login", loginRequestDTO);
 

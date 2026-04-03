@@ -16,7 +16,6 @@ namespace VoiceChat.Client.ViewModels.Login;
 
 public partial class LoginViewModel : ViewModelBase
 {
-    private readonly AppState appState;
     private readonly ConnectionService connectionService;
 
     [ObservableProperty] public string username = "";
@@ -31,16 +30,12 @@ public partial class LoginViewModel : ViewModelBase
 
     public LoginViewModel(AppState appState, ConnectionService connectionService)
     {
-        if (appState == null)
-            return;
-
-        this.appState = appState;
         this.connectionService = connectionService;
         Username = appState.GetUser().UserName;
         InputserverAddress = appState.GetLastServer()?.ServerAdress ?? "";
         ServerConnections = new ObservableCollection<ServerConnection>(appState.GetLastServers());
     }
-    public LoginViewModel() :this(null!,null!){ }
+    public LoginViewModel() :this(null!, null!) { }
 
     [RelayCommand]
     public async Task Conntect()
@@ -52,10 +47,9 @@ public partial class LoginViewModel : ViewModelBase
             return;
         }
             
-        appState.SetUsername(Username);
         try
         {
-            await connectionService.ServerConnect(InputserverAddress);
+            await connectionService.ServerConnect(Username, InputserverAddress);
         }
         catch (Exception ex)
         {
