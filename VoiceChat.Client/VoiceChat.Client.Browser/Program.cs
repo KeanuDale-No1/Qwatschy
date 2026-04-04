@@ -17,8 +17,6 @@ internal sealed partial class Program
 {
     private static async Task Main(string[] args)
     {
-        await JSHost.ImportAsync("audioService", "../js/audioService.js");
-        
         var services = ConfigureServices();
         
         await BuildAvaloniaApp()
@@ -28,6 +26,8 @@ internal sealed partial class Program
             })
             .WithInterFont()
             .StartBrowserAppAsync("out");
+        
+        await JSHost.ImportAsync("audioService", "../js/audioService.js");
     }
 
     public static AppBuilder BuildAvaloniaApp()

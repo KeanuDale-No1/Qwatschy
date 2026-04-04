@@ -20,14 +20,24 @@ namespace VoiceChat.Client.Services.VoiceService
             byte[] opusPacked = new byte[1275]; 
             
             int length = encoder.Encode(pcmData, 960, opusPacked, opusPacked.Length);
-            Array.Resize(ref opusPacked, length); //Größe auf tatsächliche Länge anpassen
+            //Array.Resize(ref opusPacked, length); //Größe auf tatsächliche Länge anpassen
             return opusPacked[..length];
         }
 
         public short[] Decode(byte[] opusData)
         {
-            int samples = decoder.Decode(opusData, pcmBuffer, pcmBuffer.Length);
-            return pcmBuffer; //Nur die tatsächlich dekodierten Samples zurückgeben
+            //int samples = decoder.Decode(opusData, pcmBuffer, pcmBuffer.Length);
+            //return pcmBuffer; //Nur die tatsächlich dekodierten Samples zurückgeben
+            // Maximal 960 Samples
+            short[] pcm = new short[960];
+
+            int samples = decoder.Decode(opusData, pcm, pcm.Length);
+
+            // Exakt passende Länge zurückgeben
+            if (samples != pcm.Length)
+                Array.Resize(ref pcm, samples);
+
+            return pcm;
         }
 
     }

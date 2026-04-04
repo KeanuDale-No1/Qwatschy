@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot\favicon.ico" />
+    <Content Remove="wwwroot\js\processor.js" />
     <Content Remove="wwwroot\qwatschy_logo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +29,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VoiceChat.Client\VoiceChat.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\SoundPlayer\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="wwwroot\js\processor.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="CopyJsToFramework" AfterTargets="Build">

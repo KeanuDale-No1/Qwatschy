@@ -33,7 +33,6 @@ public partial class BrowserVoiceService : IVoiceService
         StopRecordingJs();
     }
 
-    // JS-Funktionen importieren
     [JSImport("startRecording", "audioService")]
     internal static partial void StartRecordingJs();
 
@@ -46,19 +45,17 @@ public partial class BrowserVoiceService : IVoiceService
     {
         try
         {
-
             Instance?.HandlePcmFrame(pcmBytes);
-
         }
         catch (Exception ex)
         {
-
             Console.WriteLine(ex);
         }
     }
 
     private void HandlePcmFrame(byte[] pcmBytes)
     {
+        // 960 Samples = 1920 Bytes
         short[] pcm = new short[960];
         Buffer.BlockCopy(pcmBytes, 0, pcm, 0, 1920);
 
