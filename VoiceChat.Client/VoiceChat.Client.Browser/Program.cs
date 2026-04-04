@@ -7,8 +7,6 @@ using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using VoiceChat.Client;
 using VoiceChat.Client.Extensions;
-using VoiceChat.Client.Services.Audio;
-using VoiceChat.Client.Browser.Services.Audio;
 using VoiceChat.Client.Services.SoundPlayer;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Browser.Services;
@@ -36,9 +34,7 @@ internal sealed partial class Program
     private static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
-        //services.AddSingleton<ISoundPlayer, BrowserSoundPlayer>();
         services.AddSingleton<IVoiceService, BrowserVoiceService>();
-        services.AddSingleton<IAudioStreamService, BrowserAudioService>();
         services.AddCommonServices();
         return services.BuildServiceProvider();
     }

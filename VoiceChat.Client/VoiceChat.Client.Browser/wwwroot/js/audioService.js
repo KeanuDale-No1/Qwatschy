@@ -1,48 +1,52 @@
+// Simple cached DOTNET exports to reduce bridge overhead per frame
+let _dotnetExportsCache = null;
+export async function init() {
+    const { getAssemblyExports } = await globalThis.getDotnetRuntime(0);
+    _dotnetExportsCache = await getAssemblyExports("VoiceChat.Client.Browser.dll");
+}
+
+
 export async function startRecording() {
     const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
-            autoGainControl: true,
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false,
             channelCount: 1,
-            sampleRate: 48000
+            sampleRate: 48000,
+
+            // Chrome-spezifische Flags
+            googEchoCancellation: false,
+            googAutoGainControl: false,
+            googNoiseSuppression: false,
+            googHighpassFilter: false
         }
     });
 
-    const ctx = new AudioContext({ sampleRate: 48000 });
+    // Prefer 'interactive' latency for real-time capture
+    const ctx = new AudioContext({ sampleRate: 48000, latencyHint: 0.01 });
+    await ctx.audioWorklet.addModule("js/processor.js");
+
     const source = ctx.createMediaStreamSource(stream);
-    const processor = ctx.createScriptProcessor(2048, 1, 1);
+    const worklet = new AudioWorkletNode(ctx, "pcm-worklet");
 
-    processor.onaudioprocess = async (e) => {
-        const input = e.inputBuffer.getChannelData(0);
-
-        const pcm16 = new Int16Array(960);
-        for (let i = 0; i < 960; i++) {
-            let s = input[i];
-            if (s > 1) s = 1;
-            if (s < -1) s = -1;
-            pcm16[i] = s * 32767;
-        }
-
+    worklet.port.onmessage = async (e) => {
+        const pcm16 = e.data;
         const bytes = new Uint8Array(pcm16.buffer);
-
-        const { getAssemblyExports } = await globalThis.getDotnetRuntime(0);
-        const exports = await getAssemblyExports("VoiceChat.Client.Browser.dll");
-        exports.VoiceChat.Client.Browser.Services.BrowserVoiceService.OnPcmFrame(bytes);
+        _dotnetExportsCache.VoiceChat.Client.Browser.Services.BrowserVoiceService.OnPcmFrame(bytes);
     };
 
-    source.connect(processor);
-    processor.connect(ctx.destination);
+    source.connect(worklet);
 
     globalThis._ctx = ctx;
-    globalThis._proc = processor;
     globalThis._stream = stream;
+    globalThis._worklet = worklet;
 }
 
 export function stopRecording() {
-    if (globalThis._proc) {
-        globalThis._proc.disconnect();
-        globalThis._proc = null;
+    if (globalThis._worklet) {
+        globalThis._worklet.disconnect();
+        globalThis._worklet = null;
     }
     if (globalThis._ctx) {
         globalThis._ctx.close();
@@ -52,4 +56,22 @@ export function stopRecording() {
         globalThis._stream.getTracks().forEach(t => t.stop());
         globalThis._stream = null;
     }
+}
+
+
+export function decodeAndPlayPCM(pcmBytes) {
+    const pcm16 = new Int16Array(pcmBytes.buffer);
+
+    const float32 = new Float32Array(pcm16.length);
+    for (let i = 0; i < pcm16.length; i++) {
+        float32[i] = pcm16[i] / 32767;
+    }
+
+    const audioBuffer = ctx.createBuffer(1, float32.length, 48000);
+    audioBuffer.copyToChannel(float32, 0);
+
+    const source = ctx.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(ctx.destination);
+    source.start();
 }
