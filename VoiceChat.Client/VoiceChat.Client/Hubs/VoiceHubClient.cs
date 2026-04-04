@@ -58,7 +58,9 @@ namespace VoiceChat.Client.Hubs
                 if (result.MessageType == WebSocketMessageType.Close)
                     break;
 
-                byte[] opus = buffer.Take(result.Count).ToArray();
+
+                byte[] opus = new byte[result.Count];
+                Buffer.BlockCopy(buffer, 0, opus, 0, result.Count);
                 voiceService.PlayOpusChunk(opus);
             }
         }
