@@ -14,12 +14,12 @@ Download the appropriate installer for your operating system:
 
 | Platform | Installer | Download |
 |----------|-----------|----------|
-| Windows | `.exe` / `.msi` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
-| macOS | `.dmg` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
-| Linux | `.deb` / `.AppImage` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
-| Android | `.apk` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
+| Windows | `.exe` / `.msi` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
+| macOS | `.dmg` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
+| Linux | `.deb` / `.AppImage` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
+| Android | `.apk` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
 | iOS | TestFlight | <span class="badge badge-soon">Coming Soon</span> |
-| Web | Browser | [Web App](https://YOUR_USERNAME.github.io/VoiceChat) |
+| Web | Browser | [Web App](https://keanudale-no1.github.io/Qwatschy) |
 
 ## Windows
 
@@ -50,7 +50,7 @@ On first use, grant permission in **System Settings → Privacy & Security → M
 ### Option A: AppImage
 ```bash
 # Download
-wget https://github.com/YOUR_USERNAME/VoiceChat/releases/latest/Qwatschy.AppImage
+wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/Qwatschy.AppImage
 
 # Make executable
 chmod +x Qwatschy.AppImage
@@ -62,7 +62,7 @@ chmod +x Qwatschy.AppImage
 ### Option B: DEB Package
 ```bash
 # Download
-wget https://github.com/YOUR_USERNAME/VoiceChat/releases/latest/qwatschy.deb
+wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/qwatschy.deb
 
 # Install
 sudo dpkg -i qwatschy.deb
@@ -99,7 +99,7 @@ The iOS version is distributed via TestFlight. Once the app is available on the 
 
 No installation required!
 
-1. Open [https://YOUR_USERNAME.github.io/VoiceChat](https://YOUR_USERNAME.github.io/VoiceChat) in your browser
+1. Open [https://keanudale-no1.github.io/Qwatschy](https://keanudale-no1.github.io/Qwatschy) in your browser
 2. Grant microphone permission when prompted
 3. Connect to a server
 

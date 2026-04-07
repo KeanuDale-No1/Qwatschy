@@ -1,4 +1,22 @@
 <Solution>
+  <Folder Name="/docs/">
+    <File Path="docs/index.md" />
+    <File Path="docs/_config.yml" />
+  </Folder>
+  <Folder Name="/docs/de/">
+    <File Path="docs/de/architecture.md" />
+    <File Path="docs/de/features.md" />
+    <File Path="docs/de/getting-started.md" />
+    <File Path="docs/de/index.md" />
+    <File Path="docs/de/installation.md" />
+  </Folder>
+  <Folder Name="/docs/en/">
+    <File Path="docs/en/architecture.md" />
+    <File Path="docs/en/features.md" />
+    <File Path="docs/en/getting-started.md" />
+    <File Path="docs/en/index.md" />
+    <File Path="docs/en/installation.md" />
+  </Folder>
   <Folder Name="/VoiceChat.Backend/">
     <Project Path="VoiceChat.Api/VoiceChat.Api.csproj" />
     <Project Path="VoiceChat.Data/VoiceChat.Data.csproj" Id="d9317f2c-a9f9-473a-8960-96d1b341614a" />

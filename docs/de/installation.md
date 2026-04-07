@@ -14,12 +14,12 @@ Lade den passenden Installer für dein Betriebssystem herunter:
 
 | Plattform | Installer | Download |
 |-----------|-----------|----------|
-| Windows | `.exe` / `.msi` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
-| macOS | `.dmg` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
-| Linux | `.deb` / `.AppImage` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
-| Android | `.apk` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
+| Windows | `.exe` / `.msi` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
+| macOS | `.dmg` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
+| Linux | `.deb` / `.AppImage` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
+| Android | `.apk` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
 | iOS | TestFlight | <span class="badge badge-soon">Bald</span> |
-| Web | Browser | [Web App](https://YOUR_USERNAME.github.io/VoiceChat) |
+| Web | Browser | [Web App](https://keanudale-no1.github.io/Qwatschy) |
 
 ## Windows
 
@@ -50,7 +50,7 @@ Bei der ersten Verwendung musst du in **System Settings → Privacy & Security �
 ### Option A: AppImage
 ```bash
 # Herunterladen
-wget https://github.com/YOUR_USERNAME/VoiceChat/releases/latest/Qwatschy.AppImage
+wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/Qwatschy.AppImage
 
 # Ausführbar machen
 chmod +x Qwatschy.AppImage
@@ -62,7 +62,7 @@ chmod +x Qwatschy.AppImage
 ### Option B: DEB-Paket
 ```bash
 # Herunterladen
-wget https://github.com/YOUR_USERNAME/VoiceChat/releases/latest/qwatschy.deb
+wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/qwatschy.deb
 
 # Installieren
 sudo dpkg -i qwatschy.deb
@@ -99,7 +99,7 @@ Die iOS-Version wird über TestFlight verteilt. Sobald die App im App Store verf
 
 Keine Installation nötig!
 
-1. Öffne [https://YOUR_USERNAME.github.io/VoiceChat](https://YOUR_USERNAME.github.io/VoiceChat) in deinem Browser
+1. Öffne [https://keanudale-no1.github.io/Qwatschy](https://keanudale-no1.github.io/Qwatschy) in deinem Browser
 2. Erlaube den Mikrofon-Zugriff wenn gefragt
 3. Verbinde dich mit einem Server
 
