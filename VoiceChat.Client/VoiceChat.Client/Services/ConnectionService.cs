@@ -24,6 +24,7 @@ namespace VoiceChat.Client.Services
         {
             await serviceHub.Disconnect();
             await voiceHubClient.LeaveChannelAsync();
+
             tokenService.WriteNewToken("");
             stateService.SetDisconnectedServer();
             await navigationService.NavigateTo<LoginViewModel>();
