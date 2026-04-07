@@ -30,13 +30,20 @@ jobs:
 
       - name: Install Velopack
         run: dotnet tool install -g vpk
+        if: runner.os == 'Windows'
+
+      - name: Install Velopack (Linux)
+        run: |
+          dotnet tool install -g vpk
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+        if: runner.os == 'Linux'
 
       - name: Generate Version
         id: version
         run: |
-          $date = Get-Date -Format "yyyy.M.d"
-          $version = "$date.${{ github.run_number }}"
-          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          date=$(date +'%Y.%m.%d')
+          version="$date.${{ github.run_number }}"
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
 
       - name: Publish (${{ matrix.suffix }})
         run: |
@@ -73,9 +80,9 @@ jobs:
       - name: Generate Version
         id: version
         run: |
-          $date = Get-Date -Format "yyyy.M.d"
-          $version = "$date.${{ github.run_number }}"
-          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+          date=$(date +'%Y.%m.%d')
+          version="$date.${{ github.run_number }}"
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
