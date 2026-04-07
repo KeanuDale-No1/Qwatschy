@@ -2,9 +2,9 @@
 title: Erste Schritte
 lang: de
 layout: default
-previous: ./installation
+previous: installation
 previous_text: Installation
-next: ./features
+next: features
 next_text: Funktionen
 ---
 

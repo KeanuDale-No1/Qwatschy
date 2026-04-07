@@ -2,7 +2,7 @@
 title: Installation
 lang: en
 layout: default
-next: ./getting-started
+next: getting-started
 next_text: Getting Started
 ---
 
@@ -10,21 +10,54 @@ next_text: Getting Started
 
 ## Downloads
 
-Download the appropriate installer for your operating system:
+Download the installer for your operating system:
 
-| Platform | Installer | Download |
-|----------|-----------|----------|
-| Windows | `.exe` / `.msi` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
-| macOS | `.dmg` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
-| Linux | `.deb` / `.AppImage` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
-| Android | `.apk` | [GitHub Releases](https://github.com/KeanuDale-No1/Qwatschy/releases) |
-| iOS | TestFlight | <span class="badge badge-soon">Coming Soon</span> |
-| Web | Browser | [Web App](https://keanudale-no1.github.io/Qwatschy) |
+<div class="download-buttons">
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-x64.exe" class="download-btn windows">
+    <span class="icon">🪟</span>
+    <span class="text">
+      <strong>Windows</strong>
+      <small>.exe Installer</small>
+    </span>
+  </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux-x64.AppImage" class="download-btn linux">
+    <span class="icon">🐧</span>
+    <span class="text">
+      <strong>Linux</strong>
+      <small>AppImage</small>
+    </span>
+  </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-osx-x64.dmg" class="download-btn macos">
+    <span class="icon">🍎</span>
+    <span class="text">
+      <strong>macOS</strong>
+      <small>.dmg</small>
+    </span>
+  </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-android.apk" class="download-btn android">
+    <span class="icon">📱</span>
+    <span class="text">
+      <strong>Android</strong>
+      <small>.apk</small>
+    </span>
+  </a>
+  <a href="https://keanudale-no1.github.io/Qwatschy" class="download-btn web">
+    <span class="icon">🌐</span>
+    <span class="text">
+      <strong>Web</strong>
+      <small>Open in browser</small>
+    </span>
+  </a>
+</div>
+
+<p class="text-center">
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases" class="all-versions">📋 View all versions</a>
+</p>
 
 ## Windows
 
-### Installer Installation
-1. Download the `.exe` or `.msi` file
+### Installation
+1. Download the `.exe` file
 2. Run the installer
 3. Follow the on-screen instructions
 4. Launch "Qwatschy" from the Start menu
@@ -40,36 +73,19 @@ Download the appropriate installer for your operating system:
 1. Download the `.dmg` file
 2. Open the `.dmg` file
 3. Drag **Qwatschy** to the Applications folder
-4. Open the app from Applications
+4. Open the app from Applications (confirm macOS warning)
 
 ### Microphone Permission
 On first use, grant permission in **System Settings → Privacy & Security → Microphone**.
 
 ## Linux
 
-### Option A: AppImage
+### AppImage (Recommended)
 ```bash
-# Download
-wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/Qwatschy.AppImage
-
-# Make executable
-chmod +x Qwatschy.AppImage
-
-# Run
-./Qwatschy.AppImage
-```
-
-### Option B: DEB Package
-```bash
-# Download
-wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/qwatschy.deb
-
-# Install
-sudo dpkg -i qwatschy.deb
-sudo apt install -f
-
-# Run
-qwatschy
+# Download and run
+wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux-x64.AppImage
+chmod +x Qwatschy-linux-x64.AppImage
+./Qwatschy-linux-x64.AppImage
 ```
 
 ### Audio Dependencies
@@ -83,28 +99,25 @@ sudo apt install libasound2 libbass
 ### Installation
 1. Download the `.apk` file
 2. Open the file
-3. If needed: Enable "Install from unknown sources" in Settings
+3. Enable "Install from unknown sources" if needed
 4. Tap "Install"
 5. Open Qwatschy and grant microphone permission
 
 ### Requirements
 - Android 8.0 or higher
-- Microphone permission
-
-## iOS
-
-The iOS version is distributed via TestFlight. Once the app is available on the App Store, the link will be provided here.
 
 ## Web (Browser)
 
-No installation required!
+No installation needed! Just open:
 
-1. Open [https://keanudale-no1.github.io/Qwatschy](https://keanudale-no1.github.io/Qwatschy) in your browser
-2. Grant microphone permission when prompted
-3. Connect to a server
+👉 [https://keanudale-no1.github.io/Qwatschy](https://keanudale-no1.github.io/Qwatschy)
 
 ### Supported Browsers
 - Google Chrome / Chromium
 - Mozilla Firefox
 - Microsoft Edge
 - Safari
+
+## iOS
+
+The iOS version is coming soon!

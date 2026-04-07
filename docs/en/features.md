@@ -2,9 +2,9 @@
 title: Features
 lang: en
 layout: default
-previous: ./getting-started
+previous: getting-started
 previous_text: Getting Started
-next: ./architecture
+next: architecture
 next_text: Architecture
 ---
 

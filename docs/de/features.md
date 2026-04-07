@@ -2,9 +2,9 @@
 title: Funktionen
 lang: de
 layout: default
-previous: ./getting-started
+previous: getting-started
 previous_text: Erste Schritte
-next: ./architecture
+next: architecture
 next_text: Architektur
 ---
 

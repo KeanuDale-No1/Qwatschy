@@ -2,7 +2,7 @@
 title: Architektur
 lang: de
 layout: default
-previous: ./features
+previous: features
 previous_text: Funktionen
 ---
 

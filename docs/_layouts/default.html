@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page.title }} - Qwatschy Docs</title>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
 </head>
 <body>
   <nav class="navbar">
@@ -31,13 +32,13 @@
       
       <div class="navigation">
         {% if page.previous %}
-        <a href="{{ page.previous }}" class="nav-link">← {{ page.previous_text | default: 'Previous' }}</a>
+        <a href="{{ page.previous }}.html" class="nav-link">← {{ page.previous_text | default: 'Previous' }}</a>
         {% else %}
         <span class="nav-link disabled">← Previous</span>
         {% endif %}
         
         {% if page.next %}
-        <a href="{{ page.next }}" class="nav-link">{{ page.next_text | default: 'Next' }} →</a>
+        <a href="{{ page.next }}.html" class="nav-link">{{ page.next_text | default: 'Next' }} →</a>
         {% else %}
         <span class="nav-link disabled">Next →</span>
         {% endif %}

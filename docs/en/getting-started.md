@@ -2,9 +2,9 @@
 title: Getting Started
 lang: en
 layout: default
-previous: ./installation
+previous: installation
 previous_text: Installation
-next: ./features
+next: features
 next_text: Features
 ---
 
