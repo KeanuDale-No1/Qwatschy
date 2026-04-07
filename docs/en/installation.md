@@ -13,34 +13,14 @@ next_text: Getting Started
 Download the installer for your operating system:
 
 <div class="download-buttons">
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-x64.exe" class="download-btn windows">
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-Setup.exe" class="download-btn windows">
     <span class="icon">🪟</span>
     <span class="text">
       <strong>Windows</strong>
       <small>.exe Installer</small>
     </span>
   </a>
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux-x64.AppImage" class="download-btn linux">
-    <span class="icon">🐧</span>
-    <span class="text">
-      <strong>Linux</strong>
-      <small>AppImage</small>
-    </span>
-  </a>
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-osx-x64.dmg" class="download-btn macos">
-    <span class="icon">🍎</span>
-    <span class="text">
-      <strong>macOS</strong>
-      <small>.dmg</small>
-    </span>
-  </a>
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-android.apk" class="download-btn android">
-    <span class="icon">📱</span>
-    <span class="text">
-      <strong>Android</strong>
-      <small>.apk</small>
-    </span>
-  </a>
+ 
   <a href="https://keanudale-no1.github.io/Qwatschy" class="download-btn web">
     <span class="icon">🌐</span>
     <span class="text">
@@ -80,18 +60,14 @@ On first use, grant permission in **System Settings → Privacy & Security → M
 
 ## Linux
 
-### AppImage (Recommended)
-```bash
-# Download and run
-wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux-x64.AppImage
-chmod +x Qwatschy-linux-x64.AppImage
-./Qwatschy-linux-x64.AppImage
-```
+Linux builds are coming soon! <span class="badge badge-soon">Soon</span>
 
-### Audio Dependencies
-If you experience audio issues:
+Alternatively, build Qwatschy from source:
 ```bash
-sudo apt install libasound2 libbass
+git clone https://github.com/KeanuDale-No1/Qwatschy.git
+cd Qwatschy
+dotnet build VoiceChat.slnx
+dotnet run --project VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj
 ```
 
 ## Android
