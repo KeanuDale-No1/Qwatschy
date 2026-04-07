@@ -1,59 +1,63 @@
-name: Build & Release
+name: Auto Build & Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - master
 
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      # 📥 Repo holen
+      # 📥 Checkout
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ⚙️ .NET installieren
+      # ⚙️ .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      # 🧰 Velopack installieren
+      # 🧰 Velopack
       - name: Install Velopack
         run: dotnet tool install -g vpk
 
-      # 🔁 Version aus Tag holen (v1.0.0 -> 1.0.0)
-      - name: Extract version
+      # 🔢 Auto Version erzeugen
+      - name: Generate Version
         id: version
         run: |
-          echo VERSION=${GITHUB_REF_NAME#v} >> $GITHUB_OUTPUT
+          $date = Get-Date -Format "yyyy.M.d"
+          $version = "$date.${{ github.run_number }}"
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
 
-      # 🪟 ================= WINDOWS =================
+      # 🪟 WINDOWS BUILD
       - name: Publish Windows
         run: dotnet publish VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r win-x64 --self-contained true
 
       - name: Pack Windows
         run: |
-          vpk pack --id erwarfs --version ${{ steps.version.outputs.VERSION }} ^
+          vpk pack --id Qwatschy.Client.Desktop --version ${{ steps.version.outputs.VERSION }} ^
           --packDir VoiceChat.Client.Desktop/bin/Release/net8.0/win-x64/publish ^
-          --mainExe erwarfs.exe
+          --mainExe Qwatschy.Client.Desktop.exe
 
-      # 🐧 ================= LINUX =================
+      # 🐧 LINUX BUILD
       - name: Publish Linux
         run: dotnet publish VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true
 
       - name: Pack Linux
         run: |
-          vpk pack --id erwarfs --version ${{ steps.version.outputs.VERSION }} ^
+          vpk pack --id Qwatschy.Client.Desktop --version ${{ steps.version.outputs.VERSION }} ^
           --packDir VoiceChat.Client.Desktop/bin/Release/net8.0/linux-x64/publish ^
-          --mainExe erwarfs
+          --mainExe Qwatschy.Client.Desktop
 
-      # 🚀 Release erstellen + Dateien hochladen
-      - name: Create GitHub Release
+      # 🚀 Release erstellen
+      - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          name: Release v${{ steps.version.outputs.VERSION }}
           files: |
             **/*.nupkg
             **/RELEASES
