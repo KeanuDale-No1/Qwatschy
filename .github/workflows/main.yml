@@ -45,8 +45,7 @@ jobs:
         id: version
         run: |
           base_version=$(cat ${{ env.VERSION_FILE }})
-          run_number=$(printf "%03d" ${{ github.run_number }})
-          version="$base_version.$run_number"
+          version="$base_version.${{ github.run_number }}"
           echo "VERSION=$version" >> $GITHUB_OUTPUT
 
       - name: Publish (${{ matrix.suffix }})
@@ -79,8 +78,7 @@ jobs:
         id: version
         run: |
           base_version=$(cat ${{ env.VERSION_FILE }})
-          run_number=$(printf "%03d" ${{ github.run_number }})
-          version="$base_version.$run_number"
+          version="$base_version.${{ github.run_number }}"
           echo "VERSION=$version" >> $GITHUB_OUTPUT
 
       - name: Create Release
