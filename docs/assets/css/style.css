@@ -79,6 +79,11 @@ body {
   gap: 0.5rem;
 }
 
+.logo-img {
+  height: 32px;
+  width: auto;
+}
+
 .nav-links {
   display: flex;
   gap: 1.5rem;
@@ -164,6 +169,12 @@ body {
   background: linear-gradient(135deg, var(--accent-light) 0%, var(--bg-secondary) 100%);
   border-radius: var(--radius);
   margin-bottom: 3rem;
+}
+
+.hero-logo {
+  height: 80px;
+  width: auto;
+  margin-bottom: 1rem;
 }
 
 .hero h1 {

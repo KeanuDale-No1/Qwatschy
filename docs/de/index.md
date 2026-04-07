@@ -17,7 +17,7 @@ Willkommen in der deutschen Qwatschy-Dokumentation!
 
 ## Schnellstart
 
-1. [Server installieren](./installation.html)
+1. [Client installieren](./installation.html)
 2. [Erste Schritte](./getting-started.html)
 3. [Features entdecken](./features.html)
 

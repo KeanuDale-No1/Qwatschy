@@ -10,7 +10,8 @@ layout: default
 **Qwatschy** is a cross-platform voice chat application with real-time audio and text chat.
 
 <div class="hero">
-  <h1>🎙️ Qwatschy</h1>
+  <img src="./assets/images/logo.png" alt="Qwatschy Logo" class="hero-logo">
+  <h1>Qwatschy</h1>
   <p>Modern. Cross-platform. Real-time voice and text chat built with .NET and Avalonia.</p>
   <div class="quick-links">
     <a href="./en/installation.html" class="quick-link">📦 Installation</a>
