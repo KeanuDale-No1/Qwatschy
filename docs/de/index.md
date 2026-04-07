@@ -22,16 +22,20 @@ Willkommen in der deutschen Qwatschy-Dokumentation!
 3. [Features entdecken](./features.html)
 
 <div class="cards">
-  <div class="card">
+  <a href="./installation.html" class="card">
     <h4>📦 Installation</h4>
-    <p>Download für Windows, macOS, Linux, Android und Web.</p>
-  </div>
-  <div class="card">
+    <p>Download für Windows, Linux und Web.</p>
+  </a>
+  <a href="./getting-started.html" class="card">
     <h4>🚀 Erste Schritte</h4>
-    <p>Server aufsetzen und mit Clients verbinden.</p>
-  </div>
-  <div class="card">
+    <p>Mit einem Server verbinden und loslegen.</p>
+  </a>
+  <a href="./features.html" class="card">
     <h4>✨ Funktionen</h4>
     <p>Voice Chat, Textnachrichten, Channels und mehr.</p>
-  </div>
+  </a>
+  <a href="./architecture.html" class="card">
+    <h4>🏗️ Architektur</h4>
+    <p>Technologie-Stack und Systemdesign.</p>
+  </a>
 </div>
