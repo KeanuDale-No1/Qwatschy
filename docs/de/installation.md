@@ -1,0 +1,111 @@
+---
+title: Installation
+lang: de
+---
+
+# Installation
+
+## Downloads
+
+Lade den passenden Installer für dein Betriebssystem herunter:
+
+| Plattform | Installer | Download |
+|-----------|-----------|----------|
+| Windows | `.exe` / `.msi` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
+| macOS | `.dmg` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
+| Linux | `.deb` / `.AppImage` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
+| Android | `.apk` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
+| iOS | TestFlight | Kommt bald |
+| Web | Browser | [Web App](https://YOUR_USERNAME.github.io/VoiceChat) |
+
+## Windows
+
+### Installation per Installer
+1. Lade die `.exe` oder `.msi` Datei herunter
+2. Führe den Installer aus
+3. Folgere den Anweisungen am Bildschirm
+4. Starte "Qwatschy" aus dem Startmenü
+
+### Systemanforderungen
+- Windows 10 oder höher
+- Mikrofon und Lautsprecher/Headset
+- Internetverbindung
+
+## macOS
+
+### Installation
+1. Lade die `.dmg` Datei herunter
+2. Öffne die `.dmg` Datei
+3. Ziehe **Qwatschy** in den Applications-Ordner
+4. Öffne die App aus Applications
+
+### Mikrofon-Erlaubnis
+Bei der ersten Verwendung musst du in **System Settings → Privacy & Security → Microphone** die Erlaubnis erteilen.
+
+## Linux
+
+### Option A: AppImage
+```bash
+# Herunterladen
+wget https://github.com/YOUR_USERNAME/VoiceChat/releases/latest/Qwatschy.AppImage
+
+# Ausführbar machen
+chmod +x Qwatschy.AppImage
+
+# Starten
+./Qwatschy.AppImage
+```
+
+### Option B: DEB-Paket
+```bash
+# Herunterladen
+wget https://github.com/YOUR_USERNAME/VoiceChat/releases/latest/qwatschy.deb
+
+# Installieren
+sudo dpkg -i qwatschy.deb
+sudo apt install -f
+
+# Starten
+qwatschy
+```
+
+### Audio-Abhängigkeiten
+Falls Audio-Probleme auftreten:
+```bash
+sudo apt install libasound2 libbass
+```
+
+## Android
+
+### Installation
+1. Lade die `.apk` Datei herunter
+2. Öffne die Datei
+3. Falls nötig: Aktiviere "Aus unbekannten Quellen installieren" in den Einstellungen
+4. Tippe auf "Installieren"
+5. Öffne Qwatschy und erlaube den Mikrofon-Zugriff
+
+### Anforderungen
+- Android 8.0 oder höher
+- Mikrofon-Erlaubnis
+
+## iOS
+
+Die iOS-Version wird über TestFlight verteilt. Sobald die App im App Store verfügbar ist, findest du hier den Link.
+
+## Web (Browser)
+
+Keine Installation nötig!
+
+1. Öffne [https://YOUR_USERNAME.github.io/VoiceChat](https://YOUR_USERNAME.github.io/VoiceChat) in deinem Browser
+2. Erlaube den Mikrofon-Zugriff wenn gefragt
+3. Verbinde dich mit einem Server
+
+### Unterstützte Browser
+- Google Chrome / Chromium
+- Mozilla Firefox
+- Microsoft Edge
+- Safari
+
+---
+
+[← Zurück zur Startseite](../) | [Weiter: Erste Schritte →](./getting-started)
