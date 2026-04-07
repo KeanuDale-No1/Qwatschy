@@ -18,6 +18,8 @@ namespace VoiceChat.Client.Desktop
         [STAThread]
         public static void Main(string[] args)
         {
+            VelopackApp.Build().Run();
+            
             var services = ConfigureServices();
 
             BuildAvaloniaApp()
