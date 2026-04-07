@@ -67,6 +67,52 @@ jobs:
             **/*.nupkg
             **/RELEASES
 
+  build-server:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            runtime: win-x64
+            suffix: win
+          - os: ubuntu-latest
+            runtime: linux-x64
+            suffix: linux
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Read Version
+        id: version
+        run: |
+          base_version=$(cat ${{ env.VERSION_FILE }})
+          version="$base_version.${{ github.run_number }}"
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Publish Server (${{ matrix.suffix }})
+        run: dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishDir=output/server/
+
+      - name: Create Server ZIP (${{ matrix.suffix }})
+        run: |
+          cd output
+          7z a -tzip Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip server/
+          mv Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ../
+          cd ..
+
+      - name: Upload Server Artifact (${{ matrix.suffix }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-server-${{ matrix.suffix }}
+          path: Qwatschy-Server-${{ matrix.suffix }}-*.zip
+
   release:
     needs: build
     runs-on: ubuntu-latest
