@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
+using Velopack;
 using VoiceChat.Client.Desktop.Services.SoundPlayer;
 using VoiceChat.Client.Extensions;
 using VoiceChat.Client.Services.SoundPlayer;
@@ -22,6 +24,7 @@ namespace VoiceChat.Client.Desktop
                 .AfterSetup(_ =>
                 {
                     App.Services = services;
+                    Task.Run(CheckForUpdates);
                 })
                 .StartWithClassicDesktopLifetime(args);
         }
@@ -43,6 +46,19 @@ namespace VoiceChat.Client.Desktop
             // weitere Services...
 
             return services.BuildServiceProvider();
+        }
+
+        public static async Task CheckForUpdates()
+        {
+            var mgr = new UpdateManager("https://github.com/KeanuDale-No1/VoiceChat/releases");
+
+            var update = await mgr.CheckForUpdatesAsync();
+
+            if (update != null)
+            {
+                await mgr.DownloadUpdatesAsync(update);
+                mgr.ApplyUpdatesAndRestart(update);
+            }
         }
 
     }

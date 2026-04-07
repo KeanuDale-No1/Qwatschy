@@ -21,6 +21,7 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="ManagedBass" />
+    <PackageReference Include="Velopack" />
     <PackageReference Include="YellowDogMan.RRNoise.NET" />
   </ItemGroup>
 
