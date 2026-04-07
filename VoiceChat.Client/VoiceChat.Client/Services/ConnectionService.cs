@@ -15,13 +15,15 @@ namespace VoiceChat.Client.Services
                                  AppState appState,
                                  StateService stateService,
                                  TokenService tokenService, 
-                                 ChatHubClient serviceHub)
+                                 ChatHubClient serviceHub,
+                                 VoiceHubClient voiceHubClient)
     {
 
 
         public async Task ServerDisconnect()
         {
             await serviceHub.Disconnect();
+            await voiceHubClient.LeaveChannelAsync();
             tokenService.WriteNewToken("");
             stateService.SetDisconnectedServer();
             await navigationService.NavigateTo<LoginViewModel>();

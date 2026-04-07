@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
+	  <AssemblyName>Qwatschy.Client.Browser</AssemblyName>
+
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot\favicon.ico" />
