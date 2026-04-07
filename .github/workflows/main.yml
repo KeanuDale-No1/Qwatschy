@@ -57,6 +57,7 @@ jobs:
           main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.Client.Desktop.exe' || 'Qwatschy.Client.Desktop' }}"
           pack_dir="VoiceChat.Client/VoiceChat.Client.Desktop/bin/Release/net10.0/${{ matrix.runtime }}/publish"
           vpk pack --packId Qwatschy.Client.Desktop --packVersion ${{ steps.version.outputs.VERSION }} --packDir "$pack_dir" --mainExe "$main_exe"
+        shell: bash
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
