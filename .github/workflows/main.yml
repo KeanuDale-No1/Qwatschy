@@ -49,12 +49,13 @@ jobs:
           echo "VERSION=$version" >> $GITHUB_OUTPUT
 
       - name: Publish (${{ matrix.suffix }})
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishDir=output/${{ matrix.suffix }}/
+        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true
 
       - name: Pack (${{ matrix.suffix }})
         run: |
           main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.Client.Desktop.exe' || 'Qwatschy.Client.Desktop' }}"
-          vpk pack --packId Qwatschy.Client.Desktop --packVersion ${{ steps.version.outputs.VERSION }} --packDir output/${{ matrix.suffix }}/ --mainExe "$main_exe"
+          pack_dir="VoiceChat.Client/VoiceChat.Client.Desktop/bin/Release/net10.0/${{ matrix.runtime }}/publish"
+          vpk pack --packId Qwatschy.Client.Desktop --packVersion ${{ steps.version.outputs.VERSION }} --packDir "$pack_dir" --mainExe "$main_exe"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
