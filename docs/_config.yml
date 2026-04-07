@@ -1,0 +1,12 @@
+title: Qwatschy Documentation
+description: Cross-platform Voice Chat Application
+lang: en
+theme: null
+include:
+  - en
+  - de
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default

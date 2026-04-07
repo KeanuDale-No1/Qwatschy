@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'en' }}" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} - Qwatschy Docs</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  <link rel="icon" href="{{ '/favicon.ico' | relative_url }}">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="{{ '/index' | relative_url }}" class="logo">
+      <img src="{{ '/assets/images/logo.png' | relative_url }}" alt="Qwatschy" class="logo-img">
+      Qwatschy
+    </a>
+    <div class="nav-links">
+      <a href="{{ '/en/installation' | relative_url }}">Docs</a>
+      <div class="lang-toggle">
+        <a href="{{ '/de' | relative_url }}" {% if page.lang == 'de' %}class="active"{% endif %}>DE</a>
+        <a href="{{ '/en' | relative_url }}" {% if page.lang == 'en' or page.lang == nil %}class="active"{% endif %}>EN</a>
+      </div>
+      <div class="theme-toggle">
+        <button data-theme="light" title="Light Mode">☀️</button>
+        <button data-theme="dark" title="Dark Mode">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      {{ content }}
+      
+      <div class="navigation">
+        {% if page.previous %}
+        <a href="{{ page.previous }}.html" class="nav-link">← {{ page.previous_text | default: 'Previous' }}</a>
+        {% else %}
+        <span class="nav-link disabled">← Previous</span>
+        {% endif %}
+        
+        {% if page.next %}
+        <a href="{{ page.next }}.html" class="nav-link">{{ page.next_text | default: 'Next' }} →</a>
+        {% else %}
+        <span class="nav-link disabled">Next →</span>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>Qwatschy Voice Chat Documentation • {{ 'now' | date: "%Y" }}</p>
+  </footer>
+
+  <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
+</body>
+</html>
