@@ -54,9 +54,10 @@ jobs:
 
       - name: Pack (${{ matrix.suffix }})
         run: |
-          main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.Client.Desktop.exe' || 'Qwatschy.Client.Desktop' }}"
+          main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.exe' || 'Qwatschy' }}"
+          icon_path="VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.ico"
           pack_dir="VoiceChat.Client/VoiceChat.Client.Desktop/bin/Release/net10.0/${{ matrix.runtime }}/publish"
-          vpk pack --packId Qwatschy.Client.Desktop --packVersion ${{ steps.version.outputs.VERSION }} --packDir "$pack_dir" --mainExe "$main_exe"
+          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "$pack_dir" --mainExe "$main_exe" --icon "$icon_path"
         shell: bash
 
       - name: Upload Artifact

@@ -6,11 +6,12 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <AssemblyName>Qwatschy.Client.Desktop</AssemblyName>
+	  <AssemblyName>Qwatschy</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Icon>..\VoiceChat.Client\Assets\qwatschy_logo.ico</Icon>
   </PropertyGroup>
 
   <ItemGroup>
