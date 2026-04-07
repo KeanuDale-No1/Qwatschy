@@ -12,6 +12,8 @@ previous_text: Funktionen
 
 Qwatschy ist eine moderne, plattformübergreifende Anwendung mit einer Client-Server-Architektur.
 
+![Architektur-Diagramm](../assets/images/architecture.svg)
+
 ## Technologie-Stack
 
 ### Backend

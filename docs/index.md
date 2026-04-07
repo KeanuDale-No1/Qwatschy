@@ -38,24 +38,24 @@ layout: default
 ## Quick Links
 
 <div class="cards">
-  <div class="card">
+  <a href="./en/installation.html" class="card">
     <div class="feature-icon">📦</div>
     <h4>Installation</h4>
-    <p>Download and install Qwatschy on Windows, macOS, Linux, Android, or use the web version.</p>
-  </div>
-  <div class="card">
+    <p>Download and install Qwatschy on Windows, macOS, Android, or use the web version.</p>
+  </a>
+  <a href="./en/getting-started.html" class="card">
     <div class="feature-icon">🚀</div>
     <h4>Getting Started</h4>
-    <p>Set up your own server and connect with clients in minutes.</p>
-  </div>
-  <div class="card">
+    <p>Connect to a server and start chatting with friends.</p>
+  </a>
+  <a href="./en/features.html" class="card">
     <div class="feature-icon">✨</div>
     <h4>Features</h4>
     <p>Real-time voice chat, text messaging, channel management, and more.</p>
-  </div>
-  <div class="card">
+  </a>
+  <a href="./en/architecture.html" class="card">
     <div class="feature-icon">🏗️</div>
     <h4>Architecture</h4>
     <p>Learn about the technology stack and system design.</p>
-  </div>
+  </a>
 </div>

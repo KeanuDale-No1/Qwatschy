@@ -12,6 +12,8 @@ previous_text: Features
 
 Qwatschy is a modern, cross-platform application with a client-server architecture.
 
+![Architecture Diagram](../assets/images/architecture.svg)
+
 ## Technology Stack
 
 ### Backend

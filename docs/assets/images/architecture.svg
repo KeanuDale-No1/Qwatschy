@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <style>
+      .box { fill: #1e293b; stroke: #6366f1; stroke-width: 2; rx: 8; }
+      .box-light { fill: #f1f5f9; stroke: #6366f1; stroke-width: 2; rx: 8; }
+      .box-dark { fill: #0f172a; stroke: #818cf8; stroke-width: 2; rx: 8; }
+      .text { fill: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; }
+      .text-dark { fill: #0f172a; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; }
+      .label { fill: #94a3b8; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; }
+      .arrow { stroke: #6366f1; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .title { fill: #6366f1; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; font-weight: bold; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6366f1"/>
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" class="title">Qwatschy Architecture</text>
+  
+  <!-- Clients -->
+  <text x="150" y="80" text-anchor="middle" class="label">CLIENTS</text>
+  
+  <!-- Desktop Box -->
+  <rect x="40" y="95" width="100" height="60" class="box"/>
+  <text x="90" y="125" text-anchor="middle" class="text">🖥️ Desktop</text>
+  <text x="90" y="145" text-anchor="middle" class="label" style="font-size:10px">Windows/Linux/macOS</text>
+  
+  <!-- Mobile Box -->
+  <rect x="160" y="95" width="100" height="60" class="box"/>
+  <text x="210" y="125" text-anchor="middle" class="text">📱 Mobile</text>
+  <text x="210" y="145" text-anchor="middle" class="label" style="font-size:10px">Android/iOS</text>
+  
+  <!-- Browser Box -->
+  <rect x="280" y="95" width="100" height="60" class="box"/>
+  <text x="330" y="125" text-anchor="middle" class="text">🌐 Browser</text>
+  <text x="330" y="145" text-anchor="middle" class="label" style="font-size:10px">WebAssembly</text>
+  
+  <!-- API Server -->
+  <text x="550" y="80" text-anchor="middle" class="label">API SERVER</text>
+  <rect x="470" y="95" width="200" height="120" class="box-dark"/>
+  <text x="570" y="130" text-anchor="middle" class="text" style="font-size:16px">VoiceChat.Api</text>
+  <text x="570" y="155" text-anchor="middle" class="text">ASP.NET Core 10.0</text>
+  <text x="570" y="175" text-anchor="middle" class="label" style="font-size:11px">SignalR • WebSocket • JWT</text>
+  
+  <!-- API Sub-services -->
+  <rect x="490" y="185" width="160" height="22" class="box" style="fill:#312e81;stroke:#a5b4fc"/>
+  <text x="570" y="200" text-anchor="middle" class="text" style="fill:#e2e8f0;font-size:11px">REST + SignalR + Audio</text>
+  
+  <!-- Database -->
+  <text x="570" y="260" text-anchor="middle" class="label">DATABASE</text>
+  <rect x="470" y="275" width="200" height="70" class="box-light"/>
+  <text x="570" y="305" text-anchor="middle" class="text-dark" style="font-size:14px">🗄️ SQLite</text>
+  <text x="570" y="325" text-anchor="middle" class="label" style="fill:#64748b;font-size:11px">Entity Framework Core</text>
+  
+  <!-- Arrows from clients to API -->
+  <path d="M 340 125 L 465 125" class="arrow"/>
+  <path d="M 340 125 L 465 145" class="arrow"/>
+  <path d="M 340 125 L 465 165" class="arrow"/>
+  
+  <!-- Protocol labels -->
+  <text x="400" y="115" text-anchor="middle" class="label" style="font-size:10px">HTTPS / WebSocket</text>
+  
+  <!-- Protocol boxes -->
+  <rect x="360" y="105" width="80" height="40" class="box" style="fill:#312e81"/>
+  <text x="400" y="125" text-anchor="middle" class="text" style="font-size:11px">REST API</text>
+  <text x="400" y="138" text-anchor="middle" class="text" style="font-size:11px">SignalR</text>
+  
+  <!-- Audio WebSocket -->
+  <rect x="470" y="225" width="200" height="40" class="box" style="fill:#10b981"/>
+  <text x="570" y="245" text-anchor="middle" class="text" style="font-size:12px">🎤 Audio Stream (Opus)</text>
+  <text x="570" y="258" text-anchor="middle" class="label" style="fill:#fff;font-size:10px">WebSocket /audio</text>
+  
+  <!-- Arrow to DB -->
+  <path d="M 570 215 L 570 270" class="arrow"/>
+  
+  <!-- Legend -->
+  <text x="40" y="420" class="title" style="font-size:14px">Technology Stack</text>
+  
+  <rect x="40" y="435" width="12" height="12" style="fill:#6366f1"/>
+  <text x="60" y="446" class="label">Frontend: Avalonia, MAUI, WASM</text>
+  
+  <rect x="300" y="435" width="12" height="12" style="fill:#10b981"/>
+  <text x="320" y="446" class="label">Audio: Opus, RNNoise</text>
+  
+  <rect x="470" y="435" width="12" height="12" style="fill:#f59e0b"/>
+  <text x="490" y="446" class="label">Backend: ASP.NET Core, SignalR</text>
+  
+  <rect x="700" y="435" width="12" height="12" style="fill:#64748b"/>
+  <text x="720" y="446" class="label">DB: SQLite</text>
+</svg>

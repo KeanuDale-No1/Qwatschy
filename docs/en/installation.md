@@ -20,7 +20,20 @@ Download the installer for your operating system:
       <small>.exe Installer</small>
     </span>
   </a>
- 
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-Portable.zip" class="download-btn windows">
+    <span class="icon">🪟</span>
+    <span class="text">
+      <strong>Windows Portable</strong>
+      <small>.zip</small>
+    </span>
+  </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-0.1.0-beta.17-linux-full.nupkg" class="download-btn linux">
+    <span class="icon">🐧</span>
+    <span class="text">
+      <strong>Linux</strong>
+      <small>Velopack</small>
+    </span>
+  </a>
   <a href="https://keanudale-no1.github.io/Qwatschy" class="download-btn web">
     <span class="icon">🌐</span>
     <span class="text">
@@ -47,40 +60,17 @@ Download the installer for your operating system:
 - Microphone and speakers/headset
 - Internet connection
 
-## macOS
-
-### Installation
-1. Download the `.dmg` file
-2. Open the `.dmg` file
-3. Drag **Qwatschy** to the Applications folder
-4. Open the app from Applications (confirm macOS warning)
-
-### Microphone Permission
-On first use, grant permission in **System Settings → Privacy & Security → Microphone**.
-
 ## Linux
 
-Linux builds are coming soon! <span class="badge badge-soon">Soon</span>
+### Installation with Velopack
 
-Alternatively, build Qwatschy from source:
 ```bash
-git clone https://github.com/KeanuDale-No1/Qwatschy.git
-cd Qwatschy
-dotnet build VoiceChat.slnx
-dotnet run --project VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj
+# Install Velopack CLI
+dotnet tool install -g vpk
+
+# Install Qwatschy
+vpk install-from-package https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-0.1.0-beta.17-linux-full.nupkg
 ```
-
-## Android
-
-### Installation
-1. Download the `.apk` file
-2. Open the file
-3. Enable "Install from unknown sources" if needed
-4. Tap "Install"
-5. Open Qwatschy and grant microphone permission
-
-### Requirements
-- Android 8.0 or higher
 
 ## Web (Browser)
 
@@ -94,6 +84,6 @@ No installation needed! Just open:
 - Microsoft Edge
 - Safari
 
-## iOS
+## Other Platforms
 
-The iOS version is coming soon!
+**macOS, Android, and iOS** builds are in development and will be available soon!

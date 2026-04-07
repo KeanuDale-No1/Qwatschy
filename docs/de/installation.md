@@ -13,11 +13,25 @@ next_text: Erste Schritte
 Lade den passenden Installer für dein Betriebssystem herunter:
 
 <div class="download-buttons">
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-x64.exe" class="download-btn windows">
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-Setup.exe" class="download-btn windows">
     <span class="icon">🪟</span>
     <span class="text">
       <strong>Windows</strong>
       <small>.exe Installer</small>
+    </span>
+  </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-Portable.zip" class="download-btn windows">
+    <span class="icon">🪟</span>
+    <span class="text">
+      <strong>Windows Portable</strong>
+      <small>.zip</small>
+    </span>
+  </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-0.1.0-beta.17-linux-full.nupkg" class="download-btn linux">
+    <span class="icon">🐧</span>
+    <span class="text">
+      <strong>Linux</strong>
+      <small>Velopack</small>
     </span>
   </a>
   <a href="https://keanudale-no1.github.io/Qwatschy" class="download-btn web">
@@ -46,40 +60,17 @@ Lade den passenden Installer für dein Betriebssystem herunter:
 - Mikrofon und Lautsprecher/Headset
 - Internetverbindung
 
-## macOS
-
-### Installation
-1. Lade die `.dmg` Datei herunter
-2. Öffne die `.dmg` Datei
-3. Ziehe **Qwatschy** in den Applications-Ordner
-4. Öffne die App aus Applications (macOS Warnung bestätigen)
-
-### Mikrofon-Erlaubnis
-Bei der ersten Verwendung musst du in **System Settings → Privacy & Security → Microphone** die Erlaubnis erteilen.
-
 ## Linux
 
-Linux-Builds werden in Kürze verfügbar sein! <span class="badge badge-soon">Bald</span>
+### Installation mit Velopack
 
-Alternativ kannst du Qwatschy aus dem Quellcode bauen:
 ```bash
-git clone https://github.com/KeanuDale-No1/Qwatschy.git
-cd Qwatschy
-dotnet build VoiceChat.slnx
-dotnet run --project VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj
+# Velopack CLI installieren
+dotnet tool install -g vpk
+
+# Qwatschy installieren
+vpk install-from-package https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-0.1.0-beta.17-linux-full.nupkg
 ```
-
-## Android
-
-### Installation
-1. Lade die `.apk` Datei herunter
-2. Öffne die Datei
-3. Aktiviere "Aus unbekannten Quellen installieren" falls nötig
-4. Tippe auf "Installieren"
-5. Öffne Qwatschy und erlaube den Mikrofon-Zugriff
-
-### Anforderungen
-- Android 8.0 oder höher
 
 ## Web (Browser)
 
@@ -93,6 +84,6 @@ Keine Installation nötig! Öffne einfach:
 - Microsoft Edge
 - Safari
 
-## iOS
+## Weitere Plattformen
 
-Die iOS-Version kommt in Kürze!
+**macOS, Android und iOS** Builds sind in Entwicklung und werden in Kürze verfügbar sein!
