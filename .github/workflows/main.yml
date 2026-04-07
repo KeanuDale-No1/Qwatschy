@@ -102,11 +102,11 @@ jobs:
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Linux'
-        run: cd output && zip -r Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ${{ matrix.suffix }}/
+        run: cd output && zip -r Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ${{ matrix.suffix }}/ && mv Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ../
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Windows'
-        run: Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath output/Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip
+        run: Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip
 
       - name: Upload Server Artifact (${{ matrix.suffix }})
         uses: actions/upload-artifact@v4
