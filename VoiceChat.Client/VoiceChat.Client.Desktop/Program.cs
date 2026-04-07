@@ -1,4 +1,7 @@
-﻿using Avalonia;
+﻿// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
+// Unauthorized copying, modification, or distribution is strictly prohibited
+
+using Avalonia;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
