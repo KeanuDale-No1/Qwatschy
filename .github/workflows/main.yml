@@ -47,6 +47,7 @@ jobs:
           base_version=$(cat ${{ env.VERSION_FILE }})
           version="$base_version.${{ github.run_number }}"
           echo "VERSION=$version" >> $GITHUB_OUTPUT
+        shell: bash
 
       - name: Publish (${{ matrix.suffix }})
         run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true
@@ -83,6 +84,7 @@ jobs:
           base_version=$(cat ${{ env.VERSION_FILE }})
           version="$base_version.${{ github.run_number }}"
           echo "VERSION=$version" >> $GITHUB_OUTPUT
+        shell: bash
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
