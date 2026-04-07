@@ -7,24 +7,30 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            runtime: win-x64
+            suffix: win
+          - os: ubuntu-latest
+            runtime: linux-x64
+            suffix: linux
+
+    runs-on: ${{ matrix.os }}
 
     steps:
-      # 📥 Checkout
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ⚙️ .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 10.0.x
 
-      # 🧰 Velopack
       - name: Install Velopack
         run: dotnet tool install -g vpk
 
-      # 🔢 Auto Version erzeugen
       - name: Generate Version
         id: version
         run: |
@@ -32,33 +38,48 @@ jobs:
           $version = "$date.${{ github.run_number }}"
           echo "VERSION=$version" >> $env:GITHUB_OUTPUT
 
-      # 🪟 WINDOWS BUILD
-      - name: Publish Windows
-        run: dotnet publish VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r win-x64 --self-contained true
-
-      - name: Pack Windows
+      - name: Publish (${{ matrix.suffix }})
         run: |
-          vpk pack --id Qwatschy.Client.Desktop --version ${{ steps.version.outputs.VERSION }} ^
-          --packDir VoiceChat.Client.Desktop/bin/Release/net8.0/win-x64/publish ^
+          dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj `
+          -c Release -r ${{ matrix.runtime }} --self-contained true `
+          -p:PublishDir=output/${{ matrix.suffix }}/
+
+      - name: Pack (${{ matrix.suffix }})
+        run: |
+          vpk pack --id Qwatschy.Client.Desktop --version ${{ steps.version.outputs.VERSION }} `
+          --packDir output/${{ matrix.suffix }}/ `
           --mainExe Qwatschy.Client.Desktop.exe
 
-      # 🐧 LINUX BUILD
-      - name: Publish Linux
-        run: dotnet publish VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.suffix }}
+          path: |
+            **/*.nupkg
+            **/RELEASES
 
-      - name: Pack Linux
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Generate Version
+        id: version
         run: |
-          vpk pack --id Qwatschy.Client.Desktop --version ${{ steps.version.outputs.VERSION }} ^
-          --packDir VoiceChat.Client.Desktop/bin/Release/net8.0/linux-x64/publish ^
-          --mainExe Qwatschy.Client.Desktop
+          $date = Get-Date -Format "yyyy.M.d"
+          $version = "$date.${{ github.run_number }}"
+          echo "VERSION=$version" >> $env:GITHUB_OUTPUT
 
-      # 🚀 Release erstellen
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.version.outputs.VERSION }}
           name: Release v${{ steps.version.outputs.VERSION }}
-          files: |
-            **/*.nupkg
-            **/RELEASES
-            **/*Setup.exe
+          files: artifacts/**/*
