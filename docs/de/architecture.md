@@ -1,6 +1,9 @@
 ---
 title: Architektur
 lang: de
+layout: default
+previous: ./features
+previous_text: Funktionen
 ---
 
 # Architektur
@@ -8,37 +11,6 @@ lang: de
 ## Überblick
 
 Qwatschy ist eine moderne, plattformübergreifende Anwendung mit einer Client-Server-Architektur.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        CLIENTS                               │
-├─────────────┬─────────────┬─────────────┬──────────────────┤
-│   Desktop   │   Mobile    │   Browser   │      Other       │
-│  (Avalonia) │  (MAUI)     │  (WASM)     │                  │
-└──────┬──────┴──────┬──────┴──────┬──────┴────────┬─────────┘
-       │             │             │               │
-       └─────────────┴─────────────┴───────────────┘
-                              │
-                    ┌─────────▼─────────┐
-                    │   VoiceChat.Api   │
-                    │   (ASP.NET Core)  │
-                    └─────────┬─────────┘
-                              │
-              ┌───────────────┼───────────────┐
-              │               │               │
-       ┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
-       │  REST API   │ │  SignalR    │ │  WebSocket  │
-       │  /api/*     │ │  /connection│ │  /audio     │
-       └──────┬──────┘ └──────┬──────┘ └──────┬──────┘
-              │               │               │
-              └───────────────┼───────────────┘
-                              │
-                    ┌─────────▼─────────┐
-                    │  VoiceChat.Data   │
-                    │   (EF Core +      │
-                    │    SQLite)        │
-                    └───────────────────┘
-```
 
 ## Technologie-Stack
 
@@ -81,21 +53,10 @@ Qwatschy ist eine moderne, plattformübergreifende Anwendung mit einer Client-Se
 | `DeleteChannel(channelId)` | Channel löschen |
 | `SendMessage(message)` | Nachricht senden |
 | `GetMessages(channelId, skip, take)` | Nachrichten laden |
-| `KickUser(channelId, userId)` | Benutzer kicken |
-| `BanUser(channelId, userId)` | Benutzer bannen |
 
 ### WebSocket Audio (`/audio`)
 
 Binäres Audio-Streaming mit Opus-kodierten Daten.
-
-**Query-Parameter:**
-- `channelId`: Channel-ID
-- `token`: JWT-Token
-
-**Datenformat:**
-```
-[4 bytes: sequence number][variable: opus audio data]
-```
 
 ## Projektstruktur
 
@@ -107,47 +68,10 @@ VoiceChat.slnx
 ├── VoiceChat.Shared/       # Geteilte DTOs
 └── VoiceChat.Client/       # UI-Anwendungen
     ├── VoiceChat.Client/         # Geteilter UI-Code
-    ├── VoiceChat.Client.Desktop/ # Desktop (Windows/Linux)
+    ├── VoiceChat.Client.Desktop/ # Desktop
     ├── VoiceChat.Client.Browser/ # Web (WASM)
     ├── VoiceChat.Client.Android/ # Android
     └── VoiceChat.Client.iOS/     # iOS
-```
-
-## Datenmodell
-
-### User
-```csharp
-public class User
-{
-    public Guid Id { get; set; }
-    public string Username { get; set; }
-    public DateTime LastActive { get; set; }
-    public Guid? ConnectedChannel { get; set; }
-}
-```
-
-### Channel
-```csharp
-public class Channel
-{
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string? Description { get; set; }
-    public ICollection<Message> Messages { get; set; }
-    public ICollection<User> Users { get; set; }
-}
-```
-
-### Message
-```csharp
-public class Message
-{
-    public Guid Id { get; set; }
-    public Guid SenderId { get; set; }
-    public Guid ChannelId { get; set; }
-    public string Content { get; set; }
-    public DateTime CreatedAt { get; set; }
-}
 ```
 
 ## Sicherheit
@@ -155,8 +79,3 @@ public class Message
 - **Authentifizierung**: JWT-Token mit Ablaufzeit
 - **Validierung**: Serverseitige Eingabevalidierung
 - **SQL Injection**: Geschützt durch EF Core
-- **XSS**: Keine Benutzer-Eingaben werden als HTML gerendert
-
----
-
-[← Zurück: Funktionen](./features)

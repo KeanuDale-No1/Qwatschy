@@ -1,6 +1,11 @@
 ---
 title: Erste Schritte
 lang: de
+layout: default
+previous: ./installation
+previous_text: Installation
+next: ./features
+next_text: Funktionen
 ---
 
 # Erste Schritte
@@ -40,7 +45,9 @@ Die API-Konfiguration findest du in `VoiceChat.Api/appsettings.json`:
 1. Starte Qwatschy auf deinem Gerät
 2. Du siehst den Anmeldebildschirm
 
-![Login Screen](../assets/screenshots/login.png)
+<div class="screenshot-wrapper">
+  <img src="../assets/screenshots/login.png" alt="Login Screen" class="screenshot">
+</div>
 
 ### Anmelden
 1. Gib einen **Benutzernamen** ein (z.B. "Max")
@@ -59,7 +66,9 @@ Deine letzten Verbindungen werden automatisch gespeichert und können über das 
 2. Gib einen Namen für den Channel ein (z.B. "Allgemein")
 3. Klicke auf **Erstellen**
 
-![Channel erstellen](../assets/screenshots/create-channel.png)
+<div class="screenshot-wrapper">
+  <img src="../assets/screenshots/create-channel.png" alt="Channel erstellen" class="screenshot">
+</div>
 
 ## Benutzer verwalten
 
@@ -68,7 +77,3 @@ Die Online-Benutzer werden in der linken Leiste unter dem Channel angezeigt.
 
 ### Benutzer kicken/bannen
 Rechtsklick auf einen Benutzer → Kicken oder Bannen
-
----
-
-[← Zurück: Installation](./installation) | [Weiter: Funktionen →](./features)

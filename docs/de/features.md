@@ -1,13 +1,20 @@
 ---
 title: Funktionen
 lang: de
+layout: default
+previous: ./getting-started
+previous_text: Erste Schritte
+next: ./architecture
+next_text: Architektur
 ---
 
 # Funktionen
 
 ## Login & Authentifizierung
 
-![Login Screen](../assets/screenshots/login.png)
+<div class="screenshot-wrapper">
+  <img src="../assets/screenshots/login.png" alt="Login Screen" class="screenshot">
+</div>
 
 - **Benutzername**: Wähle einen eindeutigen Namen
 - **Server-Adresse**: IP oder Domain des Servers
@@ -16,14 +23,18 @@ lang: de
 
 ## Channel-Verwaltung
 
-![Channel List](../assets/screenshots/VoiceChat.png)
+<div class="screenshot-wrapper">
+  <img src="../assets/screenshots/VoiceChat.png" alt="Channel List" class="screenshot">
+</div>
 
 ### Channels erstellen
 1. Klicke auf das **+** Symbol
 2. Gib einen Channel-Namen ein
 3. Bestätige mit Enter oder Klick auf "Erstellen"
 
-![Channel erstellen](../assets/screenshots/create-channel.png)
+<div class="screenshot-wrapper">
+  <img src="../assets/screenshots/create-channel.png" alt="Channel erstellen" class="screenshot">
+</div>
 
 ### Channels beitreten
 - Klicke auf einen Channel in der Liste
@@ -35,7 +46,9 @@ lang: de
 
 ## Text-Chat
 
-![Chat View](../assets/screenshots/VoiceChat.png)
+<div class="screenshot-wrapper">
+  <img src="../assets/screenshots/VoiceChat.png" alt="Chat View" class="screenshot">
+</div>
 
 ### Nachrichten senden
 1. Wähle einen Channel aus
@@ -52,7 +65,9 @@ lang: de
 
 ## Voice Chat
 
-![Voice Chat](../assets/screenshots/join-voicechat.png)
+<div class="screenshot-wrapper">
+  <img src="../assets/screenshots/join-voicechat.png" alt="Voice Chat" class="screenshot">
+</div>
 
 ### Voice-Chat beitreten
 1. Klicke auf den **Voice-Button** (🎤) eines Channels
@@ -95,7 +110,3 @@ lang: de
 | **Enter** | Nachricht senden |
 | **M** | Mikrofon stumm schalten |
 | **Escape** | Abbrechen / Schließen |
-
----
-
-[← Zurück: Erste Schritte](./getting-started) | [Weiter: Architektur →](./architecture)

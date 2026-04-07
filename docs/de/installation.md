@@ -1,6 +1,9 @@
 ---
 title: Installation
 lang: de
+layout: default
+next: ./getting-started
+next_text: Erste Schritte
 ---
 
 # Installation
@@ -15,7 +18,7 @@ Lade den passenden Installer für dein Betriebssystem herunter:
 | macOS | `.dmg` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
 | Linux | `.deb` / `.AppImage` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
 | Android | `.apk` | [GitHub Releases](https://github.com/YOUR_USERNAME/VoiceChat/releases) |
-| iOS | TestFlight | Kommt bald |
+| iOS | TestFlight | <span class="badge badge-soon">Bald</span> |
 | Web | Browser | [Web App](https://YOUR_USERNAME.github.io/VoiceChat) |
 
 ## Windows
@@ -105,7 +108,3 @@ Keine Installation nötig!
 - Mozilla Firefox
 - Microsoft Edge
 - Safari
-
----
-
-[← Zurück zur Startseite](../) | [Weiter: Erste Schritte →](./getting-started)
