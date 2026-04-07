@@ -52,7 +52,7 @@ namespace VoiceChat.Client.Desktop
 
         public static async Task CheckForUpdates()
         {
-            var mgr = new UpdateManager("https://github.com/KeanuDale-No1/VoiceChat/releases");
+            var mgr = new UpdateManager("https://github.com/KeanuDale-No1/Qwatschy/releases");
 
             var update = await mgr.CheckForUpdatesAsync();
 
