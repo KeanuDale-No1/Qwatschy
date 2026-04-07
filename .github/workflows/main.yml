@@ -101,7 +101,12 @@ jobs:
         run: dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o output/${{ matrix.suffix }}/
 
       - name: Create Server ZIP (${{ matrix.suffix }})
-        run: cd output && 7z a -tzip Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ${{ matrix.suffix }}/
+        if: runner.os == 'Linux'
+        run: cd output && zip -r Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ${{ matrix.suffix }}/
+
+      - name: Create Server ZIP (${{ matrix.suffix }})
+        if: runner.os == 'Windows'
+        run: Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath output/Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip
 
       - name: Upload Server Artifact (${{ matrix.suffix }})
         uses: actions/upload-artifact@v4
