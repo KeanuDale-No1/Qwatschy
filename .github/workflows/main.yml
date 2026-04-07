@@ -52,7 +52,9 @@ jobs:
         run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishDir=output/${{ matrix.suffix }}/
 
       - name: Pack (${{ matrix.suffix }})
-        run: vpk pack --packId Qwatschy.Client.Desktop --packVersion ${{ steps.version.outputs.VERSION }} --packDir output/${{ matrix.suffix }}/ --mainExe Qwatschy.Client.Desktop.exe
+        run: |
+          main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.Client.Desktop.exe' || 'Qwatschy.Client.Desktop' }}"
+          vpk pack --packId Qwatschy.Client.Desktop --packVersion ${{ steps.version.outputs.VERSION }} --packDir output/${{ matrix.suffix }}/ --mainExe "$main_exe"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
