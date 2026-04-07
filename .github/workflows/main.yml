@@ -5,6 +5,9 @@ on:
     branches:
       - master
 
+env:
+  VERSION_FILE: VERSION
+
 jobs:
   build:
     strategy:
@@ -38,11 +41,12 @@ jobs:
           echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
         if: runner.os == 'Linux'
 
-      - name: Generate Version
+      - name: Read Version
         id: version
         run: |
-          date=$(date +'%Y.%m.%d')
-          version="$date.${{ github.run_number }}"
+          base_version=$(cat ${{ env.VERSION_FILE }})
+          run_number=$(printf "%03d" ${{ github.run_number }})
+          version="$base_version.$run_number"
           echo "VERSION=$version" >> $GITHUB_OUTPUT
 
       - name: Publish (${{ matrix.suffix }})
@@ -71,11 +75,12 @@ jobs:
         with:
           path: artifacts
 
-      - name: Generate Version
+      - name: Read Version
         id: version
         run: |
-          date=$(date +'%Y.%m.%d')
-          version="$date.${{ github.run_number }}"
+          base_version=$(cat ${{ env.VERSION_FILE }})
+          run_number=$(printf "%03d" ${{ github.run_number }})
+          version="$base_version.$run_number"
           echo "VERSION=$version" >> $GITHUB_OUTPUT
 
       - name: Create Release
