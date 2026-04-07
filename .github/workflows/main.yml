@@ -98,15 +98,10 @@ jobs:
         shell: bash
 
       - name: Publish Server (${{ matrix.suffix }})
-        run: |
-          dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o output/${{ matrix.suffix }}/
-          ls -la output/${{ matrix.suffix }}/
+        run: dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o output/${{ matrix.suffix }}/
 
       - name: Create Server ZIP (${{ matrix.suffix }})
-        run: |
-          ls -la output/
-          cd output
-          7z a -tzip Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ${{ matrix.suffix }}/
+        run: cd output && 7z a -tzip Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ${{ matrix.suffix }}/
 
       - name: Upload Server Artifact (${{ matrix.suffix }})
         uses: actions/upload-artifact@v4
@@ -115,7 +110,7 @@ jobs:
           path: Qwatschy-Server-${{ matrix.suffix }}-*.zip
 
   release:
-    needs: build
+    needs: [build, build-server]
     runs-on: ubuntu-latest
     permissions:
       contents: write
