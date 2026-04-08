@@ -27,7 +27,7 @@ Download the installer for your operating system:
       <small>.zip</small>
     </span>
   </a>
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-0.1.0-beta.17-linux-full.nupkg" class="download-btn linux">
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux-full.nupkg" class="download-btn linux">
     <span class="icon">🐧</span>
     <span class="text">
       <strong>Linux</strong>

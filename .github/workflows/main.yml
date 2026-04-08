@@ -57,6 +57,8 @@ jobs:
           main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.exe' || 'Qwatschy' }}"
           pack_dir="VoiceChat.Client/VoiceChat.Client.Desktop/bin/Release/net10.0/${{ matrix.runtime }}/publish"
           vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "$pack_dir" --mainExe "$main_exe"
+          mv Qwatschy-*.nupkg Qwatschy-${{ matrix.suffix }}.nupkg
+          mv Qwatschy-${{ matrix.suffix }}-Setup.exe Qwatschy-Setup-${{ matrix.suffix }}.exe
         shell: bash
 
       - name: Upload Artifact
@@ -102,17 +104,17 @@ jobs:
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Linux'
-        run: cd output && zip -r Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ${{ matrix.suffix }}/ && mv Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip ../
+        run: cd output && zip -r Qwatschy-Server-${{ matrix.suffix }}.zip ${{ matrix.suffix }}/ -x "*/createdump" && mv Qwatschy-Server-${{ matrix.suffix }}.zip ../
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Windows'
-        run: Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}-${{ steps.version.outputs.VERSION }}.zip
+        run: Get-ChildItem -Path output/${{ matrix.suffix }}/createdump.exe -ErrorAction SilentlyContinue | Remove-Item; Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}.zip
 
       - name: Upload Server Artifact (${{ matrix.suffix }})
         uses: actions/upload-artifact@v4
         with:
           name: release-server-${{ matrix.suffix }}
-          path: Qwatschy-Server-${{ matrix.suffix }}-*.zip
+          path: Qwatschy-Server-${{ matrix.suffix }}.zip
 
   release:
     needs: [build, build-server]
