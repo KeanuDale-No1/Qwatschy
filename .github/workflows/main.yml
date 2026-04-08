@@ -24,6 +24,8 @@ jobs:
     defaults:
       run:
         working-directory: ${{ github.workspace }}
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     steps:
       - name: Checkout
@@ -34,17 +36,16 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - name: Install Velopack
-        run: |
-          dotnet tool install -g vpk
-          echo "$HOME\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Append
+      - name: Install Velopack (Windows)
+        run: dotnet tool install -g vpk
         if: runner.os == 'Windows'
 
       - name: Install Velopack (Linux)
-        run: |
-          dotnet tool install -g vpk
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+        run: dotnet tool install -g vpk
         if: runner.os == 'Linux'
+
+      - name: Add to PATH
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
 
       - name: Read Version
         id: version
