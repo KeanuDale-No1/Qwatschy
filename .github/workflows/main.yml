@@ -7,7 +7,6 @@ on:
 
 env:
   VERSION_FILE: VERSION
-  PROJECT_DIR: ${{ github.workspace }}
 
 jobs:
   build-client:
@@ -63,10 +62,6 @@ jobs:
           vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "${{ github.workspace }}/output" --mainExe "$main_exe"
         shell: bash
 
-      - name: Rename Windows Setup
-        if: runner.os == 'Windows'
-        run: mv "${{ github.workspace }}/Qwatschy-*-Setup.exe" "${{ github.workspace }}/Qwatschy-Setup-win.exe"
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -75,7 +70,6 @@ jobs:
             ${{ github.workspace }}/Qwatschy-*.nupkg
             ${{ github.workspace }}/Qwatschy-*.AppImage
             ${{ github.workspace }}/Qwatschy-*-Setup.exe
-            ${{ github.workspace }}/Releases
 
   build-deb:
     runs-on: ubuntu-latest
@@ -92,10 +86,9 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: Install Velopack
+      - name: Install fpm
         run: |
-          dotnet tool install -g vpk
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+          gem install fpm --no-document
 
       - name: Read Version
         id: version
@@ -109,11 +102,23 @@ jobs:
         run: |
           dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir="${{ github.workspace }}/output"
 
-      - name: Pack DEB (.deb)
+      - name: Create DEB Package
         run: |
-          cd "${{ github.workspace }}/output"
-          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir . --mainExe Qwatschy --packageFormat deb
-          mv *.deb "${{ github.workspace }}/Qwatschy-deb.deb"
+          mkdir -p "${{ github.workspace }}/deb-root/usr/bin"
+          mkdir -p "${{ github.workspace }}/deb-root/usr/lib/qwatschy"
+          cp -r "${{ github.workspace }}/output/"* "${{ github.workspace }}/deb-root/usr/lib/qwatschy/"
+          echo '#!/bin/bash' > "${{ github.workspace }}/deb-root/usr/bin/qwatschy"
+          echo 'exec /usr/lib/qwatschy/Qwatschy "$@"' >> "${{ github.workspace }}/deb-root/usr/bin/qwatschy"
+          chmod +x "${{ github.workspace }}/deb-root/usr/bin/qwatschy"
+          fpm -s dir -t deb \
+            -n qwatschy \
+            -v ${{ steps.version.outputs.VERSION }} \
+            -C "${{ github.workspace }}/deb-root" \
+            -p "${{ github.workspace }}/Qwatschy-deb.deb" \
+            -a x86_64 \
+            --description "Cross-platform voice chat application" \
+            --maintainer "Qwatschy" \
+            --url "https://github.com/KeanuDale-No1/Qwatschy"
         shell: bash
 
       - name: Upload DEB Artifact
@@ -164,7 +169,6 @@ jobs:
         run: |
           cd "${{ github.workspace }}/output"
           zip -r "${{ github.workspace }}/Qwatschy-Server-${{ matrix.suffix }}.zip" . -x "*/createdump"
-        shell: bash
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Windows'
