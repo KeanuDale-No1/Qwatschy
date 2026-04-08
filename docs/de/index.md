@@ -9,22 +9,27 @@ layout: default
 Willkommen in der deutschen Qwatschy-Dokumentation!
 
 <div class="quick-links">
-  <a href="./installation.html" class="quick-link">📦 Installation</a>
+  <a href="./installation.html" class="quick-link">📦 Client</a>
+  <a href="./server.html" class="quick-link">🖥️ Server</a>
   <a href="./getting-started.html" class="quick-link">🚀 Erste Schritte</a>
   <a href="./features.html" class="quick-link">✨ Funktionen</a>
-  <a href="./architecture.html" class="quick-link">🏗️ Architektur</a>
 </div>
 
 ## Schnellstart
 
 1. [Client installieren](./installation.html)
-2. [Erste Schritte](./getting-started.html)
-3. [Features entdecken](./features.html)
+2. [Server aufsetzen](./server.html)
+3. [Verbinden](./getting-started.html)
+4. [Features entdecken](./features.html)
 
 <div class="cards">
   <a href="./installation.html" class="card">
-    <h4>📦 Installation</h4>
+    <h4>📦 Client Installation</h4>
     <p>Download für Windows, Linux und Web.</p>
+  </a>
+  <a href="./server.html" class="card">
+    <h4>🖥️ Server</h4>
+    <p>Server aufsetzen und selbst hosten.</p>
   </a>
   <a href="./getting-started.html" class="card">
     <h4>🚀 Erste Schritte</h4>

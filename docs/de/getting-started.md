@@ -1,43 +1,14 @@
 ---
-title: Erste Schritte
+title: Getting Started
 lang: de
 layout: default
-previous: installation
-previous_text: Installation
+previous: server
+previous_text: Server
 next: features
 next_text: Funktionen
 ---
 
 # Erste Schritte
-
-## Server aufsetzen
-
-### Voraussetzungen
-- .NET 10.0 SDK installiert
-- Port 5000 und 5001 verfügbar
-
-### Server starten
-```bash
-cd VoiceChat.Api
-dotnet run
-```
-
-Der Server startet standardmäßig auf `http://localhost:5000`.
-
-### Server-Konfiguration
-
-Die API-Konfiguration findest du in `VoiceChat.Api/appsettings.json`:
-
-```json
-{
-  "Urls": "http://0.0.0.0:5000",
-  "Jwt": {
-    "Key": "DEIN_GEHEIMER_SCHLÜSSEL",
-    "Issuer": "VoiceChat",
-    "Audience": "VoiceChat"
-  }
-}
-```
 
 ## Mit dem Server verbinden
 

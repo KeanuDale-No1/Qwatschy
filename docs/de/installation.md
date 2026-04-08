@@ -13,25 +13,25 @@ next_text: Erste Schritte
 Lade den passenden Installer für dein Betriebssystem herunter:
 
 <div class="download-buttons">
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-Setup.exe" class="download-btn windows">
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-Setup-win.exe" class="download-btn windows">
     <span class="icon">🪟</span>
     <span class="text">
       <strong>Windows</strong>
       <small>.exe Installer</small>
     </span>
   </a>
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-win-Portable.zip" class="download-btn windows">
-    <span class="icon">🪟</span>
-    <span class="text">
-      <strong>Windows Portable</strong>
-      <small>.zip</small>
-    </span>
-  </a>
-  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-0.1.0-beta.17-linux-full.nupkg" class="download-btn linux">
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux.nupkg" class="download-btn linux">
     <span class="icon">🐧</span>
     <span class="text">
       <strong>Linux</strong>
       <small>Velopack</small>
+    </span>
+  </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-deb.deb" class="download-btn linux">
+    <span class="icon">🐧</span>
+    <span class="text">
+      <strong>Linux (DEB)</strong>
+      <small>.deb Paket</small>
     </span>
   </a>
   <a href="https://keanudale-no1.github.io/Qwatschy" class="download-btn web">
@@ -62,14 +62,30 @@ Lade den passenden Installer für dein Betriebssystem herunter:
 
 ## Linux
 
-### Installation mit Velopack
+### Option 1: Velopack (Empfohlen)
 
 ```bash
 # Velopack CLI installieren
 dotnet tool install -g vpk
 
 # Qwatschy installieren
-vpk install-from-package https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-0.1.0-beta.17-linux-full.nupkg
+vpk install-from-package https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux.nupkg
+```
+
+### Option 2: DEB-Paket
+
+```bash
+# Herunterladen und installieren
+wget https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-deb.deb
+sudo dpkg -i Qwatschy-deb.deb
+sudo apt install -f
+```
+
+### Option 3: Arch Linux (AUR)
+
+```bash
+# Mit einem AUR-Helfer wie yay
+yay -S qwatschy
 ```
 
 ## Web (Browser)
@@ -83,6 +99,10 @@ Keine Installation nötig! Öffne einfach:
 - Mozilla Firefox
 - Microsoft Edge
 - Safari
+
+## Server aufsetzen
+
+Du möchtest einen eigenen Server betreiben? ➡️ [Server einrichten](./server.html)
 
 ## Weitere Plattformen
 

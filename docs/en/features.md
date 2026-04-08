@@ -2,8 +2,8 @@
 title: Features
 lang: en
 layout: default
-previous: getting-started
-previous_text: Getting Started
+previous: server
+previous_text: Server
 next: architecture
 next_text: Architecture
 ---

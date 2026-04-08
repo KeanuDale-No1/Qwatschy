@@ -14,7 +14,8 @@ layout: default
   <h1>Qwatschy</h1>
   <p>Modern. Cross-platform. Real-time voice and text chat built with .NET and Avalonia.</p>
   <div class="quick-links">
-    <a href="./en/installation.html" class="quick-link">📦 Installation</a>
+    <a href="./en/installation.html" class="quick-link">📦 Client</a>
+    <a href="./en/server.html" class="quick-link">🖥️ Server</a>
     <a href="./en/getting-started.html" class="quick-link">🚀 Getting Started</a>
     <a href="./en/features.html" class="quick-link">✨ Features</a>
   </div>
@@ -40,8 +41,13 @@ layout: default
 <div class="cards">
   <a href="./en/installation.html" class="card">
     <div class="feature-icon">📦</div>
-    <h4>Installation</h4>
-    <p>Download and install Qwatschy on Windows, macOS, Android, or use the web version.</p>
+    <h4>Client Installation</h4>
+    <p>Download and install Qwatschy on Windows, Linux, or use the web version.</p>
+  </a>
+  <a href="./en/server.html" class="card">
+    <div class="feature-icon">🖥️</div>
+    <h4>Server</h4>
+    <p>Set up and host your own Qwatschy server.</p>
   </a>
   <a href="./en/getting-started.html" class="card">
     <div class="feature-icon">🚀</div>

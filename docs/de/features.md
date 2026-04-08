@@ -2,8 +2,8 @@
 title: Funktionen
 lang: de
 layout: default
-previous: getting-started
-previous_text: Erste Schritte
+previous: server
+previous_text: Server
 next: architecture
 next_text: Architektur
 ---
