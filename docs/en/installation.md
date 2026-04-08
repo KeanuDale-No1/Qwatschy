@@ -34,6 +34,13 @@ Download the installer for your operating system:
       <small>.deb package</small>
     </span>
   </a>
+  <a href="https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy.flatpak" class="download-btn linux">
+    <span class="icon">🐧</span>
+    <span class="text">
+      <strong>Linux (Flatpak)</strong>
+      <small>.flatpak package</small>
+    </span>
+  </a>
   <a href="https://keanudale-no1.github.io/Qwatschy" class="download-btn web">
     <span class="icon">🌐</span>
     <span class="text">
@@ -81,7 +88,20 @@ sudo dpkg -i Qwatschy-deb.deb
 sudo apt install -f
 ```
 
-### Option 3: Arch Linux (AUR)
+### Option 3: Flatpak
+
+```bash
+# Add Flathub if not already added
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+# Install Qwatschy
+flatpak install flathub com.qwatschy.Qwatschy
+
+# Run
+flatpak run com.qwatschy.Qwatschy
+```
+
+### Option 4: Arch Linux (AUR)
 
 ```bash
 # Using an AUR helper like yay

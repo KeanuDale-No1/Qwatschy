@@ -81,3 +81,33 @@ VoiceChat.slnx
 - **Authentifizierung**: JWT-Token mit Ablaufzeit
 - **Validierung**: Serverseitige Eingabevalidierung
 - **SQL Injection**: Geschützt durch EF Core
+
+## CI/CD Pipeline
+
+### Build & Release Pipeline
+
+Die automatisierte Build-Pipeline wird bei jedem Push auf den `master`-Branch ausgeführt:
+
+| Job | Beschreibung | Ausgaben |
+|-----|--------------|----------|
+| `build-client` | Client für Windows & Linux erstellen | Velopack-Pakete (.nupkg, AppImage, Setup.exe) |
+| `build-deb` | Debian-Paket erstellen | .deb-Datei |
+| `build-flatpak` | Flatpak-Paket erstellen | .flatpak-Datei |
+| `build-server` | Server für Windows & Linux erstellen | ZIP-Archive |
+| `release` | GitHub Release erstellen | Getaggte Version mit allen Artefakten |
+
+**Versionierung**: Basisversion aus `VERSION`-Datei + GitHub Run Number (z.B. `1.0.0.123`)
+
+### Dokumentations-Pipeline
+
+Die Dokumentation wird automatisch auf GitHub Pages deployed wenn:
+- Dateien im `docs/`-Verzeichnis geändert werden
+- Die Workflow-Datei selbst geändert wird
+- Manuelle Auslösung via `workflow_dispatch`
+
+### Workflow-Dateien
+
+| Datei | Zweck |
+|-------|-------|
+| `.github/workflows/main.yml` | Build & Release |
+| `.github/workflows/deploy-docs.yml` | Dokumentations-Deployment |
