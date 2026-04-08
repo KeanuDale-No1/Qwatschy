@@ -167,6 +167,18 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Flatpak
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak flatpak-builder
+          flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install -y flathub org.freedesktop.Platform//24.08 org.freedesktop.Sdk//24.08
+
       - name: Read Version
         id: version
         run: |
@@ -179,19 +191,22 @@ jobs:
         run: |
           dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir="${{ github.workspace }}/output"
 
-      - name: Create App Archive
+      - name: Download NuGet Source Generator
         run: |
-          cd "${{ github.workspace }}/output"
-          zip -r "${{ github.workspace }}/Qwatschy-linux.zip" .
+          wget -O "${{ github.workspace }}/flatpak-dotnet-generator.py" https://raw.githubusercontent.com/flatpak/flatpak-builder-tools/master/dotnet/flatpak-dotnet-generator.py
 
-      - name: Install Flatpak
+      - name: Generate NuGet Sources
         run: |
-          flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-          flatpak install -y flathub org.freedesktop.Platform//25.08 org.freedesktop.Sdk//25.08
+          python3 "${{ github.workspace }}/flatpak-dotnet-generator.py" --dotnet 8 --freedesktop 24.08 "${{ github.workspace }}/nuget-sources.json" "VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj"
 
       - name: Build Flatpak
         run: |
           flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install build-dir com.qwatschy.Qwatschy.yml
+
+      - name: Create App Archive
+        run: |
+          cd "${{ github.workspace }}/output"
+          zip -r "${{ github.workspace }}/Qwatschy-linux.zip" .
 
       - name: Create Flatpak Bundle
         run: flatpak build-bundle repo Qwatschy.flatpak com.qwatschy.Qwatschy --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo

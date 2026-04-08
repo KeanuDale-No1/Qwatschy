@@ -1,20 +1,44 @@
-app-id: com.qwatschy.Qwatschy
+id: com.qwatschy.Qwatschy
 runtime: org.freedesktop.Platform
-runtime-version: '25.08'
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.dotnet8
 command: Qwatschy
+
 finish-args:
-  - --share=ipc
-  - --socket=x11
-  - --socket=wayland
   - --device=dri
+  - --socket=wayland
+  - --socket=x11
+  - --share=ipc
   - --share=network
+  - --socket=pulseaudio
   - --filesystem=home
+  - --talk-name=org.freedesktop.Notifications
+  - --env=DOTNET_ROOT=/app/lib/dotnet
+
 modules:
-  - name: Qwatschy
+  - name: dotnet
     buildsystem: simple
     build-commands:
-      - install -Dm755 Qwatschy /app/bin/Qwatschy
+      - /usr/lib/sdk/dotnet8/bin/install.sh
+
+  - name: qwatschy
+    buildsystem: simple
     sources:
-      - type: archive
-        path: Qwatschy-linux.zip
+      - type: dir
+        path: .
+      - type: file
+        path: nuget-sources.json
+    build-commands:
+      - dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release --no-self-contained --source ./nuget-sources -p:PublishDir=/app/output
+      - install -Dm755 /app/output/Qwatschy /app/bin/Qwatschy
+      - install -d /app/lib/qwatschy
+      - cp -r /app/output/* /app/lib/qwatschy/
+      - install -Dm644 VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png /app/share/icons/hicolor/256x256/apps/com.qwatschy.Qwatschy.png
+    finish-args:
+      - --filesystem=home
+      - --share=network
+      - --socket=wayland
+      - --socket=x11
+      - --socket=pulseaudio
