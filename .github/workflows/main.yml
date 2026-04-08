@@ -167,11 +167,6 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
       - name: Install Flatpak
         run: |
           sudo apt-get update
@@ -190,14 +185,6 @@ jobs:
       - name: Publish Linux
         run: |
           dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir="${{ github.workspace }}/output"
-
-      - name: Download NuGet Source Generator
-        run: |
-          wget -O "${{ github.workspace }}/flatpak-dotnet-generator.py" https://raw.githubusercontent.com/flatpak/flatpak-builder-tools/master/dotnet/flatpak-dotnet-generator.py
-
-      - name: Generate NuGet Sources
-        run: |
-          python3 "${{ github.workspace }}/flatpak-dotnet-generator.py" --dotnet 9 --freedesktop 24.08 "${{ github.workspace }}/nuget-sources.json" "VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj"
 
       - name: Build Flatpak
         run: |
