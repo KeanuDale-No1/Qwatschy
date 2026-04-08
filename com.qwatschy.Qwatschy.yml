@@ -35,7 +35,7 @@ modules:
       - type: git
         url: https://github.com/KeanuDale-No1/Qwatschy
     build-commands:
-      - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && export DOTNET_CLI_TELEMETRY_OPTOUT=1 && dotnet restore VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj --ignore-failed-sources
+      - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && export DOTNET_CLI_TELEMETRY_OPTOUT=1 && dotnet restore VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj --source https://api.nuget.org/v3/index.json --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet9/nuget/v3/index.json
       - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release --no-self-contained -p:PublishDir=/app/output
       - install -Dm755 /app/output/Qwatschy /app/bin/Qwatschy
       - install -d /app/lib/qwatschy
