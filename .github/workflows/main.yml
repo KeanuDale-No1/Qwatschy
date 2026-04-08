@@ -21,6 +21,9 @@ jobs:
             suffix: linux
 
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: .
 
     steps:
       - name: Checkout
@@ -104,11 +107,17 @@ jobs:
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Linux'
-        run: cd output && zip -r Qwatschy-Server-${{ matrix.suffix }}.zip ${{ matrix.suffix }}/ -x "*/createdump" && mv Qwatschy-Server-${{ matrix.suffix }}.zip ../
+        run: |
+          cd output
+          zip -r Qwatschy-Server-${{ matrix.suffix }}.zip ${{ matrix.suffix }}/ -x "*/createdump"
+          mv Qwatschy-Server-${{ matrix.suffix }}.zip ../
+        shell: bash
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Windows'
-        run: Get-ChildItem -Path output/${{ matrix.suffix }}/createdump.exe -ErrorAction SilentlyContinue | Remove-Item; Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}.zip
+        run: |
+          Get-ChildItem -Path output/${{ matrix.suffix }}/createdump.exe -ErrorAction SilentlyContinue | Remove-Item
+          Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}.zip
 
       - name: Upload Server Artifact (${{ matrix.suffix }})
         uses: actions/upload-artifact@v4
@@ -116,7 +125,7 @@ jobs:
           name: release-server-${{ matrix.suffix }}
           path: Qwatschy-Server-${{ matrix.suffix }}.zip
 
-  build-linux-packages:
+  build-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -144,29 +153,18 @@ jobs:
       - name: Publish Linux
         run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/linux/
 
-      - name: Pack Pacman (.pkg.tar.zst)
-        run: vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir output/linux/ --mainExe Qwatschy --packageFormat arch
+      - name: Pack Linux (.nupkg)
+        run: |
+          cd output/linux
+          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir . --mainExe Qwatschy
+          mv Qwatschy-*.nupkg Qwatschy-linux.nupkg
+        shell: bash
 
-      - name: Rename Pacman Package
-        run: mv *.pkg.tar.zst Qwatschy-arch.pkg.tar.zst
-
-      - name: Upload Pacman Artifact
+      - name: Upload Linux Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-pacman
-          path: Qwatschy-arch.pkg.tar.zst
-
-      - name: Pack DEB (.deb)
-        run: vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir output/linux/ --mainExe Qwatschy --packageFormat deb
-
-      - name: Rename DEB Package
-        run: mv *.deb Qwatschy-deb.deb
-
-      - name: Upload DEB Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-deb
-          path: Qwatschy-deb.deb
+          name: release-linux
+          path: output/linux/Qwatschy-linux.nupkg
 
   build-flatpak:
     runs-on: ubuntu-latest
@@ -196,6 +194,7 @@ jobs:
           cd output
           zip -r Qwatschy-linux.zip linux/
           mv Qwatschy-linux.zip ../
+        shell: bash
 
       - name: Install Flatpak
         run: |
@@ -215,7 +214,7 @@ jobs:
           path: Qwatschy.flatpak
 
   release:
-    needs: [build, build-server, build-linux-packages, build-flatpak]
+    needs: [build, build-server, build-linux, build-flatpak]
     runs-on: ubuntu-latest
     permissions:
       contents: write
