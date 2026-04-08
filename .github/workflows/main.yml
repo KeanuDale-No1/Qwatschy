@@ -62,7 +62,7 @@ jobs:
       - name: Pack (${{ matrix.suffix }})
         run: |
           main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.exe' || 'Qwatschy' }}"
-          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "${{ github.workspace }}/output" --mainExe "$main_exe"
+          vpk pack -o "${{ github.workspace }}" --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "${{ github.workspace }}/output" --mainExe "$main_exe"
         shell: bash
 
       - name: Upload Artifact
