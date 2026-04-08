@@ -182,9 +182,9 @@ jobs:
           echo "VERSION=$version" >> $GITHUB_OUTPUT
         shell: bash
 
-      - name: Publish Linux
+      - name: Publish Linux (Flatpak)
         run: |
-          dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir="${{ github.workspace }}/output"
+          dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained false -p:PublishDir="${{ github.workspace }}/output-flatpak"
 
       - name: Build Flatpak
         run: |
@@ -192,7 +192,7 @@ jobs:
 
       - name: Create App Archive
         run: |
-          cd "${{ github.workspace }}/output"
+          cd "${{ github.workspace }}/output-flatpak"
           zip -r "${{ github.workspace }}/Qwatschy-linux.zip" .
 
       - name: Create Flatpak Bundle
