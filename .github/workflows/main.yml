@@ -9,7 +9,7 @@ env:
   VERSION_FILE: VERSION
 
 jobs:
-  build:
+  build-client:
     strategy:
       matrix:
         include:
@@ -21,9 +21,6 @@ jobs:
             suffix: linux
 
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: .
 
     steps:
       - name: Checkout
@@ -67,10 +64,86 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-${{ matrix.suffix }}
+          name: release-client-${{ matrix.suffix }}
           path: |
             **/*.nupkg
             **/RELEASES
+
+  build-deb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install Velopack
+        run: |
+          dotnet tool install -g vpk
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Read Version
+        id: version
+        run: |
+          base_version=$(cat ${{ env.VERSION_FILE }})
+          version="$base_version.${{ github.run_number }}"
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Publish Linux
+        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/linux/
+
+      - name: Pack DEB (.deb)
+        run: |
+          cd output/linux
+          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir . --mainExe Qwatschy --packageFormat deb
+          mv *.deb Qwatschy-deb.deb
+        shell: bash
+
+      - name: Upload DEB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-deb
+          path: output/linux/Qwatschy-deb.deb
+
+  build-flatpak:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Read Version
+        id: version
+        run: |
+          base_version=$(cat ${{ env.VERSION_FILE }})
+          version="$base_version.${{ github.run_number }}"
+          echo "VERSION=$version" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Publish Linux
+        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/linux/
+
+      - name: Create Linux ZIP
+        run: |
+          cd output/linux
+          zip -r Qwatschy-linux.zip .
+        shell: bash
+
+      - name: Upload Linux ZIP Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-flatpak
+          path: output/linux/Qwatschy-linux.zip
 
   build-server:
     strategy:
@@ -108,9 +181,8 @@ jobs:
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Linux'
         run: |
-          cd output
-          zip -r Qwatschy-Server-${{ matrix.suffix }}.zip ${{ matrix.suffix }}/ -x "*/createdump"
-          mv Qwatschy-Server-${{ matrix.suffix }}.zip ../
+          cd output/${{ matrix.suffix }}
+          zip -r Qwatschy-Server-${{ matrix.suffix }}.zip . -x "*/createdump"
         shell: bash
 
       - name: Create Server ZIP (${{ matrix.suffix }})
@@ -125,96 +197,8 @@ jobs:
           name: release-server-${{ matrix.suffix }}
           path: Qwatschy-Server-${{ matrix.suffix }}.zip
 
-  build-linux:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Install Velopack
-        run: |
-          dotnet tool install -g vpk
-          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
-
-      - name: Read Version
-        id: version
-        run: |
-          base_version=$(cat ${{ env.VERSION_FILE }})
-          version="$base_version.${{ github.run_number }}"
-          echo "VERSION=$version" >> $GITHUB_OUTPUT
-        shell: bash
-
-      - name: Publish Linux
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/linux/
-
-      - name: Pack Linux (.nupkg)
-        run: |
-          cd output/linux
-          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir . --mainExe Qwatschy
-          mv Qwatschy-*.nupkg Qwatschy-linux.nupkg
-        shell: bash
-
-      - name: Upload Linux Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-linux
-          path: output/linux/Qwatschy-linux.nupkg
-
-  build-flatpak:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Read Version
-        id: version
-        run: |
-          base_version=$(cat ${{ env.VERSION_FILE }})
-          version="$base_version.${{ github.run_number }}"
-          echo "VERSION=$version" >> $GITHUB_OUTPUT
-        shell: bash
-
-      - name: Publish Linux
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/linux/
-
-      - name: Create Linux ZIP
-        run: |
-          cd output
-          zip -r Qwatschy-linux.zip linux/
-          mv Qwatschy-linux.zip ../
-        shell: bash
-
-      - name: Install Flatpak
-        run: |
-          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          flatpak install -y flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
-
-      - name: Build Flatpak
-        run: flatpak-builder --force-clean --user --install-deps-from=flathub build-dir com.qwatschy.Qwatschy.json
-
-      - name: Create Flatpak Bundle
-        run: flatpak build-bundle Qwatschy.flatpak com.qwatschy.Qwatschy
-
-      - name: Upload Flatpak Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-flatpak
-          path: Qwatschy.flatpak
-
   release:
-    needs: [build, build-server, build-linux, build-flatpak]
+    needs: [build-client, build-deb, build-flatpak, build-server]
     runs-on: ubuntu-latest
     permissions:
       contents: write
