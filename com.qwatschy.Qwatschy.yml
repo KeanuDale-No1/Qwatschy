@@ -1,0 +1,20 @@
+app-id: com.qwatschy.Qwatschy
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: Qwatschy
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --device=dri
+  - --share=network
+  - --filesystem=home
+modules:
+  - name: Qwatschy
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 Qwatschy /app/bin/Qwatschy
+    sources:
+      - type: archive
+        path: Qwatschy-linux.zip

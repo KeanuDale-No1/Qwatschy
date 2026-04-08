@@ -100,20 +100,57 @@ jobs:
 
       - name: Create DEB Package
         run: |
+          base_version=$(cat ${{ env.VERSION_FILE }})
+          version="$base_version.${{ github.run_number }}"
+          
+          mkdir -p "${{ github.workspace }}/deb-root/DEBIAN"
           mkdir -p "${{ github.workspace }}/deb-root/usr/bin"
           mkdir -p "${{ github.workspace }}/deb-root/usr/lib/qwatschy"
+          mkdir -p "${{ github.workspace }}/deb-root/usr/share/applications"
+          mkdir -p "${{ github.workspace }}/deb-root/usr/share/icons/hicolor/256x256/apps"
+          
           cp -r "${{ github.workspace }}/output/"* "${{ github.workspace }}/deb-root/usr/lib/qwatschy/"
-          echo '#!/bin/bash' > "${{ github.workspace }}/deb-root/usr/bin/qwatschy"
-          echo 'exec /usr/lib/qwatschy/Qwatschy "$@"' >> "${{ github.workspace }}/deb-root/usr/bin/qwatschy"
+          
+          cat > "${{ github.workspace }}/deb-root/DEBIAN/control" << EOF
+          Package: qwatschy
+          Version: $version
+          Section: net
+          Priority: optional
+          Architecture: amd64
+          Depends: libasound2, libglib2.0-0
+          Maintainer: Qwatschy
+          Description: Cross-platform voice chat application
+           Qwatschy is a modern voice chat application with real-time
+           audio and text chat capabilities.
+          EOF
+          
+          cat > "${{ github.workspace }}/deb-root/usr/bin/qwatschy" << 'WRAPPER'
+          #!/bin/bash
+          exec /usr/lib/qwatschy/Qwatschy "$@"
+          WRAPPER
           chmod +x "${{ github.workspace }}/deb-root/usr/bin/qwatschy"
-          dpkg-deb --build "${{ github.workspace }}/deb-root" "${{ github.workspace }}/Qwatschy.deb"
+          
+          cat > "${{ github.workspace }}/deb-root/usr/share/applications/com.qwatschy.Qwatschy.desktop" << 'DESKTOP'
+          [Desktop Entry]
+          Name=Qwatschy
+          Comment=Cross-platform voice chat application
+          Exec=/usr/lib/qwatschy/Qwatschy
+          Icon=com.qwatschy.Qwatschy
+          Terminal=false
+          Type=Application
+          Categories=Network;Chat;
+          DESKTOP
+          
+          cp VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png "${{ github.workspace }}/deb-root/usr/share/icons/hicolor/256x256/apps/com.qwatschy.Qwatschy.png" 2>/dev/null || true
+          
+          dpkg-deb --build "${{ github.workspace }}/deb-root" "${{ github.workspace }}/Qwatschy-deb.deb"
         shell: bash
 
       - name: Upload DEB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-deb
-          path: ${{ github.workspace }}/Qwatschy.deb
+          path: Qwatschy-deb.deb
 
   build-flatpak:
     runs-on: ubuntu-latest
@@ -142,97 +179,28 @@ jobs:
         run: |
           dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir="${{ github.workspace }}/output"
 
-      - name: Create Flatpak Manifest
-        run: |
-          cat > "${{ github.workspace }}/com.qwatschy.Qwatschy.json" << 'EOF'
-          {
-            "app-id": "com.qwatschy.Qwatschy",
-            "runtime": "org.freedesktop.Platform",
-            "runtime-version": "23.08",
-            "sdk": "org.freedesktop.Sdk",
-            "command": "Qwatschy",
-            "finish-args": [
-              "--share=ipc",
-              "--socket=x11",
-              "--socket=wayland",
-              "--device=dri",
-              "--share=network",
-              "--filesystem=home",
-              "--talk-name=org.freedesktop.Notifications"
-            ],
-            "modules": [
-              {
-                "name": "qwatschy",
-                "buildsystem": "simple",
-                "build-commands": [
-                  "install -Dm755 Qwatschy /app/bin/Qwatschy",
-                  "install -Dm644 qwatschy.metainfo.xml /app/share/metainfo/com.qwatschy.Qwatschy.metainfo.xml",
-                  "install -Dm644 qwatschy.desktop /app/share/applications/com.qwatschy.Qwatschy.desktop"
-                ],
-                "sources": [
-                  {
-                    "type": "archive",
-                    "path": "Qwatschy-linux.tar.gz"
-                  }
-                ]
-              }
-            ]
-          }
-          EOF
-        shell: bash
-
       - name: Create App Archive
         run: |
           cd "${{ github.workspace }}/output"
-          tar -czvf "${{ github.workspace }}/Qwatschy-linux.tar.gz" .
-
-      - name: Create Desktop File
-        run: |
-          cat > "${{ github.workspace }}/qwatschy.desktop" << 'EOF'
-          [Desktop Entry]
-          Name=Qwatschy
-          Comment=Cross-platform voice chat application
-          Exec=Qwatschy
-          Icon=com.qwatschy.Qwatschy
-          Terminal=false
-          Type=Application
-          Categories=Network;Chat;
-          EOF
-
-      - name: Create AppStream Metadata
-        run: |
-          cat > "${{ github.workspace }}/qwatschy.metainfo.xml" << 'EOF'
-          <?xml version="1.0" encoding="UTF-8"?>
-          <component type="desktop-application">
-            <id>com.qwatschy.Qwatschy</id>
-            <name>Qwatschy</name>
-            <summary>Cross-platform voice chat application</summary>
-            <metadata_license>CC0-1.0</metadata_license>
-            <project_license>MIT</project_license>
-            <description>
-              <p>Qwatschy is a modern voice chat application with real-time audio and text chat.</p>
-            </description>
-            <launchable type="desktop-id">com.qwatschy.Qwatschy.desktop</launchable>
-            <url type="homepage">https://github.com/KeanuDale-No1/Qwatschy</url>
-          </component>
-          EOF
+          zip -r "${{ github.workspace }}/Qwatschy-linux.zip" .
 
       - name: Install Flatpak
         run: |
-          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-          flatpak install -y flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
+          flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install -y flathub org.freedesktop.Platform//25.08 org.freedesktop.Sdk//25.08
 
       - name: Build Flatpak
-        run: flatpak-builder --force-clean --user --install-deps-from=flathub build-dir "${{ github.workspace }}/com.qwatschy.Qwatschy.json"
+        run: |
+          flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install build-dir com.qwatschy.Qwatschy.yml
 
       - name: Create Flatpak Bundle
-        run: flatpak build-bundle "${{ github.workspace }}/Qwatschy.flatpak" com.qwatschy.Qwatschy
+        run: flatpak build-bundle repo Qwatschy.flatpak com.qwatschy.Qwatschy --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Upload Flatpak Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-flatpak
-          path: ${{ github.workspace }}/Qwatschy.flatpak
+          path: Qwatschy.flatpak
 
   build-server:
     strategy:
