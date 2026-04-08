@@ -3,10 +3,10 @@ runtime: org.freedesktop.Platform
 runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.dotnet8
+  - org.freedesktop.Sdk.Extension.dotnet9
 build-options:
-  prepend-path: /usr/lib/sdk/dotnet8/bin
-  append-ld-library-path: /usr/lib/sdk/dotnet8/lib
+  prepend-path: /usr/lib/sdk/dotnet9/bin
+  append-ld-library-path: /usr/lib/sdk/dotnet9/lib
 command: Qwatschy
 
 finish-args:
@@ -24,7 +24,7 @@ modules:
   - name: dotnet
     buildsystem: simple
     build-commands:
-      - /usr/lib/sdk/dotnet8/bin/install.sh
+      - /usr/lib/sdk/dotnet9/bin/install.sh
 
   - name: qwatschy
     buildsystem: simple
@@ -34,8 +34,8 @@ modules:
       - type: file
         path: nuget-sources.json
     build-commands:
-      - export PATH=/usr/lib/sdk/dotnet8/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet8 && dotnet restore VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj --source ./nuget-sources
-      - export PATH=/usr/lib/sdk/dotnet8/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet8 && dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release --no-self-contained --source ./nuget-sources -p:PublishDir=/app/output
+      - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && dotnet restore VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj --source ./nuget-sources
+      - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release --no-self-contained --source ./nuget-sources -p:PublishDir=/app/output
       - install -Dm755 /app/output/Qwatschy /app/bin/Qwatschy
       - install -d /app/lib/qwatschy
       - cp -r /app/output/* /app/lib/qwatschy/

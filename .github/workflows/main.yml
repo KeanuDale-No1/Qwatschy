@@ -32,7 +32,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 9.0.x
 
       - name: Install Velopack
         run: dotnet tool install -g vpk
@@ -84,7 +84,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 9.0.x
 
       - name: Read Version
         id: version
@@ -165,7 +165,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 9.0.x
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -197,7 +197,7 @@ jobs:
 
       - name: Generate NuGet Sources
         run: |
-          python3 "${{ github.workspace }}/flatpak-dotnet-generator.py" --dotnet 8 --freedesktop 24.08 "${{ github.workspace }}/nuget-sources.json" "VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj"
+          python3 "${{ github.workspace }}/flatpak-dotnet-generator.py" --dotnet 9 --freedesktop 24.08 "${{ github.workspace }}/nuget-sources.json" "VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj"
 
       - name: Build Flatpak
         run: |
@@ -240,7 +240,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 10.0.x
+          dotnet-version: 9.0.x
 
       - name: Read Version
         id: version
