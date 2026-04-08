@@ -199,6 +199,13 @@ jobs:
         run: |
           dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained false -p:PublishDir="${{ github.workspace }}/output-flatpak"
 
+      - name: Prepare Flatpak build
+        run: |
+          mkdir -p build-dir
+          cp io.github.KeanuDale_No1.Qwatschy.yml build-dir/
+          cp -r output-flatpak/* build-dir/output/
+          cp VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png build-dir/output/
+
       - name: Build Flatpak
         run: |
           flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install build-dir io.github.KeanuDale_No1.Qwatschy.yml
