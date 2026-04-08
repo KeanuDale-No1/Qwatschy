@@ -1,6 +1,6 @@
 id: com.qwatschy.Qwatschy
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.dotnet9
@@ -35,7 +35,7 @@ modules:
       - type: git
         url: https://github.com/KeanuDale-No1/Qwatschy
     build-commands:
-      - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && dotnet restore VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj
+      - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && export DOTNET_CLI_TELEMETRY_OPTOUT=1 && dotnet workload update --skip-sign-check && dotnet restore VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj
       - export PATH=/usr/lib/sdk/dotnet9/bin:$PATH && export DOTNET_ROOT=/usr/lib/sdk/dotnet9 && dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release --no-self-contained -p:PublishDir=/app/output
       - install -Dm755 /app/output/Qwatschy /app/bin/Qwatschy
       - install -d /app/lib/qwatschy
