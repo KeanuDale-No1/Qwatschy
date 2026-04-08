@@ -201,7 +201,7 @@ jobs:
 
       - name: Prepare Flatpak build
         run: |
-          mkdir -p build-dir
+          mkdir -p build-dir/output
           cp io.github.KeanuDale_No1.Qwatschy.yml build-dir/
           cp -r output-flatpak/* build-dir/output/
           cp VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png build-dir/output/
