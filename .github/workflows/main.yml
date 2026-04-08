@@ -50,24 +50,27 @@ jobs:
         shell: bash
 
       - name: Publish (${{ matrix.suffix }})
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true
+        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishDir=output/
 
       - name: Pack (${{ matrix.suffix }})
         run: |
           main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.exe' || 'Qwatschy' }}"
-          pack_dir="VoiceChat.Client/VoiceChat.Client.Desktop/bin/Release/net10.0/${{ matrix.runtime }}/publish"
-          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "$pack_dir" --mainExe "$main_exe"
-          mv Qwatschy-*.nupkg Qwatschy-${{ matrix.suffix }}.nupkg
-          mv Qwatschy-${{ matrix.suffix }}-Setup.exe Qwatschy-Setup-${{ matrix.suffix }}.exe
+          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir output/ --mainExe "$main_exe"
         shell: bash
+
+      - name: Rename Windows Setup
+        if: runner.os == 'Windows'
+        run: mv Qwatschy-*-Setup.exe Qwatschy-Setup-win.exe
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-client-${{ matrix.suffix }}
           path: |
-            **/*.nupkg
-            **/RELEASES
+            Qwatschy-*.nupkg
+            Qwatschy-*.AppImage
+            Qwatschy-*-Setup.exe
+            Releases
 
   build-deb:
     runs-on: ubuntu-latest
@@ -95,55 +98,20 @@ jobs:
         shell: bash
 
       - name: Publish Linux
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/linux/
+        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/
 
       - name: Pack DEB (.deb)
         run: |
-          cd output/linux
+          cd output
           vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir . --mainExe Qwatschy --packageFormat deb
-          mv *.deb Qwatschy-deb.deb
+          mv *.deb ../Qwatschy-deb.deb
         shell: bash
 
       - name: Upload DEB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-deb
-          path: output/linux/Qwatschy-deb.deb
-
-  build-flatpak:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Read Version
-        id: version
-        run: |
-          base_version=$(cat ${{ env.VERSION_FILE }})
-          version="$base_version.${{ github.run_number }}"
-          echo "VERSION=$version" >> $GITHUB_OUTPUT
-        shell: bash
-
-      - name: Publish Linux
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/linux/
-
-      - name: Create Linux ZIP
-        run: |
-          cd output/linux
-          zip -r Qwatschy-linux.zip .
-        shell: bash
-
-      - name: Upload Linux ZIP Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-flatpak
-          path: output/linux/Qwatschy-linux.zip
+          path: Qwatschy-deb.deb
 
   build-server:
     strategy:
@@ -176,20 +144,20 @@ jobs:
         shell: bash
 
       - name: Publish Server (${{ matrix.suffix }})
-        run: dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o output/${{ matrix.suffix }}/
+        run: dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o output/
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Linux'
         run: |
-          cd output/${{ matrix.suffix }}
-          zip -r Qwatschy-Server-${{ matrix.suffix }}.zip . -x "*/createdump"
+          cd output
+          zip -r ../Qwatschy-Server-${{ matrix.suffix }}.zip . -x "*/createdump"
         shell: bash
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Windows'
         run: |
-          Get-ChildItem -Path output/${{ matrix.suffix }}/createdump.exe -ErrorAction SilentlyContinue | Remove-Item
-          Compress-Archive -Path output/${{ matrix.suffix }}/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}.zip
+          Get-ChildItem -Path output/createdump.exe -ErrorAction SilentlyContinue | Remove-Item
+          Compress-Archive -Path output/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}.zip
 
       - name: Upload Server Artifact (${{ matrix.suffix }})
         uses: actions/upload-artifact@v4
@@ -198,7 +166,7 @@ jobs:
           path: Qwatschy-Server-${{ matrix.suffix }}.zip
 
   release:
-    needs: [build-client, build-deb, build-flatpak, build-server]
+    needs: [build-client, build-deb, build-server]
     runs-on: ubuntu-latest
     permissions:
       contents: write
