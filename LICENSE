@@ -1,24 +1,21 @@
-PROPRIETARY LICENSE AGREEMENT
+MIT License
 
-Copyright (c) 2026 KeanuDale-No1 - Alle Rechte vorbehalten.
+Copyright (c) 2026 KeanuDale-No1
 
-Dieses Softwareprojekt ist Eigentum von KeanuDale-No1. 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-NUR KeanuDale-No1 ist berechtigt, diese Software zu:
-- Nutzen
-- Kopieren
-- Modifizieren
-- Verteilen
-- Kommerziell verwenden
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Ohne ausdrückliche schriftliche Genehmigung von KeanuDale-No1 ist es 
-ausdrücklich VERBOTEN:
-- Diese Software öffentlich zu nutzen
-- Diese Software als Teil eigener Projekte zu verwenden
-- Forks dieses Repositories zu erstellen
-- Diese Software kommerziell zu vertreiben
-- Den Quellcode für eigene Projekte zu verwenden
-
-Bei Verstoß behält sich KeanuDale-No1 rechtliche Schritte vor.
-
-Kontakt: keanudale001@gmail.com
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
