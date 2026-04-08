@@ -7,6 +7,7 @@ on:
 
 env:
   VERSION_FILE: VERSION
+  PROJECT_DIR: ${{ github.workspace }}
 
 jobs:
   build-client:
@@ -21,6 +22,9 @@ jobs:
             suffix: linux
 
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
 
     steps:
       - name: Checkout
@@ -50,30 +54,34 @@ jobs:
         shell: bash
 
       - name: Publish (${{ matrix.suffix }})
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishDir=output/
+        run: |
+          dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -p:PublishDir="${{ github.workspace }}/output"
 
       - name: Pack (${{ matrix.suffix }})
         run: |
           main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.exe' || 'Qwatschy' }}"
-          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir output/ --mainExe "$main_exe"
+          vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "${{ github.workspace }}/output" --mainExe "$main_exe"
         shell: bash
 
       - name: Rename Windows Setup
         if: runner.os == 'Windows'
-        run: mv Qwatschy-*-Setup.exe Qwatschy-Setup-win.exe
+        run: mv "${{ github.workspace }}/Qwatschy-*-Setup.exe" "${{ github.workspace }}/Qwatschy-Setup-win.exe"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-client-${{ matrix.suffix }}
           path: |
-            Qwatschy-*.nupkg
-            Qwatschy-*.AppImage
-            Qwatschy-*-Setup.exe
-            Releases
+            ${{ github.workspace }}/Qwatschy-*.nupkg
+            ${{ github.workspace }}/Qwatschy-*.AppImage
+            ${{ github.workspace }}/Qwatschy-*-Setup.exe
+            ${{ github.workspace }}/Releases
 
   build-deb:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
 
     steps:
       - name: Checkout
@@ -98,20 +106,21 @@ jobs:
         shell: bash
 
       - name: Publish Linux
-        run: dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir=output/
+        run: |
+          dotnet publish VoiceChat.Client/VoiceChat.Client.Desktop/VoiceChat.Client.Desktop.csproj -c Release -r linux-x64 --self-contained true -p:PublishDir="${{ github.workspace }}/output"
 
       - name: Pack DEB (.deb)
         run: |
-          cd output
+          cd "${{ github.workspace }}/output"
           vpk pack --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir . --mainExe Qwatschy --packageFormat deb
-          mv *.deb ../Qwatschy-deb.deb
+          mv *.deb "${{ github.workspace }}/Qwatschy-deb.deb"
         shell: bash
 
       - name: Upload DEB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-deb
-          path: Qwatschy-deb.deb
+          path: ${{ github.workspace }}/Qwatschy-deb.deb
 
   build-server:
     strategy:
@@ -125,6 +134,9 @@ jobs:
             suffix: linux
 
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
 
     steps:
       - name: Checkout
@@ -144,26 +156,27 @@ jobs:
         shell: bash
 
       - name: Publish Server (${{ matrix.suffix }})
-        run: dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o output/
+        run: |
+          dotnet publish VoiceChat.Api/VoiceChat.Api.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o "${{ github.workspace }}/output"
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Linux'
         run: |
-          cd output
-          zip -r ../Qwatschy-Server-${{ matrix.suffix }}.zip . -x "*/createdump"
+          cd "${{ github.workspace }}/output"
+          zip -r "${{ github.workspace }}/Qwatschy-Server-${{ matrix.suffix }}.zip" . -x "*/createdump"
         shell: bash
 
       - name: Create Server ZIP (${{ matrix.suffix }})
         if: runner.os == 'Windows'
         run: |
-          Get-ChildItem -Path output/createdump.exe -ErrorAction SilentlyContinue | Remove-Item
-          Compress-Archive -Path output/* -DestinationPath Qwatschy-Server-${{ matrix.suffix }}.zip
+          Get-ChildItem -Path "${{ github.workspace }}/output/createdump.exe" -ErrorAction SilentlyContinue | Remove-Item
+          Compress-Archive -Path "${{ github.workspace }}/output/*" -DestinationPath "${{ github.workspace }}/Qwatschy-Server-${{ matrix.suffix }}.zip"
 
       - name: Upload Server Artifact (${{ matrix.suffix }})
         uses: actions/upload-artifact@v4
         with:
           name: release-server-${{ matrix.suffix }}
-          path: Qwatschy-Server-${{ matrix.suffix }}.zip
+          path: ${{ github.workspace }}/Qwatschy-Server-${{ matrix.suffix }}.zip
 
   release:
     needs: [build-client, build-deb, build-server]
