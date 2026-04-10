@@ -10,11 +10,12 @@
              x:DataType="viewmodels:MainViewModel"
              Background="{DynamicResource BackgroundBrush}">
 
-  
+    <Design.DataContext>
+        <viewmodels:MainViewModel />
+    </Design.DataContext>
 
-    <Grid Background="{DynamicResource BackgroundBrush}"
-          Grid.RowDefinitions="*" 
-          Grid.ColumnDefinitions="*">
+    <Grid Background="{DynamicResource BackgroundBrush}" 
+          Grid.RowDefinitions="*" Grid.ColumnDefinitions="*">
         <ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding CurrentViewModel}" />
     </Grid>
 </UserControl>
