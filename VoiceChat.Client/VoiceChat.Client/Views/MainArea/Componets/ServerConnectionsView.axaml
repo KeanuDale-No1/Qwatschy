@@ -21,8 +21,7 @@
 									   Height="32"
 									   Stretch="Uniform"/>
 							</Border>
-
-							<Separator/>
+							<Separator Margin="0" Padding="0" Height="1" MaxHeight="1"/>
 						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
@@ -36,8 +35,7 @@
 						   VerticalAlignment="Center"
 						   Opacity="0.5"/>
 			</Border>
-			<Separator/>
-
+			<Separator Margin="0" Padding="0" Height="1" MaxHeight="1"/>
 		</StackPanel>
 	</ScrollViewer>
 
