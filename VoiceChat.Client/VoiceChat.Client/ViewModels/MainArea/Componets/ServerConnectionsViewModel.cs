@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Avalonia.Media.Imaging;
+using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Avalonia.Media.Imaging;
+using System.Threading.Tasks;
 using VoiceChat.Client.ViewModels.Base;
 
 namespace VoiceChat.Client.ViewModels.MainArea.Componets;
@@ -15,6 +17,24 @@ public partial class ServerConnectionsViewModel : ViewModelBase
     public ServerConnectionsViewModel()
     {
         
+    }
+
+    [RelayCommand]
+    public async Task AddServer(ServerConnectionInfo server)
+    {
+
+    }
+
+    [RelayCommand]
+    public async Task RemoveServer(ServerConnectionInfo server)
+    {
+        
+    }
+
+    [RelayCommand]
+    public async Task ConnectServer()
+    {
+
     }
 
 }

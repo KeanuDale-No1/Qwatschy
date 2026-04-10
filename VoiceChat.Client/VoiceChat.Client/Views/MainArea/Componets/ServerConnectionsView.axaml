@@ -7,7 +7,6 @@
 			 x:DataType="vm:ServerConnectionsViewModel"
 			 x:Class="VoiceChat.Client.Views.MainArea.Componets.ServerConnectionsView">
 
-
 	<ScrollViewer>
 		<StackPanel>
 			<ItemsControl ItemsSource="{Binding Servers}">
@@ -15,29 +14,34 @@
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal">
 							<Border MaxHeight="48" Height="48" Width="48" Padding="0" Margin="0">
-								<!--<Image Source="{Binding Image}"
-									   Width="32"
-									   Height="32"
-									   Stretch="Uniform"/>-->
-							<TextBlock Text="{Binding Abbr}" 
-									   FontSize="32"
-									   HorizontalAlignment="Center"
-									   VerticalAlignment="Center" 
-									   FontWeight="Bold"/>
-
-
+								<Button Command="{Binding $parent[ItemsControl].DataContext.ConnectServerCommand}"
+										CommandParameter="{Binding .}"
+										Height="60"
+										Width="60"
+										Content="{Binding Abbr}"
+										FontSize="32"
+										FontWeight="ExtraBold"
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										HorizontalContentAlignment="Center"
+										VerticalContentAlignment="Center"
+										ToolTip.Tip="{Binding ServerName}"/>
 							</Border>
 						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 			<Border MaxHeight="64" Height="64" Padding="0" Margin="0">
-				<TextBlock Text="+"
-						   FontSize="32"
-						   FontWeight="ExtraBold"
-						   HorizontalAlignment="Center"
-						   VerticalAlignment="Center"
-						   Opacity="0.5"/>
+				<Button Command="{Binding AddServerCommand}"
+						Height="60"
+						Width="60"
+						Content="+"
+						FontSize="32"
+						FontWeight="ExtraBold"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						HorizontalContentAlignment="Center"
+						VerticalContentAlignment="Center"/>
 			</Border>
 			<Separator Margin="0" Padding="0" Height="1" MaxHeight="1"/>
 		</StackPanel>
