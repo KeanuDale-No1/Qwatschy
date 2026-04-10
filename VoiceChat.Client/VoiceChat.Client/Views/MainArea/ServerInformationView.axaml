@@ -3,9 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
+
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="VoiceChat.Client.Views.MainArea.ServerInformation"
-             Background="{DynamicResource SurfaceBrush}">
+             x:Class="VoiceChat.Client.Views.MainArea.ServerInformationView"
+             Background="{DynamicResource SurfaceBrush}"
+             x:DataType="vm:ServerInformationViewModel">
 
     <Border Classes="panel">
         <StackPanel Spacing="12">
@@ -18,7 +21,7 @@
             </Border>
 
             <TextBlock Classes="title"
-                       Text="Dev Community"/>
+                       Text="{Binding ServerName}"/>
 
             <Separator/>
 

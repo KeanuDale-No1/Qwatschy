@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace VoiceChat.Client.Views.MainArea;
 
-public partial class ServerInformation : UserControl
+public partial class ServerInformationView : UserControl
 {
-    public ServerInformation()
+    public ServerInformationView()
     {
         InitializeComponent();
     }

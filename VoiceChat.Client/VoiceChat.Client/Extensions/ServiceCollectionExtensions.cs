@@ -2,14 +2,15 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Net.Http;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.Navigation;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels;
 using VoiceChat.Client.ViewModels.Login;
 using VoiceChat.Client.ViewModels.MainArea;
+using VoiceChat.Client.ViewModels.MainArea.Componets;
 
 namespace VoiceChat.Client.Extensions;
 public static class ServiceCollectionExtensions
@@ -20,7 +21,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<TokenService>();
         services.AddSingleton<ChatHubClient>();
         services.AddSingleton<VoiceHubClient>();
-        services.AddSingleton<ConnectionService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<StateService>();
         services.AddHttpClient("ApiClient", (sp, client) =>
@@ -49,5 +49,8 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ChannelSidebarViewModel>();
         services.AddTransient<ChatViewModel>();
         services.AddTransient<ServerInformationViewModel>();
+        services.AddTransient<ServerConnectionsViewModel>();
+        services.AddTransient<ActionbarViewModel>();
+
     }
 }

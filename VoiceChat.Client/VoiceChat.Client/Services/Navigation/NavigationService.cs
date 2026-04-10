@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using VoiceChat.Client.ViewModels;
 using VoiceChat.Client.ViewModels.Base;
 
-namespace VoiceChat.Client.Services;
+namespace VoiceChat.Client.Services.Navigation;
 
 internal class NavigationService : INavigationService
 {

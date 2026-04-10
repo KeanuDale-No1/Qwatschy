@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="64" d:DesignHeight="450"
+			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea.Componets"
+			 x:DataType="vm:ServerConnectionsViewModel"
+			 x:Class="VoiceChat.Client.Views.MainArea.Componets.ServerConnectionsView">
+
+
+	<ScrollViewer>
+		<StackPanel>
+
+			<ItemsControl ItemsSource="{Binding Servers}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel>
+							<Border MaxHeight="64" Height="64" Padding="0" Margin="0">
+								<Image Source="{Binding Image}"
+									   Width="32"
+									   Height="32"
+									   Stretch="Uniform"/>
+							</Border>
+
+							<Separator/>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+
+			<Border MaxHeight="64" Padding="0" Margin="0">
+				<TextBlock Text="+"
+						   FontSize="24"
+						   FontWeight="ExtraBold"
+						   HorizontalAlignment="Center"
+						   VerticalAlignment="Center"
+						   Opacity="0.5"/>
+			</Border>
+			<Separator/>
+
+		</StackPanel>
+	</ScrollViewer>
+
+
+</UserControl>

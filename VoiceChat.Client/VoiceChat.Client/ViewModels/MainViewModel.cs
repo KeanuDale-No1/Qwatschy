@@ -2,8 +2,8 @@
 
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
-using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
+using VoiceChat.Client.Services.Navigation;
 using VoiceChat.Client.ViewModels.Base;
 using VoiceChat.Client.ViewModels.Login;
 using VoiceChat.Client.ViewModels.MainArea;

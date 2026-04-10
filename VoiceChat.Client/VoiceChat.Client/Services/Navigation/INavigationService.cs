@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using VoiceChat.Client.ViewModels.Base;
 
-namespace VoiceChat.Client.Services;
+namespace VoiceChat.Client.Services.Navigation;
 
 public interface INavigationService
 {
