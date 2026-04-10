@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Shared.Models;
 
@@ -22,7 +23,7 @@ namespace VoiceChat.Client.Services
 
     public class ChannelService
     {
-        private readonly AppState appState;
+        private readonly IAppSettingsService appState;
         private readonly StateService stateService;
 
         private readonly ApiService httpClientService;
@@ -37,7 +38,7 @@ namespace VoiceChat.Client.Services
         public ChannelService(ApiService httpClientService,
                               ChatHubClient serviceHub,
                               VoiceChatService voiceChatService,
-                              AppState appState,
+                              IAppSettingsService appState,
                               StateService stateService)
         {
             this.appState = appState;
@@ -59,9 +60,9 @@ namespace VoiceChat.Client.Services
             }
         }
 
-        private void ServiceHub_UserJoinChannel(ConnectChannelResponseDTO obj)
+        private async void ServiceHub_UserJoinChannel(ConnectChannelResponseDTO obj)
         {
-            if (obj.UserId == appState.GetUser().ClientId)
+            if (obj.UserId ==  appState.AppSetting.UserSettings.UserId)
             {
                 stateService.SetConnectedChannel(obj.ChannelId);
                 voiceService.Start();

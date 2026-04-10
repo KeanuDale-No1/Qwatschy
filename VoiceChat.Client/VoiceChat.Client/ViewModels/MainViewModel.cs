@@ -26,5 +26,4 @@ public partial class MainViewModel : ViewModelBase
     }
 
     public MainViewModel() : this(null!) { }
-
 }

@@ -18,7 +18,6 @@ public static class ServiceCollectionExtensions
     {
         //Services
         services.AddSingleton<TokenService>();
-        services.AddSingleton<AppState>();
         services.AddSingleton<ChatHubClient>();
         services.AddSingleton<VoiceHubClient>();
         services.AddSingleton<ConnectionService>();
@@ -49,7 +48,6 @@ public static class ServiceCollectionExtensions
         services.AddTransient<MainAreaViewModel>();
         services.AddTransient<ChannelSidebarViewModel>();
         services.AddTransient<ChatViewModel>();
-        services.AddTransient<RightSidebarViewModel>();
 
     }
 }

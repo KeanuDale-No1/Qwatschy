@@ -6,8 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Velopack;
+using VoiceChat.Client.Desktop.Services.AppSettings;
 using VoiceChat.Client.Desktop.Services.SoundPlayer;
 using VoiceChat.Client.Extensions;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.SoundPlayer;
 using VoiceChat.Client.Services.VoiceService;
 
@@ -47,6 +49,7 @@ namespace VoiceChat.Client.Desktop
             // Hier registrierst du deinen Desktop-SoundPlayer
             services.AddSingleton<ISoundPlayer, DesktopSoundPlayer>();
             services.AddSingleton<IVoiceService, Services.VoiceService.DesktopVoiceService>();
+            services.AddSingleton<IAppSettingsService, AppSettingsService>();
             services.AddCommonServices();
             // weitere Services...
 

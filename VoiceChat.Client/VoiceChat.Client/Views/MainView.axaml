@@ -18,6 +18,5 @@
           Grid.RowDefinitions="*" 
           Grid.ColumnDefinitions="*,auto">
         <ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding CurrentViewModel}" />
-        <control:RightSidebar Grid.Column="1" Grid.Row="0"/>
     </Grid>
 </UserControl>

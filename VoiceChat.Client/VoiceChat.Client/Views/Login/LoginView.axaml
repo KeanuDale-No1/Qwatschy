@@ -1,76 +1,51 @@
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:VoiceChat.Client.ViewModels.Login"
-    mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:VoiceChat.Client.ViewModels.Login"
+			 mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
 
-    x:DataType="vm:LoginViewModel"
-    x:Class="VoiceChat.Client.Views.Login.LoginView"
-    Background="{DynamicResource BackgroundBrush}">
+			 x:DataType="vm:LoginViewModel"
+			 x:Class="VoiceChat.Client.Views.Login.LoginView"
+			 Background="{DynamicResource BackgroundBrush}">
 
-    <SplitView IsPaneOpen="{Binding OpenLastConnection}" PanePlacement="Bottom" DisplayMode="Inline" OpenPaneLength="300">
-        <SplitView.Pane>
-            <Border Classes="panel">
-                <StackPanel Spacing="8">
-                    <TextBlock Classes="header" Text="Verbindungshistorie"/>
-                    <Separator/>
-                    <ItemsControl ItemsSource="{Binding ServerConnections}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Button Classes="channelItem"
-                                        Command="{Binding $parent[ItemsControl].DataContext.SetHistoryServerCommand}"
-                                        CommandParameter="{Binding .}"
-                                        HorizontalAlignment="Stretch"
-                                        Content="{Binding ServerAdress}"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
-            </Border>
-        </SplitView.Pane>
+	<Grid RowDefinitions="*, auto, *"
+		  ColumnDefinitions="*,auto,*"
+		  Background="{DynamicResource BackgroundBrush}">
+		<TextBlock Grid.Row="0"
+				   Grid.Column="1"
+				Text="Schön das du zu Qwatschy gefunden hast" 
+				   Classes="title"
+				   VerticalAlignment="Center" 
+				   HorizontalAlignment="Center"/>
+		<Border Grid.Row="1" Grid.Column="1"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Padding="50"
+				Background="{DynamicResource BackgroundColorField}">
+			<StackPanel HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Spacing="16"
+						MinWidth="300">
+				<Image Margin="20"
+					   Height="256"
+					   Width="256"
+					   Source="avares://VoiceChat.Client/Assets/qwatschy_logo.ico"
+					   Stretch="Uniform"/>
 
-        <Grid RowDefinitions="*, auto" Background="{DynamicResource BackgroundBrush}">
-            <StackPanel Grid.Row="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Spacing="16"
-                        MinWidth="300">
+				<TextBlock Classes="header"
+						   Text="Wie ist dein Name:"
+						   HorizontalAlignment="Center"/>
+				<TextBox HorizontalAlignment="Stretch"
+						 Text="{Binding Username}"/>
 
-                <Image Margin="20"
-                       Height="256"
-                       Width="256"
-                       Source="avares://VoiceChat.Client/Assets/qwatschy_logo.ico"
-                       Stretch="Uniform"/>
+				<Button Classes="primary"
+						HorizontalAlignment="Stretch"
+						HorizontalContentAlignment="Center"
+						Content="Speichern"
+						Command="{Binding SaveCommand}"/>
+			</StackPanel>
+		</Border>
+	</Grid>
 
-                <TextBlock Classes="header"
-                           Text="Username"
-                           HorizontalAlignment="Left"/>
-                <TextBox HorizontalAlignment="Stretch"
-                         Text="{Binding Username}"/>
-
-                <TextBlock Classes="header"
-                           Text="Server IP:"
-                           HorizontalAlignment="Left"
-                           Margin="0,8,0,0"/>
-                <TextBox HorizontalAlignment="Stretch"
-                         Text="{Binding InputserverAddress}"/>
-
-                <Button Classes="primary"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        Content="Verbinden"
-                        Command="{Binding ConntectCommand}"
-                        Margin="0,16,0,0"/>
-            </StackPanel>
-            <Button Grid.Row="1"
-                    HorizontalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    Command="{Binding OpenHistoryCommand}"
-                    Content="{Binding HistoryButtonText}"
-                    Margin="0,8"/>
-        </Grid>
-
-    </SplitView>
 </UserControl>

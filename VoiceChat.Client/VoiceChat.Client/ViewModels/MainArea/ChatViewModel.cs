@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.ViewModels.Base;
 using VoiceChat.Shared.Models;
 
@@ -30,7 +31,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
         [ObservableProperty] private bool isLoadingMore = false;
 
         private readonly ChatHubClient chatService;
-        private readonly AppState appState;
+        private readonly IAppSettingsService appState;
         private readonly ChannelService channelService;
         public event Action? MessageAdded;
         public event Action? ScrollToBottom;
@@ -40,7 +41,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
         private const int InitialLoad = 40;
         private const int LoadMoreCount = 50;
 
-        public ChatViewModel(ChatHubClient chatService, AppState appState, StateService stateService, ChannelService channelService)
+        public ChatViewModel(ChatHubClient chatService, IAppSettingsService appState, StateService stateService, ChannelService channelService)
         {
             this.stateService = stateService;
             this.appState = appState;
@@ -95,7 +96,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
                 
                 foreach (var msg in response.Messages)
                 {
-                    Messages.Add(CreateChatMessage(msg));
+                    Messages.Add(await CreateChatMessage(msg));
                 }
                 
                 loadedCount = response.Messages.Count;
@@ -125,10 +126,9 @@ namespace VoiceChat.Client.ViewModels.MainArea
                 
                 var skip = loadedCount;
                 var response = await chatService.GetMessages(stateService.SelectChannelId.Value, skip, LoadMoreCount);
-                
                 foreach (var msg in response.Messages)
                 {
-                    Messages.Insert(0, CreateChatMessage(msg));
+                    Messages.Insert(0, await CreateChatMessage(msg));
                 }
                 
                 loadedCount += response.Messages.Count;
@@ -142,22 +142,22 @@ namespace VoiceChat.Client.ViewModels.MainArea
             }
         }
 
-        private ChatMessage CreateChatMessage(ChatMessageDTO msg)
+        private async Task<ChatMessage> CreateChatMessage(ChatMessageDTO msg)
         {
+            
             var username = msg.Username ?? "Unknown";
             var initials = username.Length > 2 ? username.Substring(0, 2) : username;
-            
             return new ChatMessage(
                 msg.ChannelId,
                 username,
                 msg.Content,
                 msg.Timestamp,
-                appState.GetUser().ClientId == msg.SenderId ? HorizontalAlignment.Right : HorizontalAlignment.Left,
-                appState.GetUser().ClientId == msg.SenderId,
+                appState.AppSetting.UserSettings.UserId== msg.SenderId ? HorizontalAlignment.Right : HorizontalAlignment.Left,
+                appState.AppSetting.UserSettings.UserId == msg.SenderId,
                 initials);
         }
 
-        private void OnMessageReceived(ChatMessageDTO message)
+        private async void OnMessageReceived(ChatMessageDTO message)
         {
             Debug.WriteLine($"[Chat] MessageReceived: Channel={message.ChannelId}, Content={message.Content}");
             Debug.WriteLine($"[Chat] Current Channel: {stateService.SelectChannelId}");
@@ -165,7 +165,7 @@ namespace VoiceChat.Client.ViewModels.MainArea
             if (stateService.SelectChannelId.HasValue && message.ChannelId == stateService.SelectChannelId.Value)
             {
                 Debug.WriteLine($"[Chat] Adding message to collection");
-                Messages.Add(CreateChatMessage(message));
+                Messages.Add(await CreateChatMessage(message));
                 MessageAdded?.Invoke();
                 ScrollToBottom?.Invoke();
             }
@@ -182,7 +182,8 @@ namespace VoiceChat.Client.ViewModels.MainArea
             if (chatService.Connection?.State == HubConnectionState.Connected && stateService.SelectChannelId.HasValue && String.IsNullOrWhiteSpace(MessageInput) == false)
             {
                 Debug.WriteLine($"[Chat] Sending message to channel {stateService.SelectChannelId}");
-                await chatService.SendMessage(new ChatMessageDTO(appState.GetUser().ClientId, stateService.SelectChannelId.Value, MessageInput, DateTime.UtcNow));
+                
+                await chatService.SendMessage(new ChatMessageDTO(appState.AppSetting.UserSettings.UserId, stateService.SelectChannelId.Value, MessageInput, DateTime.UtcNow));
                 MessageInput = "";
             }
         }

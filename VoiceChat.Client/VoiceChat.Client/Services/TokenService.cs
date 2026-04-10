@@ -6,7 +6,6 @@ namespace VoiceChat.Client.Services
 {
     public class TokenService
     {
-
         private string Token { get; set; }
 
         public void WriteNewToken(string token)

@@ -4,8 +4,10 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using VoiceChat.Client.Extensions;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.ViewModels;
 using VoiceChat.Client.Views;
 
@@ -18,7 +20,6 @@ public partial class App : Application
     {
         AvaloniaXamlLoader.Load(this);
     }
-
     public override void OnFrameworkInitializationCompleted()
     {
         if (Services == null)
@@ -26,16 +27,8 @@ public partial class App : Application
             base.OnFrameworkInitializationCompleted();
             return;
         }
-        Console.WriteLine(ApplicationLifetime);
-        if (!Design.IsDesignMode)
-        {
-            try
-            {
-                var appState = Services.GetRequiredService<AppState>();
-                appState.ApplicationLifetime = ApplicationLifetime;
-            }
-            catch { }
-        }
+
+        InitializeAppSettingsAsync();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -55,6 +48,13 @@ public partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+
+    private void InitializeAppSettingsAsync()
+    {
+        var appSettings = Services.GetRequiredService<IAppSettingsService>();
+        appSettings.InitAppSettings();
     }
 
 }

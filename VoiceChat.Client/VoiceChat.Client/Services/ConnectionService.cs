@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.ViewModels.Login;
 using VoiceChat.Client.ViewModels.MainArea;
 using VoiceChat.Shared.Models;
@@ -12,9 +13,9 @@ namespace VoiceChat.Client.Services
 {
     public class ConnectionService(ApiService apiService,
                                  INavigationService navigationService,
-                                 AppState appState,
+                                 IAppSettingsService appState,
                                  StateService stateService,
-                                 TokenService tokenService, 
+                                 TokenService tokenService,
                                  ChatHubClient serviceHub,
                                  VoiceHubClient voiceHubClient)
     {
@@ -32,14 +33,18 @@ namespace VoiceChat.Client.Services
 
         public async Task ServerConnect(string username, string serveraddress)
         {
-            appState.SetUsername(username);
-            stateService.SetConnectedServer(appState.GetUser().ClientId, username, serveraddress);
-            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(appState.GetUser().ClientId, appState.GetUser().UserName);
+            
+            appState.AppSetting.UserSettings.Username = username;
+            appState.SaveAppSettings();
+
+            stateService.SetConnectedServer(appState.AppSetting.UserSettings.UserId, username, serveraddress);
+            LoginRequestDTO loginRequestDTO = new LoginRequestDTO(appState.AppSetting.UserSettings.UserId, appState.AppSetting.UserSettings.Username);
             var response = await apiService.PostAsync<LoginRequestDTO, LoginResponseDTO>("/api/login", loginRequestDTO);
 
             if (response != null && response.UserId != Guid.Empty && !String.IsNullOrEmpty(response.AuthToken))
             {
-                appState.AddServer(new ServerConnection(appState.GetUser().UserName, serveraddress));
+                appState.AppSetting.ServerSettings.ServerAddress.Add(serveraddress);
+                appState.SaveAppSettings();
                 tokenService.WriteNewToken(response.AuthToken);
                 await serviceHub.OnConnectedAsync();
                 await navigationService.NavigateTo<MainAreaViewModel>();
