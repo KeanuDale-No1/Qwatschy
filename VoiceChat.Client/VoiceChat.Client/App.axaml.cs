@@ -40,7 +40,7 @@ public partial class App : Application
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            var vm = Design.IsDesignMode ? new MainViewModel() : Services.GetRequiredService<MainViewModel>();
+            var vm = Services.GetRequiredService<MainViewModel>();
             singleViewPlatform.MainView = new MainView
             {
                 DataContext = vm

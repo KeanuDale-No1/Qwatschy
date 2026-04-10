@@ -6,24 +6,24 @@
   <ItemGroup>
     <!-- Avalonia packages -->
     <!-- Important: keep version in sync! -->
-    <PackageVersion Include="Avalonia" Version="11.3.12" />
+    <PackageVersion Include="Avalonia" Version="12.0.0" />
     <PackageVersion Include="Avalonia.Controls.MediaPlayer" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.iOS" Version="11.3.11" />
-    <PackageVersion Include="Avalonia.Browser" Version="11.3.12" />
-    <PackageVersion Include="Avalonia.Android" Version="11.3.11" />
-    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.13" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.iOS" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Browser" Version="12.0.0" />
+    <PackageVersion Include="Avalonia.Android" Version="12.0.0" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageVersion Include="Concentus" Version="2.2.2" />
     <PackageVersion Include="LibVLCSharp" Version="3.9.6" />
     <PackageVersion Include="ManagedBass" Version="4.0.2" />
-    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.5" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.JSInterop" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.5" />
+    <PackageVersion Include="Microsoft.JSInterop" Version="10.0.5" />
     <PackageVersion Include="NAudio" Version="2.3.0" />
     <PackageVersion Include="OpenTK" Version="4.9.4" />
     <PackageVersion Include="OwnAudioSharp" Version="2.6.1" />
@@ -32,9 +32,12 @@
     <PackageVersion Include="Silk.NET.Core" Version="2.23.0" />
     <PackageVersion Include="Silk.NET.OpenAL" Version="2.23.0" />
     <PackageVersion Include="Silk.NET.OpenAL.Extensions.Enumeration" Version="2.23.0" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.WebAssembly" Version="2.88.9" />
+    <PackageVersion Include="SkiaSharp" Version="2.88.9" />
     <PackageVersion Include="SoundFlow" Version="1.4.0" />
+    <PackageVersion Include="Tmds.DBus.Protocol" Version="0.92.0" />
     <PackageVersion Include="Velopack" Version="0.0.1298" />
-    <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
+    <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.2.0.2" />
     <PackageVersion Include="YellowDogMan.RRNoise.NET" Version="0.1.9" />
   </ItemGroup>
 </Project>

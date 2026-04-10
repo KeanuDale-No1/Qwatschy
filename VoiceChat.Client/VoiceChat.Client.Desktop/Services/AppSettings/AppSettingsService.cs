@@ -7,7 +7,8 @@ namespace VoiceChat.Client.Desktop.Services.AppSettings;
 
 internal class AppSettingsService : IAppSettingsService
 {
-    public AppSetting AppSetting { get; set; } 
+    public bool NewAppSetting { get; private set; } = true;
+    public AppSetting AppSetting { get; private set; } 
 
 
     private string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), QwatschyConstants.AppName, "settings.dat");
@@ -15,7 +16,7 @@ internal class AppSettingsService : IAppSettingsService
     {
     }
 
-    public  void InitAppSettings()
+    public void InitAppSettings()
     {
         try
         {
@@ -30,6 +31,7 @@ internal class AppSettingsService : IAppSettingsService
             var json = File.ReadAllText(filePath);
             var clientData = JsonSerializer.Deserialize<AppSetting>(json);
             AppSetting = clientData ?? new AppSetting();
+            NewAppSetting = false;
         }
         catch (Exception ex)
         {
@@ -38,7 +40,7 @@ internal class AppSettingsService : IAppSettingsService
         }
     }
 
-    public void SaveAppSettings()
+    private void SaveAppSettings()
     {
         try
         {
@@ -47,6 +49,7 @@ internal class AppSettingsService : IAppSettingsService
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
             File.WriteAllText(filePath, json);
+            NewAppSetting = false;
         }
         catch (UnauthorizedAccessException)
         {
@@ -55,4 +58,11 @@ internal class AppSettingsService : IAppSettingsService
         {
         }
     }
+
+    public void SetUsername(string Username)
+    {
+        AppSetting.UserSettings.Username = Username;
+        SaveAppSettings();
+    }
+
 }

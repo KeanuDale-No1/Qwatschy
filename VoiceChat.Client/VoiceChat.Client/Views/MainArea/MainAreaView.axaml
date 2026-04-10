@@ -10,6 +10,19 @@
      x:Class="VoiceChat.Client.Views.MainArea.MainAreaView"
      Background="{DynamicResource BackgroundBrush}">
 
+
+
+    <Grid RowDefinitions="" ColumnDefinitions="250, *, 200, 64" Background="{DynamicResource BackgroundBrush}">
+        <ContentControl Grid.Column="0" Content="{Binding ChannelSidebarViewModel}" />
+        <ContentControl Grid.Column="1" Content="{Binding ChatViewModel}" />
+        <ContentControl Grid.Column="2" Content="{Binding ServerInformationViewModel}" />
+    </Grid>
+
+
+
+
+
+    <!--
     <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220" MinWidth="180" />
@@ -28,5 +41,5 @@
         <GridSplitter Grid.Column="3" Classes="splitter" ResizeDirection="Columns"/>
 
         <views:ServerInformation Grid.Column="4"/>
-    </Grid>
+    </Grid>-->
 </UserControl>

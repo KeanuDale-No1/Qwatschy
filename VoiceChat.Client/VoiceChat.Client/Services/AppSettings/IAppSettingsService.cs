@@ -8,8 +8,8 @@ namespace VoiceChat.Client.Services.AppSettings;
 
 public interface IAppSettingsService
 {
-    public AppSetting AppSetting { get; set; }
-
+    public AppSetting AppSetting { get; }
+    public bool NewAppSetting { get; }
     public void InitAppSettings();
-    public void SaveAppSettings();
+    public void SetUsername(string Username);
 }

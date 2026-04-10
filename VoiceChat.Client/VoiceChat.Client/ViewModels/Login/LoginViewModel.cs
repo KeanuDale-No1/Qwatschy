@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using VoiceChat.Client.Services;
@@ -17,21 +18,25 @@ namespace VoiceChat.Client.ViewModels.Login;
 
 public partial class LoginViewModel : ViewModelBase
 {
-    private readonly IAppSettingsService appState;
+    private readonly IAppSettingsService appSettingsService;
+    private readonly INavigationService navigationService;
 
-    [ObservableProperty] public string username = "";
 
-    public LoginViewModel(IAppSettingsService appState)
+    [ObservableProperty]
+    public string username = "";
+
+    public LoginViewModel(IAppSettingsService appSettingsService, INavigationService navigationService)
     {
-        this.appState = appState;
-        Username = appState.AppSetting.UserSettings.Username;
+        this.appSettingsService = appSettingsService;
+        this.navigationService = navigationService;
     }
-    public LoginViewModel() : this(null!) { }
 
     [RelayCommand]
     public async Task Save()
     {
-        appState.AppSetting.UserSettings.Username = Username;
-        appState.SaveAppSettings();
+        if (string.IsNullOrWhiteSpace(Username))
+            return;
+        appSettingsService.SetUsername(Username);
+        await navigationService.NavigateTo<MainAreaViewModel>();
     }
 }

@@ -33,18 +33,12 @@ namespace VoiceChat.Client.Services
 
         public async Task ServerConnect(string username, string serveraddress)
         {
-            
-            appState.AppSetting.UserSettings.Username = username;
-            appState.SaveAppSettings();
-
             stateService.SetConnectedServer(appState.AppSetting.UserSettings.UserId, username, serveraddress);
             LoginRequestDTO loginRequestDTO = new LoginRequestDTO(appState.AppSetting.UserSettings.UserId, appState.AppSetting.UserSettings.Username);
             var response = await apiService.PostAsync<LoginRequestDTO, LoginResponseDTO>("/api/login", loginRequestDTO);
 
             if (response != null && response.UserId != Guid.Empty && !String.IsNullOrEmpty(response.AuthToken))
             {
-                appState.AppSetting.ServerSettings.ServerAddress.Add(serveraddress);
-                appState.SaveAppSettings();
                 tokenService.WriteNewToken(response.AuthToken);
                 await serviceHub.OnConnectedAsync();
                 await navigationService.NavigateTo<MainAreaViewModel>();

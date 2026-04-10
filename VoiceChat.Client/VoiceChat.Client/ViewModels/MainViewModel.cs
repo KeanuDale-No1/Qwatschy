@@ -3,27 +3,31 @@
 using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.ViewModels.Base;
 using VoiceChat.Client.ViewModels.Login;
+using VoiceChat.Client.ViewModels.MainArea;
 
 namespace VoiceChat.Client.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    private readonly INavigationService _navigationService;
 
     [ObservableProperty] private ViewModelBase _currentViewModel;
 
 
-    public MainViewModel(INavigationService navigationService)
+    public MainViewModel(INavigationService navigationService, IAppSettingsService appSettingsService)
     {
         if (!Design.IsDesignMode)
         {
-            _navigationService = navigationService;
             ((NavigationService)navigationService).SetMainViewModel(this);
-            navigationService.NavigateTo<LoginViewModel>();
+            if (appSettingsService.NewAppSetting)
+                navigationService.NavigateTo<LoginViewModel>();
+            else
+                navigationService.NavigateTo<MainAreaViewModel>();
+
         }
     }
 
-    public MainViewModel() : this(null!) { }
+
 }

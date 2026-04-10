@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
   <PropertyGroup>
-    <TargetFramework>net9.0-browser</TargetFramework>
+    <TargetFramework>net10.0-browser</TargetFramework>
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
@@ -13,11 +13,18 @@
     <Content Remove="wwwroot\qwatschy_logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="wwwroot\favicon.ico" />
+    <AvaloniaResource Include="wwwroot\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AvaloniaResource>
     <AvaloniaResource Include="wwwroot\qwatschy_logo.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\js\**" CopyToOutputDirectory="PreserveNewest" />
+    <AvaloniaXaml Remove="Services\SoundPlayer\**" />
+    <Compile Remove="Services\SoundPlayer\**" />
+    <Content Remove="Services\SoundPlayer\**" />
+    <EmbeddedResource Remove="Services\SoundPlayer\**" />
+    <None Remove="Services\SoundPlayer\**" />
     <None Include="wwwroot\main.js" CopyToOutputDirectory="PreserveNewest" />
     <None Include="wwwroot\app.css" CopyToOutputDirectory="PreserveNewest" />
     <None Include="wwwroot\index.html" CopyToOutputDirectory="PreserveNewest" />
@@ -34,17 +41,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\SoundPlayer\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Update="wwwroot\js\audioService.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="wwwroot\js\localStorage.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="wwwroot\js\processor.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <Target Name="CopyJsToFramework" AfterTargets="Build">
-    <Exec Command="if not exist &quot;$(OutputPath)wwwroot\_framework\js&quot; mkdir &quot;$(OutputPath)wwwroot\_framework\js&quot;" />
-    <Exec Command="copy &quot;$(MSBuildProjectDirectory)\wwwroot\js\audioService.js&quot; &quot;$(OutputPath)wwwroot\_framework\js&quot;" />
-  </Target>
 </Project>
