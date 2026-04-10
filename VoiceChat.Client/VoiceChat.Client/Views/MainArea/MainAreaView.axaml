@@ -13,7 +13,7 @@
 
 
     <Grid RowDefinitions="" ColumnDefinitions="250, *, 200, 64" Background="{DynamicResource BackgroundBrush}">
-        <ContentControl Grid.Column="0" Content="{Binding ChannelSidebarViewModel}" />
+        <ContentControl Grid.Column="0" Content="{vm:Resolve ChannelSidebarViewModel}" />
         <ContentControl Grid.Column="1" Content="{Binding ChatViewModel}" />
         <ContentControl Grid.Column="2" Content="{Binding ServerInformationViewModel}" />
     </Grid>
