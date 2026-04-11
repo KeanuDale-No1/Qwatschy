@@ -22,7 +22,7 @@ public partial class ServerConnectionsViewModel : ViewModelBase
     [RelayCommand]
     public async Task AddServer(ServerConnectionInfo server)
     {
-
+        
     }
 
     [RelayCommand]
