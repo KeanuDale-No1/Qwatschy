@@ -34,6 +34,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Compile Update="Views\Dialog\DialogView.axaml.cs">
+		  <DependentUpon>DialogView.axaml</DependentUpon>
+		</Compile>
 		<Compile Update="Views\Login\LoginView.axaml.cs">
 			<DependentUpon>LoginView.axaml</DependentUpon>
 		</Compile>

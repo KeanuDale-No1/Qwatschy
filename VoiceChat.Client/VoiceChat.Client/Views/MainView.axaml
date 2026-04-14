@@ -3,8 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewmodels="using:VoiceChat.Client.ViewModels"
-             xmlns:control="using:VoiceChat.Client.Views"
+             xmlns:dialog="using:VoiceChat.Client.ViewModels.Dialog"
+			 xmlns:me="clr-namespace:VoiceChat.Client.Extensions"
 
+             xmlns:control="using:VoiceChat.Client.Views"
+             
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="VoiceChat.Client.Views.MainView"
              x:DataType="viewmodels:MainViewModel"
@@ -13,9 +16,9 @@
     <Design.DataContext>
         <viewmodels:MainViewModel />
     </Design.DataContext>
-
     <Grid Background="{DynamicResource BackgroundBrush}" 
           Grid.RowDefinitions="*" Grid.ColumnDefinitions="*">
         <ContentControl Grid.Column="0" Grid.Row="0" Content="{Binding CurrentViewModel}" />
+		<ContentControl ZIndex="1" Grid.Column="4" Content="{me:Resolve dialog:DialogViewModel}" />
     </Grid>
 </UserControl>

@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:componets="using:VoiceChat.Client.ViewModels.MainArea.Componets"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="250" d:DesignHeight="150"
+			 x:DataType="componets:AddServerDialogViewModel"
+			 x:Class="VoiceChat.Client.Views.MainArea.Componets.AddServerDialogView">
+
+	<Grid RowDefinitions="*,auto">
+		<StackPanel Grid.Row="0" Margin="0, 0, 0, 10">
+			<Label>Serveradresse:</Label>
+			<TextBox Text="{Binding ServerAdress}"></TextBox>
+		</StackPanel>
+
+		<Button Grid.Row="1" Command="{Binding cancelCommand}"
+				HorizontalAlignment="Left"
+				Content="Abbrechen"/>
+
+		<Button Grid.Row="1" Command="{Binding closeCommand}"
+				HorizontalAlignment="Right"
+				Content="Hinzufügen"/>
+	</Grid>
+
+</UserControl>

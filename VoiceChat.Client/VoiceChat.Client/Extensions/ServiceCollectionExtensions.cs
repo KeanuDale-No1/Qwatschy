@@ -4,10 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.Services.Navigation;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels;
+using VoiceChat.Client.ViewModels.Dialog;
 using VoiceChat.Client.ViewModels.Login;
 using VoiceChat.Client.ViewModels.MainArea;
 using VoiceChat.Client.ViewModels.MainArea.Componets;
@@ -22,6 +24,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ChatHubClient>();
         services.AddSingleton<VoiceHubClient>();
         services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<DialogServiceViewSetterService>();
+        services.AddSingleton<DialogViewModel>();
         services.AddSingleton<StateService>();
         services.AddHttpClient("ApiClient", (sp, client) =>
         {
@@ -51,6 +56,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ServerInformationViewModel>();
         services.AddTransient<ServerConnectionsViewModel>();
         services.AddTransient<ActionbarViewModel>();
+        services.AddTransient<AddServerDialogViewModel>();
 
     }
 }
