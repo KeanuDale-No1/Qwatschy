@@ -4,6 +4,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.ViewModels.Base;
 
 namespace VoiceChat.Client.ViewModels.MainArea.Componets;
@@ -13,16 +14,24 @@ namespace VoiceChat.Client.ViewModels.MainArea.Componets;
 public partial class ServerConnectionsViewModel : ViewModelBase
 {
     public ObservableCollection<ServerConnectionInfo> Servers { get; } = new ObservableCollection<ServerConnectionInfo>();
+    private readonly IDialogService dialogService;
 
-    public ServerConnectionsViewModel()
+    public ServerConnectionsViewModel(IDialogService dialogService)
     {
-        
+        this.dialogService = dialogService;
     }
 
     [RelayCommand]
-    public async Task AddServer(ServerConnectionInfo server)
+    public async Task AddServer()
     {
-        
+        var result = await dialogService.ShowDialog<AddServerDialogViewModel>();
+        if (result is not null && !result.IsCanceled)
+        {
+            if (result.Data is string serveradress)
+            {
+                Servers.Add(new ServerConnectionInfo(serveradress,""));
+            }
+        }
     }
 
     [RelayCommand]
