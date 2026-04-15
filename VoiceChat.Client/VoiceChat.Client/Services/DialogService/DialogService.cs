@@ -1,12 +1,10 @@
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
 namespace VoiceChat.Client.Services.DialogService;
 
-public class DialogService(IServiceProvider serviceProvider, IApplicationLifetime applicationLifetime, DialogServiceViewSetterService dialogServiceViewSetterService) : IDialogService
+public class DialogService(IServiceProvider serviceProvider, DialogServiceViewSetterService dialogServiceViewSetterService) : IDialogService
 {
 
     private TaskCompletionSource<DialogResult>? _dialogCompletionSource;

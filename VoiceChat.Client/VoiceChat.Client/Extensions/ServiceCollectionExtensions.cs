@@ -36,22 +36,10 @@ public static class ServiceCollectionExtensions
 
 
         services.AddSingleton<StateService>();
-        services.AddHttpClient("ApiClient", (sp, client) =>
-        {
-            var settings = sp.GetRequiredService<StateService>();
-            if (!string.IsNullOrWhiteSpace(settings.ServerAddress))
-                client.BaseAddress = new Uri(settings.ServerAddress);
-        });
+      
        
-        services.AddTransient<ApiService>();
         services.AddSingleton<ChannelService>();
         services.AddSingleton<VoiceChatService>();
-        services.AddSingleton<IApplicationLifetime>(sp => 
-        {
-            if (Application.Current?.ApplicationLifetime != null)
-                return Application.Current.ApplicationLifetime;
-            return null!;
-        });
         services.AddTransient<Sounds>();
 
 

@@ -17,8 +17,8 @@ internal partial class AddServerDialogViewModel : DialogViewModelBase
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
-    [Required]
-    [Url(ErrorMessage = "Bitte geben Sie eine gültige Adresse ein.")]
+    [Required(ErrorMessage = "Eine Adresse ist erforderlich")]
+    [Url(ErrorMessage = "Bitte gebe eine gültige Adresse ein.")]
     [ServerAddressNotDuplicate(ErrorMessage = "Serveradresse existiert bereits.")]
     [NotifyCanExecuteChangedFor(nameof(CloseCommand))]
     private string? serverAdress;
@@ -30,10 +30,7 @@ internal partial class AddServerDialogViewModel : DialogViewModelBase
     [RelayCommand(CanExecute = nameof(CanClose))]
     protected async Task Close()
     {
-        if (ServerAdress != null)
-        {
-            dialogService.Close(false, ServerAdress);
-        }
+        dialogService.Close(false, ServerAdress);
     }
 
     private bool CanClose() => !HasErrors && !string.IsNullOrWhiteSpace(ServerAdress);

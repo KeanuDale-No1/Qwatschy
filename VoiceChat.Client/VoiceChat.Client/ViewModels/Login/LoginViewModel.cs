@@ -23,6 +23,9 @@ public partial class LoginViewModel : ViewModelBase
 
 
     [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Ein Name ist erforderlich")]
+    [Length(2,30,ErrorMessage = "Der Name muss 2 bis 20 Zeichen enthalten")]
     public string username = "";
 
     public LoginViewModel(IAppSettingsService appSettingsService, INavigationService navigationService)
@@ -31,12 +34,13 @@ public partial class LoginViewModel : ViewModelBase
         this.navigationService = navigationService;
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanSave))]
     public async Task Save()
     {
-        if (string.IsNullOrWhiteSpace(Username))
-            return;
+        
         appSettingsService.SetUsername(Username);
         await navigationService.NavigateTo<MainAreaViewModel>();
     }
+    private bool CanSave() => !HasErrors && !string.IsNullOrWhiteSpace(Username);
+
 }
