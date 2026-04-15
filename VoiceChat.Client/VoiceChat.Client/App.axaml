@@ -22,6 +22,10 @@
     <Application.Styles>
         <FluentTheme/>
         <StyleInclude Source="avares://VoiceChat.Client/Styles/DialogStyles.axaml"/>
+        <StyleInclude Source="avares://VoiceChat.Client/Styles/Controls.axaml"/>
+
+
+        
     </Application.Styles>
 
 </Application>

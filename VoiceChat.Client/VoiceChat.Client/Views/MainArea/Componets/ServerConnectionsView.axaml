@@ -7,45 +7,24 @@
 			 x:DataType="vm:ServerConnectionsViewModel"
 			 x:Class="VoiceChat.Client.Views.MainArea.Componets.ServerConnectionsView">
 
-	<ScrollViewer>
+	<ScrollViewer Classes="serverSidebar">
 		<StackPanel>
 			<ItemsControl ItemsSource="{Binding Servers}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<StackPanel Orientation="Horizontal">
-							<Border MaxHeight="48" Height="48" Width="48" Padding="0" Margin="0">
-								<Button Command="{Binding $parent[ItemsControl].DataContext.ConnectServerCommand}"
-										CommandParameter="{Binding .}"
-										Height="60"
-										Width="60"
-										Content="{Binding Abbr}"
-										FontSize="32"
-										FontWeight="ExtraBold"
-										HorizontalAlignment="Center"
-										VerticalAlignment="Center"
-										HorizontalContentAlignment="Center"
-										VerticalContentAlignment="Center"
-										ToolTip.Tip="{Binding ServerName}"/>
-							</Border>
-						</StackPanel>
+						<Button Classes="serverIcon"
+								Command="{Binding $parent[ItemsControl].DataContext.ConnectServerCommand}"
+								CommandParameter="{Binding .}"
+								Content="{Binding Abbr}"
+								ToolTip.Tip="{Binding ServerName}"/>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			<Border MaxHeight="64" Height="64" Padding="0" Margin="0">
-				<Button Command="{Binding AddServerCommand}"
-						Height="60"
-						Width="60"
-						Content="+"
-						FontSize="32"
-						FontWeight="ExtraBold"
-						HorizontalAlignment="Center"
-						VerticalAlignment="Center"
-						HorizontalContentAlignment="Center"
-						VerticalContentAlignment="Center"/>
-			</Border>
-			<Separator Margin="0" Padding="0" Height="1" MaxHeight="1"/>
+			<Button Classes="addServer"
+					Command="{Binding AddServerCommand}"
+					Content="+"/>
+			<Border Classes="serverDivider"/>
 		</StackPanel>
 	</ScrollViewer>
-
 
 </UserControl>
