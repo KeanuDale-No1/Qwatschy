@@ -49,4 +49,26 @@
         <Setter Property="Padding" Value="16,12"/>
     </Style>
 
+    <Style Selector="StackPanel.dialogForm">
+        <Setter Property="Spacing" Value="8"/>
+    </Style>
+
+    <Style Selector="Label.dialogLabel">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="Margin" Value="0,4,0,4"/>
+    </Style>
+
+    <Style Selector="TextBox.dialogInput">
+        <Setter Property="MinWidth" Value="250"/>
+    </Style>
+
+    <Style Selector="StackPanel.dialogButtons">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="Spacing" Value="8"/>
+        <Setter Property="Margin" Value="0,12,0,0"/>
+    </Style>
+
 </Styles>

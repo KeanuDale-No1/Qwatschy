@@ -7,19 +7,13 @@
 			 x:DataType="componets:AddServerDialogViewModel"
 			 x:Class="VoiceChat.Client.Views.MainArea.Componets.AddServerDialogView">
 
-	<Grid RowDefinitions="*,auto">
-		<StackPanel Grid.Row="0" Margin="0, 0, 0, 10">
-			<Label>Serveradresse:</Label>
-			<TextBox Text="{Binding ServerAdress}"></TextBox>
+	<StackPanel Classes="dialogForm">
+		<Label Classes="dialogLabel">Serveradresse:</Label>
+		<TextBox Classes="dialogInput" Text="{Binding ServerAdress}"/>
+		<StackPanel Classes="dialogButtons">
+			<Button Command="{Binding cancelCommand}" Content="Abbrechen" MinWidth="80"/>
+			<Button Command="{Binding closeCommand}" Content="Hinzufügen" Classes="primary" MinWidth="80"/>
 		</StackPanel>
-
-		<Button Grid.Row="1" Command="{Binding cancelCommand}"
-				HorizontalAlignment="Left"
-				Content="Abbrechen"/>
-
-		<Button Grid.Row="1" Command="{Binding closeCommand}"
-				HorizontalAlignment="Right"
-				Content="Hinzufügen"/>
-	</Grid>
+	</StackPanel>
 
 </UserControl>
