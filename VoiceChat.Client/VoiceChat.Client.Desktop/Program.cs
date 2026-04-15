@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
+// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
 // Unauthorized copying, modification, or distribution is strictly prohibited
 
 using Avalonia;
@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Velopack;
 using VoiceChat.Client.Desktop.Services.AppSettings;
 using VoiceChat.Client.Extensions;
+using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.VoiceService;
 
@@ -24,6 +25,8 @@ namespace VoiceChat.Client.Desktop
             VelopackApp.Build().Run();
             
             var services = ConfigureServices();
+
+            ServiceLocator.AppSettingsService = services.GetRequiredService<IAppSettingsService>();
 
             BuildAvaloniaApp()
                 .AfterSetup(_ =>

@@ -42,6 +42,28 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
+    <Style Selector="Button.serverCloseIcon">
+        <Setter Property="Background" Value="{DynamicResource DangerBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="ZIndex" Value="1"/>
+    </Style>
+
+    <Style Selector="Button.serverIcon:pointerover Button.serverCloseIcon">
+        <Setter Property="Opacity" Value="1"/>
+    </Style>
+
+    <Style Selector="Button.serverCloseIcon:pointerover">
+        <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
+    </Style>
+
     <Style Selector="Button.addServer">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>

@@ -13,10 +13,22 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Button Classes="serverIcon"
-								Command="{Binding $parent[ItemsControl].DataContext.ConnectServerCommand}"
+								Command="{Binding $parent[ItemsControl].DataContext.OpenServerCommand}"
 								CommandParameter="{Binding .}"
-								Content="{Binding Abbr}"
-								ToolTip.Tip="{Binding ServerName}"/>
+								ToolTip.Tip="{Binding ServerName}">
+							<Grid>
+								<TextBlock Text="{Binding Abbr}"
+										   HorizontalAlignment="Center"
+										   VerticalAlignment="Center"/>
+								<Button Classes="serverCloseIcon"
+										Command="{Binding $parent[ItemsControl].DataContext.RemoveServerCommand}"
+										CommandParameter="{Binding .}"
+										HorizontalAlignment="Right"
+										VerticalAlignment="Top"
+										Margin="0,-4,-4,0"
+										Content="✕"/>
+							</Grid>
+						</Button>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

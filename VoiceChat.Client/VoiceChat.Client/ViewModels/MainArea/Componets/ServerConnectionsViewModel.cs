@@ -29,25 +29,25 @@ public partial class ServerConnectionsViewModel : ViewModelBase
     public async Task AddServer()
     {
         var result = await dialogService.ShowDialog<AddServerDialogViewModel>();
-        if (result is not null && !result.IsCanceled)
+        if (result is null || result.IsCanceled)
+            return;
+
+        if (result.Data is string serveradress)
         {
-            if (result.Data is string serveradress)
-            {
-                var success = await serverService.AddServer(serveradress);
-            }
+            var success = await serverService.AddServer(serveradress);
         }
     }
 
-    
+
 
     [RelayCommand]
     public async Task RemoveServer(ServerConnectionInfo server)
     {
-        
+
     }
 
     [RelayCommand]
-    public async Task ConnectServer()
+    public async Task OpenServer()
     {
 
     }
