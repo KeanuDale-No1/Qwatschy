@@ -7,26 +7,20 @@
 
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="VoiceChat.Client.Views.MainArea.ServerInformationView"
-             Background="{DynamicResource SurfaceBrush}"
              x:DataType="vm:ServerInformationViewModel">
 
-    <Border Classes="panel">
-        <StackPanel Spacing="12">
-            <Border Height="120" Background="{DynamicResource PrimaryBrush}">
-                <Image Height="100"
-                       Width="100"
-                       Stretch="Uniform"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+    <Border Classes="serverPanel">
+        <StackPanel Classes="serverInfo">
+            <Border Classes="serverHeader">
+                <Image Classes="serverIcon"/>
             </Border>
 
-            <TextBlock Classes="title"
+            <TextBlock Classes="serverInfoTitle"
                        Text="{Binding ServerName}"/>
 
             <Separator/>
 
-            <TextBlock Classes="caption"
-                       TextWrapping="Wrap"
+            <TextBlock Classes="serverInfoCaption"
                        Text="Willkommen beim Voice Chat Server!"/>
         </StackPanel>
     </Border>

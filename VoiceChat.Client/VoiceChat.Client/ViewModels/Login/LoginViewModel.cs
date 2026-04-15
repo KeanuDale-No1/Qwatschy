@@ -26,6 +26,7 @@ public partial class LoginViewModel : ViewModelBase
     [NotifyDataErrorInfo]
     [Required(ErrorMessage = "Ein Name ist erforderlich")]
     [Length(2,30,ErrorMessage = "Der Name muss 2 bis 20 Zeichen enthalten")]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
     public string username = "";
 
     public LoginViewModel(IAppSettingsService appSettingsService, INavigationService navigationService)
