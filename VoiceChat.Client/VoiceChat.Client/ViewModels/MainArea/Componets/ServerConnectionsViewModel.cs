@@ -1,4 +1,4 @@
-﻿using Avalonia.Media.Imaging;
+using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.ObjectModel;
@@ -43,13 +43,16 @@ public partial class ServerConnectionsViewModel : ViewModelBase
     [RelayCommand]
     public async Task RemoveServer(ServerConnectionInfo server)
     {
-
     }
 
     [RelayCommand]
     public async Task OpenServer()
     {
+    }
 
+    public void Initialize()
+    {
+        serverService.ConnectAll();
     }
 
 }

@@ -8,5 +8,5 @@ namespace VoiceChat.Client.Services.ServerService;
 public interface IServerService
 {
     public Task<bool> AddServer(string serverAdress);
-    public Task CheckAlive();
+    public Task ConnectAll();
 }

@@ -16,16 +16,17 @@
 								Command="{Binding $parent[ItemsControl].DataContext.OpenServerCommand}"
 								CommandParameter="{Binding .}"
 								ToolTip.Tip="{Binding ServerName}">
-							<Grid>
-								<TextBlock Text="{Binding Abbr}"
+							<Grid RowDefinitions="*" ColumnDefinitions="*" >
+								<TextBlock Grid.Row="0" Grid.Column="0"
+										   Text="{Binding Abbr}"
 										   HorizontalAlignment="Center"
 										   VerticalAlignment="Center"/>
 								<Button Classes="serverCloseIcon"
+										Grid.Row="0" Grid.Column="0"
 										Command="{Binding $parent[ItemsControl].DataContext.RemoveServerCommand}"
 										CommandParameter="{Binding .}"
 										HorizontalAlignment="Right"
 										VerticalAlignment="Top"
-										Margin="0,-4,-4,0"
 										Content="✕"/>
 							</Grid>
 						</Button>

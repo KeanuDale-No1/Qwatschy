@@ -27,7 +27,7 @@ internal class ServerService(IAppSettingsService appSettingsService, ClientHub c
         }
     }
 
-    public async Task CheckAlive()
+    public async Task ConnectAll()
     {
         var servers = appSettingsService.AppSetting.Servers.ServerAddresses;
 
