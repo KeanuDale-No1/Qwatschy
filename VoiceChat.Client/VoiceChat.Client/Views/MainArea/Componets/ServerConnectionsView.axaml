@@ -14,6 +14,7 @@
 					<DataTemplate>
 						<Button Classes="serverIcon"
 								Command="{Binding $parent[ItemsControl].DataContext.OpenServerCommand}"
+								IsEnabled="{Binding IsConnected}"
 								CommandParameter="{Binding .}"
 								ToolTip.Tip="{Binding ServerName}">
 							<Grid RowDefinitions="*" ColumnDefinitions="*" >

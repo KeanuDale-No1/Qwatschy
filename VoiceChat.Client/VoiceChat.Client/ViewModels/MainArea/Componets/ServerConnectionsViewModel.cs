@@ -36,6 +36,7 @@ public partial class ServerConnectionsViewModel : ViewModelBase
     [RelayCommand]
     public async Task RemoveServer(ServerConnectionInfo server)
     {
+        await _clientHub.RemoveServerAsync(server.ServerId);
     }
 
     [RelayCommand]

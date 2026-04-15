@@ -13,4 +13,6 @@ public interface IAppSettingsService
     public void InitAppSettings();
     public void SetUsername(string Username);
     public void AddServer(Guid serverId, string serverAdress);
+    public void RemoveServer(Guid serverId);
+
 }

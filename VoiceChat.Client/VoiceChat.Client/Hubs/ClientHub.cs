@@ -1,3 +1,4 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +13,7 @@ using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Client.Hubs;
 
-public class ServerConnectionInfo
+public partial class ServerConnectionInfo : ObservableObject
 {
     public ServerConnectionInfo(Guid serverId, string serverAdress, string serverName)
     {
@@ -25,7 +26,8 @@ public class ServerConnectionInfo
     public string ServerAdress { get; set; }
     public string ServerName { get; set; }
     public string ErrorMessage { get; set; } = string.Empty;
-    public bool IsConnected { get; set; }
+    [ObservableProperty] private bool isConnected;
+
     public string Abbr => AbbreviationHelper.GetAbbreviation(ServerName);
 }
 
@@ -61,8 +63,20 @@ public class ClientHub(IAppSettingsService appSettingsService) : IClientHubExcha
     {
         var serverId = Guid.NewGuid();
         await ConnectAsync(serverId, serverAddress);
-            appSettingsService.AddServer(serverId, serverAddress);
+        appSettingsService.AddServer(serverId, serverAddress);
     }
+
+    public async Task RemoveServerAsync(Guid serverId)
+    {
+        await DisconnectAsync(serverId);
+        var serverInfo = ServerConnectionInfos.FirstOrDefault(s => s.ServerId == serverId);
+        if (serverInfo != null)
+            ServerConnectionInfos.Remove(serverInfo);
+        appSettingsService.RemoveServer(serverId);
+    }
+
+
+
 
     public async Task ConnectAllAsync()
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 using System.Text;
@@ -71,6 +72,16 @@ internal partial class AppSettingsService : IAppSettingsService
     {
         AppSetting.Servers.ServerAddresses.Add(new ServerSettings { ServerId = serverId, ServerAddress = ServerAdress });
         SaveAppSettings();
+    }
+
+    public void RemoveServer(Guid serverId)
+    {
+        var server = AppSetting.Servers.ServerAddresses.FirstOrDefault(x => x.ServerId == serverId);
+        if (server != null)
+        {
+            AppSetting.Servers.ServerAddresses.Remove(server);
+            SaveAppSettings();
+        }
     }
 
     /// ------------ Helper Methods ------------

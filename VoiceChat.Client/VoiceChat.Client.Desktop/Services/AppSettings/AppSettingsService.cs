@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using VoiceChat.Client.Services.AppSettings;
 
@@ -69,5 +70,15 @@ internal class AppSettingsService : IAppSettingsService
     {
         AppSetting.Servers.ServerAddresses.Add(new ServerSettings { ServerId = serverId, ServerAddress = serverAdress });
         SaveAppSettings();
+    }
+
+    public void RemoveServer(Guid serverId)
+    {
+        var server = AppSetting.Servers.ServerAddresses.FirstOrDefault(x => x.ServerId == serverId);
+        if (server != null)
+        {
+            AppSetting.Servers.ServerAddresses.Remove(server);
+            SaveAppSettings();
+        }
     }
 }
