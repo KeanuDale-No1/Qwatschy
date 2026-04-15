@@ -6,42 +6,29 @@
 			 mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
 
 			 x:DataType="vm:LoginViewModel"
-			 x:Class="VoiceChat.Client.Views.Login.LoginView"
-			 Background="{DynamicResource BackgroundBrush}">
+			 x:Class="VoiceChat.Client.Views.Login.LoginView">
 
 	<Grid RowDefinitions="*, auto, *"
-		  ColumnDefinitions="*,auto,*"
-		  Background="{DynamicResource BackgroundBrush}">
+		  ColumnDefinitions="*,auto,*">
 		<TextBlock Grid.Row="0"
 				   Grid.Column="1"
 				Text="Schön das du zu Qwatschy gefunden hast" 
-				   Classes="title"
-				   VerticalAlignment="Center" 
-				   HorizontalAlignment="Center"/>
+				Classes="title"
+				VerticalAlignment="Center" 
+				HorizontalAlignment="Center"/>
 		<Border Grid.Row="1" Grid.Column="1"
-				HorizontalAlignment="Center"
-				VerticalAlignment="Center"
-				Padding="50"
-				Background="{DynamicResource BackgroundColorField}">
-			<StackPanel HorizontalAlignment="Center"
-						VerticalAlignment="Center"
-						Spacing="16"
-						MinWidth="300">
-				<Image Margin="20"
-					   Height="256"
-					   Width="256"
-					   Source="avares://VoiceChat.Client/Assets/qwatschy_logo.ico"
-					   Stretch="Uniform"/>
+				Classes="loginBox">
+			<StackPanel Classes="loginForm">
+				<Image Classes="loginLogo"
+					   Source="avares://VoiceChat.Client/Assets/qwatschy_logo.ico"/>
 
 				<TextBlock Classes="header"
 						   Text="Wie ist dein Name:"
 						   HorizontalAlignment="Center"/>
-				<TextBox HorizontalAlignment="Stretch"
+				<TextBox Classes="loginInput"
 						 Text="{Binding Username}"/>
 
-				<Button Classes="primary"
-						HorizontalAlignment="Stretch"
-						HorizontalContentAlignment="Center"
+				<Button Classes="primary loginSubmit"
 						Content="Speichern"
 						Command="{Binding SaveCommand}"/>
 			</StackPanel>
