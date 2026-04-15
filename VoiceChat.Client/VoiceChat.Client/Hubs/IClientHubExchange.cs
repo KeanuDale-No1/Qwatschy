@@ -11,6 +11,8 @@ public interface IClientHubExchange
     Task DisconnectAsync(Guid serverId);
     Task<GetMessagesResponseDTO> GetMessagesAsync(Guid serverId, Guid channelId, int skip = 0, int take = 50);
     Task SendMessageAsync(Guid serverId, ChatMessageDTO message);
+    Task AddServerAsync(string serverAddress);
+    Task ConnectAllAsync();
 }
 
 public enum ServerConnectionState

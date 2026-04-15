@@ -6,15 +6,46 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using VoiceChat.Client.ViewModels.MainArea.Componets;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Shared.Models;
-using VoiceChat.Shared.Networking;
 
 namespace VoiceChat.Client.Hubs;
 
-public class ClientHub() : IClientHubExchange, IDisposable
+public class ServerConnectionInfo
+{
+    public ServerConnectionInfo(Guid serverId, string serverAdress, string serverName)
+    {
+        ServerId = serverId;
+        ServerAdress = serverAdress;
+        ServerName = serverName;
+    }
+
+    public Guid ServerId { get; set; }
+    public string ServerAdress { get; set; }
+    public string ServerName { get; set; }
+    public string ErrorMessage { get; set; } = string.Empty;
+    public bool IsConnected { get; set; }
+    public string Abbr => AbbreviationHelper.GetAbbreviation(ServerName);
+}
+
+public static class AbbreviationHelper
+{
+    public static string GetAbbreviation(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+            return string.Empty;
+
+        return new string(input
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Where(w => w.Length > 2)
+            .SelectMany(w => w.Where(char.IsUpper))
+            .Take(3)
+            .ToArray());
+    }
+}
+
+public class ClientHub(IAppSettingsService appSettingsService) : IClientHubExchange, IDisposable
 {
     private readonly ConcurrentDictionary<Guid, HubConnection> _connections = new();
     public readonly ObservableCollection<ServerConnectionInfo> ServerConnectionInfos = new();
@@ -25,9 +56,27 @@ public class ClientHub() : IClientHubExchange, IDisposable
 
 
     public IEnumerable<Guid> ConnectedServers => _connections.Keys;
+
+    public async Task AddServerAsync(string serverAddress)
+    {
+        var serverId = Guid.NewGuid();
+        await ConnectAsync(serverId, serverAddress);
+            appSettingsService.AddServer(serverId, serverAddress);
+    }
+
+    public async Task ConnectAllAsync()
+    {
+        var servers = appSettingsService.AppSetting.Servers.ServerAddresses;
+        foreach (var server in servers)
+        {
+            await ConnectAsync(server.ServerId, server.ServerAddress);
+        }
+    }
+
     public async Task ConnectAsync(Guid serverId, string serverAddress)
     {
-        if (!string.IsNullOrWhiteSpace(serverAddress) && !_connections.ContainsKey(serverId)) {
+        if (!string.IsNullOrWhiteSpace(serverAddress) && !_connections.ContainsKey(serverId))
+        {
             var ServerInfo = new ServerConnectionInfo(serverId, serverAddress, "Test1");
             ServerConnectionInfos.Add(ServerInfo);
             await ConnectToServerAsync(ServerInfo);
