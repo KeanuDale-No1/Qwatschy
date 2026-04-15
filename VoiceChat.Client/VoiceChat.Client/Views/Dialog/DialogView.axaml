@@ -19,8 +19,7 @@
 						<TextBlock Text="{Binding DialogViewModelBase?.Title, FallbackValue=''}" Classes="dialogTitle"/>
 						<Button Content="&#xE711;" 
 								Command="{Binding DialogViewModelBase?.CancelCommand, FallbackValue={x:Null}}" 
-								Classes="dialogClose"
-								/>
+								Classes="dialogClose" />
 					</Grid>
 				</Border>
 				<Border Grid.Row="1" Classes="dialogContent">
