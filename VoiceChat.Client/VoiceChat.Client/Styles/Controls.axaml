@@ -62,8 +62,8 @@
         <Setter Property="Opacity" Value="1"/>
     </Style>
 
-    <Style Selector="Button.serverCloseIcon:pointerover">
-        <Setter Property="Background" Value="{DynamicResource DangerHoverBrush}"/>
+    <Style Selector="Button.serverCloseIcon:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="Red"/>
     </Style>
 
