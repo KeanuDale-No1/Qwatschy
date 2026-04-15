@@ -16,9 +16,9 @@
 			<Grid RowDefinitions="Auto,*">
 				<Border Grid.Row="0" Classes="dialogHeader">
 					<Grid>
-						<TextBlock Text="{Binding DialogViewModelBase.Title}" Classes="dialogTitle"/>
+						<TextBlock Text="{Binding DialogViewModelBase?.Title, FallbackValue=''}" Classes="dialogTitle"/>
 						<Button Content="&#xE711;" 
-								Command="{Binding DialogViewModelBase.CancelCommand}" 
+								Command="{Binding DialogViewModelBase?.CancelCommand, FallbackValue={x:Null}}" 
 								Classes="dialogClose"
 								/>
 					</Grid>
