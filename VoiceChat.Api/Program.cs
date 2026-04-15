@@ -103,6 +103,7 @@ app.Map("/audio", async context =>
     await audioHandler.HandleWebSocketAsync(channelId, webSocket, context.RequestAborted);
 });//.AllowAnonymous();
 
-Console.WriteLine("API ready. Listening on http://localhost:5000");
+var urls = builder.Configuration["Urls"] ?? "http://localhost:5000";
+Console.WriteLine($"API ready. Listening on {urls}");
 
 app.Run();

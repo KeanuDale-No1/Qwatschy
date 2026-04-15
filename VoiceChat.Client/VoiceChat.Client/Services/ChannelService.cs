@@ -26,7 +26,6 @@ namespace VoiceChat.Client.Services
         private readonly IAppSettingsService appState;
         private readonly StateService stateService;
 
-        private readonly ApiService httpClientService;
 
         private readonly ChatHubClient serviceHub;
         private readonly VoiceChatService voiceService;
@@ -35,14 +34,12 @@ namespace VoiceChat.Client.Services
         public List<UserDTO> Users = new List<UserDTO>();
         public NotifyingCollection<UserDTO> ChannelUsers = new NotifyingCollection<UserDTO> { };
 
-        public ChannelService(ApiService httpClientService,
-                              ChatHubClient serviceHub,
+        public ChannelService(ChatHubClient serviceHub,
                               VoiceChatService voiceChatService,
                               IAppSettingsService appState,
                               StateService stateService)
         {
             this.appState = appState;
-            this.httpClientService = httpClientService;
             this.serviceHub = serviceHub;
             this.voiceService = voiceChatService;
             this.stateService = stateService;
@@ -108,10 +105,7 @@ namespace VoiceChat.Client.Services
                 if (string.IsNullOrWhiteSpace(stateService.ServerAddress))
                     return;
 
-                var response = await httpClientService.PostAsync<GetChannelsRequestDTO, GetChannelsResponseDTO>("api/GetChannels", new GetChannelsRequestDTO());
                 Channels.Clear();
-                foreach (var c in response.Channels)
-                    Channels.Add(c);
             }
             catch
             {
