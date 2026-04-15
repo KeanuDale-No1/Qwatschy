@@ -1,4 +1,4 @@
-<UserControl Classes="DialogContainer" xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:dialog="using:VoiceChat.Client.ViewModels.Dialog"
@@ -8,24 +8,25 @@
 			 x:DataType="vm:DialogViewModel"
 			 x:Class="VoiceChat.Client.Views.Dialog.DialogView"
 				IsVisible="{Binding Show}"
-
 			 VerticalAlignment="Stretch"
-			 HorizontalAlignment="Stretch"
-			 >
+			 HorizontalAlignment="Stretch">
 	<Grid>
-
-		<Panel  Opacity="0.6" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-				Background="{DynamicResource BackgroundFieldBrush}"/>
-		<Border Opacity="1" Background="{DynamicResource BackgroundDialogFieldBrush}" BorderThickness="1" BorderBrush="{DynamicResource BackgroundBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5">
-			<StackPanel>
-				<StackPanel Orientation="Horizontal" Background="{DynamicResource BackgroundDialogHeaderBrush}">
-					<TextBlock Text="{Binding DialogViewModelBase.Title}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
-					<Button Content="✕" Command="{Binding DialogViewModelBase.cancelCommand}" HorizontalAlignment="Right"  Classes="icon"/>
-				</StackPanel>
-				<Separator Margin="0,0,0,8"/>
-				<ContentControl Content="{Binding DialogViewModelBase}" Opacity="1" />
-			</StackPanel>
+		<Panel Classes="dialogOverlay"/>
+		<Border Classes="dialogWindow" MinWidth="400" MaxWidth="600">
+			<Grid RowDefinitions="Auto,*">
+				<Border Grid.Row="0" Classes="dialogHeader">
+					<Grid>
+						<TextBlock Text="{Binding DialogViewModelBase.Title}" Classes="dialogTitle"/>
+						<Button Content="&#xE711;" 
+								Command="{Binding DialogViewModelBase.cancelCommand}" 
+								Classes="dialogClose"
+								/>
+					</Grid>
+				</Border>
+				<Border Grid.Row="1" Classes="dialogContent">
+					<ContentControl Content="{Binding DialogViewModelBase}" />
+				</Border>
+			</Grid>
 		</Border>
 	</Grid>
 </UserControl>
-
