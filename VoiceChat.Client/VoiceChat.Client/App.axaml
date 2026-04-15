@@ -21,7 +21,6 @@
 
     <Application.Styles>
         <FluentTheme/>
-        <StyleInclude Source="avares://VoiceChat.Client/Styles/Win81Controls.axaml"/>
         <StyleInclude Source="avares://VoiceChat.Client/Styles/DialogStyles.axaml"/>
     </Application.Styles>
 

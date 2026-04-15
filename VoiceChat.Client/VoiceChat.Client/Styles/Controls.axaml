@@ -9,15 +9,5 @@
 
   <!-- Add Styles Here -->
 
-   <Style Selector="Button.primary">
-    <Setter Property="Background" Value="{DynamicResource BrandPrimaryBrush}"/>
-    <Setter Property="Foreground" Value="White"/>
-    <Setter Property="Padding" Value="14,10"/>
-    <Setter Property="CornerRadius" Value="6"/>
-  </Style>
-
-  <Style Selector="Button.primary:pointerover">
-    <Setter Property="Background" Value="{DynamicResource BrandPrimaryHoverBrush}"/>
-  </Style>
 
 </Styles>
