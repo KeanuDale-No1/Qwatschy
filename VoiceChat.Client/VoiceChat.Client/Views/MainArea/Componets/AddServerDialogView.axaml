@@ -11,8 +11,8 @@
 		<Label Classes="dialogLabel">Serveradresse:</Label>
 		<TextBox Classes="dialogInput" Text="{Binding ServerAdress}"/>
 		<StackPanel Classes="dialogButtons">
-			<Button Command="{Binding cancelCommand}" Content="Abbrechen" MinWidth="80"/>
-			<Button Command="{Binding closeCommand}" Content="Hinzufügen" Classes="primary" MinWidth="80"/>
+			<Button Command="{Binding CancelCommand}" Content="Abbrechen" MinWidth="80"/>
+			<Button Command="{Binding CloseCommand}" Content="Hinzufügen" Classes="primary" MinWidth="80"/>
 		</StackPanel>
 	</StackPanel>
 

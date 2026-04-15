@@ -65,4 +65,9 @@ internal class AppSettingsService : IAppSettingsService
         SaveAppSettings();
     }
 
+    public void AddServer(Guid serverId, string serverAdress)
+    {
+        AppSetting.Servers.ServerAddresses.Add(new ServerSettings { ServerId = serverId, ServerAddress = serverAdress });
+        SaveAppSettings();
+    }
 }

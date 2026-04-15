@@ -20,9 +20,13 @@ Console.WriteLine("Configuring services...");
 
 builder.Services.AddDbContext<VoiceChatDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+
 builder.Services.AddUsecases();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtOptions>>().Value);
+
+
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddCors(options =>
 {

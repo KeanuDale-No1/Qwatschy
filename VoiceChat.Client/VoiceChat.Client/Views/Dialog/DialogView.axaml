@@ -18,7 +18,7 @@
 					<Grid>
 						<TextBlock Text="{Binding DialogViewModelBase.Title}" Classes="dialogTitle"/>
 						<Button Content="&#xE711;" 
-								Command="{Binding DialogViewModelBase.cancelCommand}" 
+								Command="{Binding DialogViewModelBase.CancelCommand}" 
 								Classes="dialogClose"
 								/>
 					</Grid>

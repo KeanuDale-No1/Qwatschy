@@ -10,7 +10,7 @@ namespace VoiceChat.Client.ViewModels.Base;
 public partial class DialogViewModelBase : ViewModelBase
 {
     protected readonly IDialogService dialogService;
-    public virtual string Title { get; init; }
+    public virtual string Title { get; init; } = "";
 
     public DialogViewModelBase(IDialogService dialogService)
     {
@@ -18,7 +18,7 @@ public partial class DialogViewModelBase : ViewModelBase
     }
 
     [RelayCommand]
-    protected virtual void cancel()
+    protected virtual void Cancel()
     {
         dialogService.Close(true,null);
     }

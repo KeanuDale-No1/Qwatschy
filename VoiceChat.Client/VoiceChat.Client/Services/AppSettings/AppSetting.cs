@@ -10,7 +10,7 @@ namespace VoiceChat.Client.Services.AppSettings;
 public class AppSetting
 {
     public UserSettings UserSettings { get; set; } = new UserSettings();
-    public ServerSettings ServerSettings { get; set; } = new ServerSettings();
+    public Servers Servers { get; set; } = new Servers();
 }
 
 public class UserSettings
@@ -19,14 +19,21 @@ public class UserSettings
     public string Username { get; set; } = string.Empty;
 }
 
-public class ServerSettings
+public class Servers
 {
-    public List<string> ServerAddress { get; set; } = new List<string>();
+    public List<ServerSettings> ServerAddresses { get; set; } = new List<ServerSettings>();
 }
 
 
+public class ServerSettings
+{
+    public Guid ServerId { get; set; }
+    public required string ServerAddress { get; set; }
+}
+
 [JsonSerializable(typeof(AppSetting))]
 [JsonSerializable(typeof(UserSettings))]
+[JsonSerializable(typeof(Servers))]
 [JsonSerializable(typeof(ServerSettings))]
 public partial class AppSettingContext : JsonSerializerContext
 {

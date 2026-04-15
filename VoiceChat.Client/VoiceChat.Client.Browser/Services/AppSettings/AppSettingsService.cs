@@ -67,9 +67,11 @@ internal partial class AppSettingsService : IAppSettingsService
         AppSetting.UserSettings.Username = Username;
         SaveAppSettings();
     }
-
-
-
+    public void AddServer(Guid serverId, string ServerAdress)
+    {
+        AppSetting.Servers.ServerAddresses.Add(new ServerSettings { ServerId = serverId, ServerAddress = ServerAdress });
+        SaveAppSettings();
+    }
 
     /// ------------ Helper Methods ------------
     private static string ToBase64(string plainText)
@@ -83,4 +85,5 @@ internal partial class AppSettingsService : IAppSettingsService
         return Encoding.UTF8.GetString(bytes);
     }
 
+    
 }

@@ -1,8 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 
 namespace VoiceChat.Client.ViewModels.Base;
 
-public abstract class ViewModelBase : ObservableObject
+public abstract class ViewModelBase : ObservableValidator
 {
 }

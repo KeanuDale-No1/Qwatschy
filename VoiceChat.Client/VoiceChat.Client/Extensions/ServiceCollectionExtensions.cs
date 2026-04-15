@@ -6,6 +6,7 @@ using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.Services.Navigation;
+using VoiceChat.Client.Services.ServerService;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels;
@@ -23,10 +24,19 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<TokenService>();
         services.AddSingleton<ChatHubClient>();
         services.AddSingleton<VoiceHubClient>();
+
+        services.AddSingleton<IServerService, ServerService>();
+        services.AddSingleton<ClientHub>();
+
         services.AddSingleton<INavigationService, NavigationService>();
+
+        #region DialogService
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<DialogServiceViewSetterService>();
         services.AddSingleton<DialogViewModel>();
+        #endregion
+
+
         services.AddSingleton<StateService>();
         services.AddHttpClient("ApiClient", (sp, client) =>
         {

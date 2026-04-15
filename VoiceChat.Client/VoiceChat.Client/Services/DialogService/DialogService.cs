@@ -20,7 +20,7 @@ public class DialogService(IServiceProvider serviceProvider, IApplicationLifetim
         _dialogCompletionSource = new TaskCompletionSource<DialogResult>();
 
         var result = await _dialogCompletionSource.Task;
-        return new DialogResult { Data = result };
+        return result;
     }
 
     public void Close(bool isCancel, object data)

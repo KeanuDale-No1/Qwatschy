@@ -12,4 +12,5 @@ public interface IAppSettingsService
     public bool NewAppSetting { get; }
     public void InitAppSettings();
     public void SetUsername(string Username);
+    public void AddServer(Guid serverId, string serverAdress);
 }
