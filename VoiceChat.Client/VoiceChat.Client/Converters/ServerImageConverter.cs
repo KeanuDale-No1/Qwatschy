@@ -19,24 +19,24 @@ public class ServerImageConverter : IMultiValueConverter
 
         if (!string.IsNullOrEmpty(serverImage))
         {
-            if (targetType == typeof(IBrush) || targetType.IsAssignableTo(typeof(IBrush)))
+            try
             {
-                try
-                {
-                    var base64Data = serverImage.Contains(',') 
-                        ? serverImage.Split(',')[1] 
-                        : serverImage;
-                    var binaryData = System.Convert.FromBase64String(base64Data);
-                    using var stream = new MemoryStream(binaryData);
-                    var bitmap = new Avalonia.Media.Imaging.Bitmap(stream);
+                var base64Data = serverImage.Contains(',') 
+                    ? serverImage.Split(',')[1] 
+                    : serverImage;
+                var binaryData = System.Convert.FromBase64String(base64Data);
+                using var stream = new MemoryStream(binaryData);
+                var bitmap = new Avalonia.Media.Imaging.Bitmap(stream);
+
+                if (targetType == typeof(IBrush) || targetType.IsAssignableTo(typeof(IBrush)))
                     return new ImageBrush { Source = bitmap, Stretch = Stretch.UniformToFill };
-                }
-                catch
-                {
-                    return null;
-                }
+
+                return bitmap;
             }
-            return serverImage;
+            catch
+            {
+                return null;
+            }
         }
 
         return fallback ?? string.Empty;
