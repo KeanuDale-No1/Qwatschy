@@ -27,8 +27,11 @@ public partial class ServerConnectionInfo : ObservableObject
     public Guid ServerId { get; set; }
     public string ServerAdress { get; set; }
     public string ServerName { get; set; }
+    [ObservableProperty] private string? serverImage;
+
+
     public string? Description { get; set; }
-    public string? ServerImage { get; set; }
+    //public string? ServerImage { get; set; }
     public string? Token { get; set; }
     public string ErrorMessage { get; set; } = string.Empty;
     [ObservableProperty] private bool isConnected;

@@ -7,6 +7,8 @@ using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.Services.Navigation;
+using VoiceChat.Client.Services.ServerViewService;
+using VoiceChat.Client.Services.ServerViewServices;
 using VoiceChat.Client.Services.TokenProviders;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Utilitis;
@@ -30,6 +32,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<INavigationService, NavigationService>();
 
+        services.AddSingleton<IServerViewService, ServerViewService>();
         #region DialogService
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<DialogServiceViewSetterService>();

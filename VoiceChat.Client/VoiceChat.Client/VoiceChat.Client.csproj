@@ -43,7 +43,7 @@
 		<Compile Update="Views\MainArea\MainAreaView.axaml.cs">
 			<DependentUpon>MainAreaView.axaml</DependentUpon>
 		</Compile>
-		<Compile Update="Views\MainArea\ServerInformationView.axaml.cs">
+		<Compile Update="Views\MainArea\Componets\ServerInformationView.axaml.cs">
 			<DependentUpon>ServerInformationView.axaml</DependentUpon>
 		</Compile>
 	</ItemGroup>

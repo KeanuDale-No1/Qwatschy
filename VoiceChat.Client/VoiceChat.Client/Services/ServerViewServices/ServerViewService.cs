@@ -1,20 +1,23 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services.ServerViewService;
 
 namespace VoiceChat.Client.Services.ServerViewServices;
 
-internal class ServerViewService : IServerViewService
+internal partial class ServerViewService : IServerViewService
 {
-    public ServerConnectionInfo ServerConnectionInfo { get; private set; }
+    public ServerConnectionInfo ServerConnectionInfo { get;internal set; } = new(Guid.Empty, string.Empty, "Offline");
 
     public ServerViewService()
     {
-        ServerConnectionInfo = new ServerConnectionInfo(Guid.Empty, string.Empty, "Offline");
     }
+
+    public event Action ServerConnectionInfoChanged;
 
     public void UpdateServerConnectionInfo(ServerConnectionInfo newInfo)
     {
         ServerConnectionInfo = newInfo;
+        ServerConnectionInfoChanged?.Invoke();
     }
 }

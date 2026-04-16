@@ -5,8 +5,10 @@ using VoiceChat.Client.Hubs;
 
 namespace VoiceChat.Client.Services.ServerViewService;
 
-internal interface IServerViewService
+public interface IServerViewService
 {
+    public event Action ServerConnectionInfoChanged;
     public ServerConnectionInfo ServerConnectionInfo { get; }
+
     public void UpdateServerConnectionInfo(ServerConnectionInfo newInfo);
 }

@@ -174,6 +174,7 @@
         <Setter Property="FontSize" Value="20"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
     <Style Selector="TextBlock.serverInfoCaption">
