@@ -26,7 +26,6 @@ namespace VoiceChat.Client.Desktop
             
             var services = ConfigureServices();
 
-            ServiceLocator.AppSettingsService = services.GetRequiredService<IAppSettingsService>();
 
             BuildAvaloniaApp()
                 .AfterSetup(_ =>
@@ -48,7 +47,7 @@ namespace VoiceChat.Client.Desktop
             var services = new ServiceCollection();
 
             services.AddSingleton<IVoiceService, Services.VoiceService.DesktopVoiceService>();
-            services.AddSingleton<IAppSettingsService, AppSettingsService>();
+            services.AddSingleton<IStorageService, FileStorageService>();
             services.AddCommonServices();
             // weitere Services...
 

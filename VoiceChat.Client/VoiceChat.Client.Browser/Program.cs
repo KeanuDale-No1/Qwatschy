@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
+// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
 // Unauthorized copying, modification, or distribution is strictly prohibited
 
 using Avalonia;
@@ -22,6 +22,7 @@ internal sealed partial class Program
         await JSHost.ImportAsync("audioService", "../js/audioService.js");
         var services = ConfigureServices();
         
+        
         await BuildAvaloniaApp()
             .AfterSetup(_ =>
             {
@@ -38,7 +39,7 @@ internal sealed partial class Program
     private static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
-        services.AddSingleton<IAppSettingsService, AppSettingsService>();
+        services.AddSingleton<IStorageService, LocalStorageService>();
         services.AddSingleton<IVoiceService, BrowserVoiceService>();
         services.AddCommonServices();
         return services.BuildServiceProvider();

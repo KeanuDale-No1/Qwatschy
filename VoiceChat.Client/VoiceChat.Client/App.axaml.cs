@@ -18,8 +18,9 @@ public partial class App : Application
     public static IServiceProvider Services { get; set; } = default!;
     public override void Initialize()
     {
-        AvaloniaXamlLoader.Load(this);
+        AvaloniaXamlLoader.Load(this); 
     }
+    
     public override void OnFrameworkInitializationCompleted()
     {
         if (Services == null)
@@ -51,7 +52,7 @@ public partial class App : Application
     }
 
 
-    private void InitializeAppSettingsAsync()
+    private async void InitializeAppSettingsAsync()
     {
         var appSettings = Services.GetRequiredService<IAppSettingsService>();
         appSettings.InitAppSettings();

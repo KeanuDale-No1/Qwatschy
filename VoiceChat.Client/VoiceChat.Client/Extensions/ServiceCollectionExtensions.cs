@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.Services.Navigation;
 using VoiceChat.Client.Services.VoiceService;
@@ -20,6 +21,7 @@ public static class ServiceCollectionExtensions
     public static void AddCommonServices(this IServiceCollection services)
     {
         //Services
+        services.AddSingleton<IAppSettingsService, AppSettingsService>();
         services.AddSingleton<TokenService>();
         services.AddSingleton<ChatHubClient>();
         services.AddSingleton<VoiceHubClient>();
