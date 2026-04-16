@@ -1,13 +1,23 @@
 using Avalonia.Controls;
+using System;
 using VoiceChat.Client.ViewModels.MainArea;
 
-namespace VoiceChat.Client.Views.MainArea
+namespace VoiceChat.Client.Views.MainArea;
+
+public partial class MainAreaView : UserControl
 {
-    public partial class MainAreaView : UserControl
+    public MainAreaView()
     {
-        public MainAreaView()
+        InitializeComponent();
+        Initialized += OnInitialized;
+
+    }
+
+    private async void OnInitialized(object? sender, EventArgs e)
+    {
+        if (DataContext is MainAreaViewModel vm)
         {
-            InitializeComponent();
+            await vm.Init();
         }
     }
 }
