@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using VoiceChat.Api.Endpoints;
 using VoiceChat.Api.Hubs;
+using VoiceChat.Api.Options;
 using VoiceChat.Api.Services;
 using VoiceChat.Api.UseCases;
 using VoiceChat.Api.WebSockets;
 using VoiceChat.Data;
 using VoiceChat.Data.Repositories;
-using VoiceChat.Shared.Models;
+using VoiceChat.Shared.DTOs;
 
 Console.WriteLine("Starting API...");
 

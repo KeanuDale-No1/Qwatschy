@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using VoiceChat.Api.Options;
 using VoiceChat.Api.Services;
 using VoiceChat.Data.Repositories;
 using VoiceChat.Domain.Auth;
-using VoiceChat.Shared.Models;
+using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Api.Endpoints;
 

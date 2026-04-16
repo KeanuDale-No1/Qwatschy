@@ -1,4 +1,4 @@
-namespace VoiceChat.Shared.Models;
+namespace VoiceChat.Shared.DTOs;
 
 public record ServerConnectResponseDTO(
     string Token,

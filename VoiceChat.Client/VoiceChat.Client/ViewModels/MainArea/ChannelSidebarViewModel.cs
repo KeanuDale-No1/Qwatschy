@@ -11,49 +11,30 @@ using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels.Base;
-using VoiceChat.Shared.Models;
+using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Client.ViewModels.MainArea;
 
 public partial class ChannelSidebarViewModel : ViewModelBase
 {
-    private readonly ChannelService channelService;
     private readonly Sounds sounds;
     private readonly VoiceHubClient voiceHubClient;
     //private readonly VoiceChannelViewModel voiceChannelViewModel;
 
-    public ObservableCollection<ChannelDTO> Channels { get; } = new ObservableCollection<ChannelDTO>
-            {
-                new ChannelDTO() {
-                    Id = Guid.NewGuid(),
-                    Description = "",
-                    Name = "Room1",
-                    UnreadCount = 1 },
-                new ChannelDTO() {
-                    Id = Guid.NewGuid(),
-                    Name = "Room 2",
-                    UnreadCount = 0,
-                    Description = "test"
-                }};
-    public ObservableCollection<UserDTO> SelectedChannelUsers { get; set; } = new ObservableCollection<UserDTO>();
+   
 
-    [ObservableProperty] public ChannelDTO? selectedChannel;
 
  
-    [ObservableProperty] public string newChannelName = "";
 
     [ObservableProperty] public bool isInVoiceChannel;
 
 
-    public ChannelSidebarViewModel(ChannelService channelService, Sounds sounds, VoiceHubClient voiceHubClient ) //  VoiceChannelViewModel voiceChannelViewModel)
+    public ChannelSidebarViewModel( Sounds sounds, VoiceHubClient voiceHubClient ) 
     {
 
-        this.channelService = channelService;
         this.sounds = sounds;
         //this.voiceChannelViewModel = voiceChannelViewModel;
         this.voiceHubClient = voiceHubClient;
-        Channels = channelService.Channels;
-        SelectedChannelUsers = channelService.ChannelUsers;
     }
     public ChannelSidebarViewModel()
     {
@@ -62,32 +43,17 @@ public partial class ChannelSidebarViewModel : ViewModelBase
             throw new InvalidOperationException(
                 "Parameterloser Konstruktor darf nur im Designer verwendet werden.");
 
-        // Dummy-Daten für Designer
-        Channels = new ObservableCollection<ChannelDTO>
-            {
-                new ChannelDTO() {
-                    Id = Guid.NewGuid(),
-                    Description = "",
-                    Name = "Room1",
-                    UnreadCount = 1 },
-                new ChannelDTO() {
-                    Id = Guid.NewGuid(),
-                    Name = "Room 2",
-                    UnreadCount = 0,
-                    Description = "test"
-                }};
     }
 
 
 
     [RelayCommand]
-    private async Task JoinChannel(ChannelDTO channel)
+    private async Task JoinChannel()
     {
         try
         {
             sounds.PlayJoinSound();
 
-            await channelService.JoinChannel(channel);
             await voiceHubClient.LeaveChannelAsync();
             await voiceHubClient.ConnectAsync();
 
@@ -105,40 +71,27 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     public async Task CreateChannel()
     {
 
-        await channelService.AddChannel(new ChannelDTO() { Id = Guid.NewGuid(), Name = NewChannelName, Description = "" });
-        NewChannelName = "";
 
     }
 
 
     [RelayCommand]
-    private async Task DeleteChannel(ChannelDTO channel)
+    private async Task DeleteChannel()
     {
-        await channelService.DeleteChannel(channel);
     }
     [RelayCommand]
-    private async Task SelectChannel(ChannelDTO channel)
+    private async Task SelectChannel()
     {
-        SelectedChannel = channel;
-        channelService.SetSelectChannel(channel);
     }
 
     [RelayCommand]
-    private async Task KickUser(UserDTO user)
+    private async Task KickUser()
     {
-        if (SelectedChannel != null)
-        {
-            await channelService.KickUser(SelectedChannel.Id, user.ClientID);
-        }
     }
 
     [RelayCommand]
-    private async Task BanUser(UserDTO user)
+    private async Task BanUser()
     {
-        if (SelectedChannel != null)
-        {
-            await channelService.BanUser(SelectedChannel.Id, user.ClientID);
-        }
     }
 
     //[RelayCommand]

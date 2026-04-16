@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
-using VoiceChat.Shared.Models;
+using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Client.Hubs;
 
@@ -56,9 +56,9 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
     public readonly ObservableCollection<ServerConnectionInfo> ServerConnectionInfos = new();
 
 
-    public event Action<Guid, ChatMessageDTO>? MessageReceived;
     public event Action<Guid, HubConnectionState>? ConnectionStateChanged;
 
+    //public event Action<Guid, ChatMessageDTO>? MessageReceived;
 
     public IEnumerable<Guid> ConnectedServers => _connections.Keys;
 
@@ -125,23 +125,23 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
         await DisconnectServerAsync(serverId);
     }
 
-    public async Task SendMessageAsync(Guid serverId, ChatMessageDTO message)
-    {
-        if (_connections.TryGetValue(serverId, out var connection) && connection.State == HubConnectionState.Connected)
-        {
-            await connection.InvokeAsync("SendMessage", message);
-        }
-    }
+    //public async Task SendMessageAsync(Guid serverId, ChatMessageDTO message)
+    //{
+    //    if (_connections.TryGetValue(serverId, out var connection) && connection.State == HubConnectionState.Connected)
+    //    {
+    //        await connection.InvokeAsync("SendMessage", message);
+    //    }
+    //}
 
-    public async Task<GetMessagesResponseDTO> GetMessagesAsync(Guid serverId, Guid channelId, int skip = 0, int take = 50)
-    {
-        if (_connections.TryGetValue(serverId, out var connection) && connection.State == HubConnectionState.Connected)
-        {
-            return await connection.InvokeAsync<GetMessagesResponseDTO>("GetMessages", channelId, skip, take);
-        }
+    //public async Task<GetMessagesResponseDTO> GetMessagesAsync(Guid serverId, Guid channelId, int skip = 0, int take = 50)
+    //{
+    //    if (_connections.TryGetValue(serverId, out var connection) && connection.State == HubConnectionState.Connected)
+    //    {
+    //        return await connection.InvokeAsync<GetMessagesResponseDTO>("GetMessages", channelId, skip, take);
+    //    }
 
-        return new GetMessagesResponseDTO(new List<ChatMessageDTO>(), 0);
-    }
+    //    return new GetMessagesResponseDTO(new List<ChatMessageDTO>(), 0);
+    //}
 
     private async Task ConnectToServerAsync(ServerConnectionInfo serverConnectionInfo)
     {
@@ -163,10 +163,10 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
 
         var connection = builder.Build();
 
-        connection.On<ChatMessageDTO>("ReceiveMessage", (message) =>
-        {
-            MessageReceived?.Invoke(serverId, message);
-        });
+        //connection.On<ChatMessageDTO>("ReceiveMessage", (message) =>
+        //{
+        //    MessageReceived?.Invoke(serverId, message);
+        //});
 
         connection.Closed += async (exception) =>
         {

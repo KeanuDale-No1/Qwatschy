@@ -23,7 +23,6 @@ public static class ServiceCollectionExtensions
         //Services
         services.AddSingleton<IAppSettingsService, AppSettingsService>();
         services.AddSingleton<TokenService>();
-        services.AddSingleton<ChatHubClient>();
         services.AddSingleton<VoiceHubClient>();
 
         services.AddHttpClient<ITokenProvider, TokenProvider>();
@@ -41,7 +40,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<StateService>();
       
        
-        services.AddSingleton<ChannelService>();
         services.AddSingleton<VoiceChatService>();
         services.AddTransient<Sounds>();
 

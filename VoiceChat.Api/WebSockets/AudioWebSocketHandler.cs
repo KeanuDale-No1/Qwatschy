@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.WebSockets;
 using System.Security.Claims;
 using System.Text;
-using VoiceChat.Shared.Models;
+using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Api.WebSockets;
 

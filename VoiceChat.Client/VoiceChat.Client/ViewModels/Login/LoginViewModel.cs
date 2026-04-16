@@ -1,17 +1,11 @@
-﻿using Avalonia.Collections;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.Navigation;
 using VoiceChat.Client.ViewModels.Base;
 using VoiceChat.Client.ViewModels.MainArea;
-using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Client.ViewModels.Login;
 

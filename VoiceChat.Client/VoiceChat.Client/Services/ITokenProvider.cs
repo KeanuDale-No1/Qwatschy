@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using VoiceChat.Shared.Models;
+using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Client.Services;
 

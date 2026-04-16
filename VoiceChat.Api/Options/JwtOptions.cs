@@ -1,4 +1,4 @@
-namespace VoiceChat.Shared.Models;
+namespace VoiceChat.Api.Options;
 
 public class JwtOptions
 {
