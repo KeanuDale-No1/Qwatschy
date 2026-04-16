@@ -44,7 +44,8 @@ public static class ServerEndpoints
             return new ServerConnectResponseDTO(
                 token,
                 serverOptions.ServerName,
-                serverImage
+                serverImage, 
+                serverOptions.Description
             );
         }).WithMetadata(new AllowAnonymousAttribute());
     }

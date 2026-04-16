@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using VoiceChat.Shared.DTOs;
 
-namespace VoiceChat.Client.Services;
+namespace VoiceChat.Client.Services.TokenProviders;
 
 public class TokenProvider : ITokenProvider
 {

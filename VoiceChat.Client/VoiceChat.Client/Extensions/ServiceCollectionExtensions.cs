@@ -7,6 +7,7 @@ using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.Services.Navigation;
+using VoiceChat.Client.Services.TokenProviders;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels;
@@ -22,7 +23,6 @@ public static class ServiceCollectionExtensions
     {
         //Services
         services.AddSingleton<IAppSettingsService, AppSettingsService>();
-        services.AddSingleton<TokenService>();
         services.AddSingleton<VoiceHubClient>();
 
         services.AddHttpClient<ITokenProvider, TokenProvider>();

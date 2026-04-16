@@ -33,7 +33,6 @@ public partial class ChatViewModel : ViewModelBase
     private readonly IAppSettingsService appState;
     public event Action? MessageAdded;
     public event Action? ScrollToBottom;
-    private readonly StateService stateService;
     
     private int loadedCount = 0;
     private const int InitialLoad = 40;
@@ -41,7 +40,6 @@ public partial class ChatViewModel : ViewModelBase
 
     public ChatViewModel( IAppSettingsService appState, StateService stateService)
     {
-        this.stateService = stateService;
         this.appState = appState;
     }
 
@@ -58,48 +56,12 @@ public partial class ChatViewModel : ViewModelBase
         };
     }
 
-    private void OnSelectedChannelChanged(Guid? channelId)
-    {
-        IsInputEnabled = stateService.SelectChannelId.HasValue;
-        if (stateService.SelectChannelId.HasValue)
-        {
-            _ = LoadMessagesForChannel(stateService.SelectChannelId.Value);
-        }
-        else
-        {
-            ChannelTitle = "";
-            Messages.Clear();
-        }
-    }
 
-    private async Task LoadMessagesForChannel(Guid channelId)
-    {
-        try
-        {
-            IsLoading = true;
-            HasMoreMessages = true;
-            loadedCount = 0;
-            
-            Debug.WriteLine($"[Chat] Loading messages for channel {channelId}");
-            
-            Messages.Clear();
-            
-            IsLoading = false;
-            Debug.WriteLine($"[Chat] Messages added to collection. Count: {Messages.Count}");
-            MessageAdded?.Invoke();
-            ScrollToBottom?.Invoke();
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"[Chat] Error loading messages: {ex.Message}");
-            IsLoading = false;
-        }
-    }
 
     [RelayCommand]
     public async Task LoadMoreMessages()
     {
-        if (IsLoadingMore || !HasMoreMessages ||  !stateService.SelectChannelId.HasValue|| stateService.SelectChannelId == Guid.Empty)
+        if (IsLoadingMore || !HasMoreMessages )
             return;
 
         try

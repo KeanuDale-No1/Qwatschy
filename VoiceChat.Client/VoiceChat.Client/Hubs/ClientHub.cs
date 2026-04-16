@@ -1,3 +1,4 @@
+using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -8,8 +9,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
+using VoiceChat.Client.Services.TokenProviders;
 using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Client.Hubs;
@@ -26,6 +27,7 @@ public partial class ServerConnectionInfo : ObservableObject
     public Guid ServerId { get; set; }
     public string ServerAdress { get; set; }
     public string ServerName { get; set; }
+    public string? Description { get; set; }
     public string? ServerImage { get; set; }
     public string? Token { get; set; }
     public string ErrorMessage { get; set; } = string.Empty;
@@ -109,6 +111,7 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
                 serverInfo.Token = serverData.Token;
                 serverInfo.ServerName = serverData.ServerName;
                 serverInfo.ServerImage = serverData.ServerImage;
+                serverInfo.Description = serverData.Description;
             }
             else
             {

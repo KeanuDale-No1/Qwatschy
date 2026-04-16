@@ -9,14 +9,12 @@ namespace VoiceChat.Client.Services.VoiceService
     {
         private readonly IVoiceService voiceService;
       
-        private readonly StateService stateService;
         private bool isRecording = false;
         private bool isInitialized = false;
 
-        public VoiceChatService(IVoiceService voiceService, StateService stateService
-            )
+        private bool IsMuted = false;
+        public VoiceChatService(IVoiceService voiceService)
         {
-            this.stateService = stateService;
             this.voiceService = voiceService;
             voiceService.AudioFrameReceived += OnAudioFrameReceived;
         }
@@ -52,8 +50,8 @@ namespace VoiceChat.Client.Services.VoiceService
 
         public void ToggleMute()
         {
-            stateService.SetMuted(!stateService.IsMuted);
-            if (stateService.IsMuted)
+            IsMuted= !IsMuted;
+            if (IsMuted)
             {
                 voiceService.StopRecording();
                 isRecording = false;
@@ -67,10 +65,7 @@ namespace VoiceChat.Client.Services.VoiceService
 
         private void OnAudioFrameReceived(byte[] opusdata)
         {
-            if (stateService.ConnectedChannelId.HasValue && stateService.ConnectedChannelId != Guid.Empty)
-            {
 
-            }
         }
 
     }

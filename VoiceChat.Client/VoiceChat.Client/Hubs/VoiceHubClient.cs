@@ -15,27 +15,21 @@ namespace VoiceChat.Client.Hubs
         private ClientWebSocket ws = new ClientWebSocket();
 
 
-        private readonly TokenService tokenService;
-        private readonly StateService stateService;
         private readonly IVoiceService voiceService;
 
-        public VoiceHubClient(TokenService tokenService,StateService stateService, IVoiceService voiceService)
+        public VoiceHubClient( IVoiceService voiceService)
         {
-            this.tokenService = tokenService;
-            this.stateService = stateService;
             this.voiceService = voiceService;
             voiceService.AudioFrameReceived += VoiceService_AudioFrameRecorded;
         }
         public async Task ConnectAsync()
         {
-            if (string.IsNullOrWhiteSpace(stateService.ServerAddress))
-                return;
             if (ws.State == WebSocketState.Open)
                 return;
             ws = new ClientWebSocket();
             //ws.Options.SetRequestHeader("Authorization", $"Bearer {tokenService.ReadToken()}");
-            var uri = new Uri(stateService.ServerAddress.Replace("http", "ws").Replace("https", "wss") + "/audio?channel=" + stateService.ConnectedChannelId+"&token="+ tokenService.ReadToken());
-            await ws.ConnectAsync(uri, CancellationToken.None);
+            //var uri = new Uri(stateService.ServerAddress.Replace("http", "ws").Replace("https", "wss") + "/audio?channel=" + stateService.ConnectedChannelId+"&token=");
+            //await ws.ConnectAsync(uri, CancellationToken.None);
             _ = Task.Run(ReceiveLoop);
         }
         private async void VoiceService_AudioFrameRecorded(byte[] frame)

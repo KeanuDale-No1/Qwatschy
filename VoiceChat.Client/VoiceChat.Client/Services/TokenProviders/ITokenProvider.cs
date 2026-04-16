@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using VoiceChat.Shared.DTOs;
 
-namespace VoiceChat.Client.Services;
+namespace VoiceChat.Client.Services.TokenProviders;
 
 public interface ITokenProvider
 {
