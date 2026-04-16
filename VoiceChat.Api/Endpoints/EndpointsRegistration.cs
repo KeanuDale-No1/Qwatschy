@@ -1,4 +1,4 @@
-﻿using VoiceChat.Data.Repositories;
+using VoiceChat.Data.Repositories;
 
 namespace VoiceChat.Api.Endpoints
 {
@@ -12,8 +12,7 @@ namespace VoiceChat.Api.Endpoints
     {
         public static void AddEndpoints(this IEndpointRouteBuilder app)
         {
-            app.AddAuthEndpoints();
-            app.AddChannelEndpoints();
+            app.AddServerEndpoints();
         }
     }
 }

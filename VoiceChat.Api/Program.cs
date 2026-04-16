@@ -26,6 +26,9 @@ builder.Services.AddUsecases();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtOptions>>().Value);
 
+builder.Services.Configure<ServerOptions>(builder.Configuration.GetSection("ServerOptions"));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<ServerOptions>>().Value);
+
 
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddCors(options =>

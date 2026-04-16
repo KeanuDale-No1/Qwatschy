@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Shared.Models;
 
@@ -25,6 +26,8 @@ public partial class ServerConnectionInfo : ObservableObject
     public Guid ServerId { get; set; }
     public string ServerAdress { get; set; }
     public string ServerName { get; set; }
+    public string? ServerImage { get; set; }
+    public string? Token { get; set; }
     public string ErrorMessage { get; set; } = string.Empty;
     [ObservableProperty] private bool isConnected;
 
@@ -47,7 +50,7 @@ public static class AbbreviationHelper
     }
 }
 
-public class ClientHub(IAppSettingsService appSettingsService) : IClientHubExchange, IDisposable
+public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider tokenProvider) : IClientHubExchange, IDisposable
 {
     private readonly ConcurrentDictionary<Guid, HubConnection> _connections = new();
     public readonly ObservableCollection<ServerConnectionInfo> ServerConnectionInfos = new();
@@ -81,20 +84,39 @@ public class ClientHub(IAppSettingsService appSettingsService) : IClientHubExcha
     public async Task ConnectAllAsync()
     {
         var servers = appSettingsService.AppSetting.Servers.ServerAddresses;
+        var userSettings = appSettingsService.AppSetting.UserSettings;
         foreach (var server in servers)
         {
-            await ConnectAsync(server.ServerId, server.ServerAddress);
+            await ConnectAsync(server.ServerId, server.ServerAddress, userSettings.UserId, userSettings.Username);
         }
     }
 
     public async Task ConnectAsync(Guid serverId, string serverAddress)
     {
+        var userSettings = appSettingsService.AppSetting.UserSettings;
+        await ConnectAsync(serverId, serverAddress, userSettings.UserId, userSettings.Username);
+    }
+
+    public async Task ConnectAsync(Guid serverId, string serverAddress, Guid clientId, string? displayName)
+    {
         if (!string.IsNullOrWhiteSpace(serverAddress) && !_connections.ContainsKey(serverId))
         {
-            var ServerInfo = new ServerConnectionInfo(serverId, serverAddress, "Test1");
-            ServerConnectionInfos.Add(ServerInfo);
-            await ConnectToServerAsync(ServerInfo);
+            var serverInfo = new ServerConnectionInfo(serverId, serverAddress, "Connecting...");
 
+            var serverData = await tokenProvider.GetServerInfoAsync(serverAddress, clientId, displayName);
+            if (serverData != null)
+            {
+                serverInfo.Token = serverData.Token;
+                serverInfo.ServerName = serverData.ServerName;
+                serverInfo.ServerImage = serverData.ServerImage;
+            }
+            else
+            {
+                serverInfo.ServerName = new Uri(serverAddress).Host;
+            }
+            ServerConnectionInfos.Add(serverInfo);
+
+            await ConnectToServerAsync(serverInfo);
         }
     }
 
@@ -130,7 +152,7 @@ public class ClientHub(IAppSettingsService appSettingsService) : IClientHubExcha
         var builder = new HubConnectionBuilder()
             .WithUrl(url, options =>
             {
-                options.AccessTokenProvider = () => Task.FromResult(""); //TODO TOKENPROVIDER
+                options.AccessTokenProvider = () => Task.FromResult(serverConnectionInfo.Token ?? string.Empty);
                 options.Transports = HttpTransportType.LongPolling;
             })
             .AddJsonProtocol(options =>

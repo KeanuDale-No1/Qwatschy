@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ChatHubClient>();
         services.AddSingleton<VoiceHubClient>();
 
+        services.AddHttpClient<ITokenProvider, TokenProvider>();
         services.AddSingleton<ClientHub>();
 
         services.AddSingleton<INavigationService, NavigationService>();

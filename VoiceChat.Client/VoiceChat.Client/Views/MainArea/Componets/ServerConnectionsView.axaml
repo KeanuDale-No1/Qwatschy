@@ -4,8 +4,13 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 mc:Ignorable="d" d:DesignWidth="64" d:DesignHeight="450"
 			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea.Componets"
+			 xmlns:converters="using:VoiceChat.Client.Converters"
 			 x:DataType="vm:ServerConnectionsViewModel"
 			 x:Class="VoiceChat.Client.Views.MainArea.Componets.ServerConnectionsView">
+
+	<UserControl.Resources>
+		<converters:ServerImageConverter x:Key="ServerImageConverter"/>
+	</UserControl.Resources>
 
 	<ScrollViewer Classes="serverSidebar">
 		<StackPanel>
@@ -18,8 +23,19 @@
 								CommandParameter="{Binding .}"
 								ToolTip.Tip="{Binding ServerName}">
 							<Grid RowDefinitions="*" ColumnDefinitions="*" >
+								<Border Grid.Row="0" Grid.Column="0"
+										HorizontalAlignment="Stretch"
+										VerticalAlignment="Stretch">
+									<Border.Background>
+										<MultiBinding Converter="{StaticResource ServerImageConverter}">
+											<Binding Path="ServerImage"/>
+											<Binding Path="Abbr"/>
+										</MultiBinding>
+									</Border.Background>
+								</Border>
 								<TextBlock Grid.Row="0" Grid.Column="0"
 										   Text="{Binding Abbr}"
+										   IsVisible="{Binding ServerImage, Converter={x:Static ObjectConverters.IsNull}}"
 										   HorizontalAlignment="Center"
 										   VerticalAlignment="Center"/>
 								<Button Classes="serverCloseIcon"

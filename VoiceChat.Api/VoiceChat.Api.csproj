@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -17,6 +17,10 @@
   <ItemGroup>
     <ProjectReference Include="..\VoiceChat.Data\VoiceChat.Data.csproj" />
     <ProjectReference Include="..\VoiceChat.Shared\VoiceChat.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ServerImg\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
