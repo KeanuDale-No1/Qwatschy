@@ -7,7 +7,7 @@ namespace VoiceChat.Client.Services.ServerViewServices;
 
 internal partial class ServerViewService : IServerViewService
 {
-    public ServerConnectionInfo ServerConnectionInfo { get;internal set; } = new(Guid.Empty, string.Empty, "Offline");
+    public ServerConnectionInfo? ServerConnectionInfo { get;internal set; }
 
     public ServerViewService()
     {

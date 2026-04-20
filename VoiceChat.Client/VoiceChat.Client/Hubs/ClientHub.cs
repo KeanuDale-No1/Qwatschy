@@ -10,6 +10,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using VoiceChat.Client.Services.AppSettings;
+using VoiceChat.Client.Services.ServerViewService;
+using VoiceChat.Client.Services.ServerViewServices;
 using VoiceChat.Client.Services.TokenProviders;
 using VoiceChat.Shared.DTOs;
 
@@ -55,7 +57,7 @@ public static class AbbreviationHelper
     }
 }
 
-public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider tokenProvider) : IClientHubExchange, IDisposable
+public partial class ClientHub(IAppSettingsService appSettingsService, ITokenProvider tokenProvider, IServerViewService serverViewService) : IClientHubExchange, IDisposable
 {
     private readonly ConcurrentDictionary<Guid, HubConnection> _connections = new();
     public readonly ObservableCollection<ServerConnectionInfo> ServerConnectionInfos = new();
@@ -63,7 +65,6 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
 
     public event Action<Guid, HubConnectionState>? ConnectionStateChanged;
 
-    //public event Action<Guid, ChatMessageDTO>? MessageReceived;
 
     public IEnumerable<Guid> ConnectedServers => _connections.Keys;
 
@@ -76,15 +77,14 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
 
     public async Task RemoveServerAsync(Guid serverId)
     {
+        if (serverViewService.ServerConnectionInfo.ServerId == serverId)
+            serverViewService.UpdateServerConnectionInfo(null);
         await DisconnectAsync(serverId);
         var serverInfo = ServerConnectionInfos.FirstOrDefault(s => s.ServerId == serverId);
         if (serverInfo != null)
             ServerConnectionInfos.Remove(serverInfo);
         appSettingsService.RemoveServer(serverId);
     }
-
-
-
 
     public async Task ConnectAllAsync()
     {
@@ -131,23 +131,13 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
         await DisconnectServerAsync(serverId);
     }
 
-    //public async Task SendMessageAsync(Guid serverId, ChatMessageDTO message)
-    //{
-    //    if (_connections.TryGetValue(serverId, out var connection) && connection.State == HubConnectionState.Connected)
-    //    {
-    //        await connection.InvokeAsync("SendMessage", message);
-    //    }
-    //}
 
-    //public async Task<GetMessagesResponseDTO> GetMessagesAsync(Guid serverId, Guid channelId, int skip = 0, int take = 50)
-    //{
-    //    if (_connections.TryGetValue(serverId, out var connection) && connection.State == HubConnectionState.Connected)
-    //    {
-    //        return await connection.InvokeAsync<GetMessagesResponseDTO>("GetMessages", channelId, skip, take);
-    //    }
+    private void RegisterEventHandlers(HubConnection connection)
+    {
+        RegisterChatEventHandlers(connection);
+        RegisterChannelEventHandlers(connection);
+    }
 
-    //    return new GetMessagesResponseDTO(new List<ChatMessageDTO>(), 0);
-    //}
 
     private async Task ConnectToServerAsync(ServerConnectionInfo serverConnectionInfo)
     {
@@ -169,10 +159,6 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
 
         var connection = builder.Build();
 
-        //connection.On<ChatMessageDTO>("ReceiveMessage", (message) =>
-        //{
-        //    MessageReceived?.Invoke(serverId, message);
-        //});
 
         connection.Closed += async (exception) =>
         {
@@ -194,6 +180,9 @@ public class ClientHub(IAppSettingsService appSettingsService, ITokenProvider to
             ConnectionStateChanged?.Invoke(serverId, HubConnectionState.Connected);
             await Task.CompletedTask;
         };
+
+
+        RegisterEventHandlers(connection);
 
         _connections[serverId] = connection;
         ConnectionStateChanged?.Invoke(serverId, HubConnectionState.Connecting);
