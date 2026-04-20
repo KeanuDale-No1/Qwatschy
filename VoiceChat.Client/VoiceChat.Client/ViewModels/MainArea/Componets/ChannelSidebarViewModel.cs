@@ -20,7 +20,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     [ObservableProperty] public bool isInVoiceChannel;
 
 
-    public ChannelSidebarViewModel( Sounds sounds, IServerViewService serverViewService,  VoiceHubClient voiceHubClient ) 
+    public ChannelSidebarViewModel( Sounds sounds, IServerViewService serverViewService, VoiceHubClient voiceHubClient ) 
     {
 
         this.sounds = sounds;
@@ -61,7 +61,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
 
 
     [RelayCommand]
-    public async Task CreateChannel()
+    public async Task AddChannel()
     {
 
 
