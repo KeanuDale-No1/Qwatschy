@@ -98,10 +98,10 @@ public partial class ClientHub(IAppSettingsService appSettingsService, ITokenPro
     }
 
 
-    private void RegisterEventHandlers(HubConnection connection)
+    private void RegisterEventHandlers(HubConnection connection, Guid serverId)
     {
-        RegisterChatEventHandlers(connection);
-        RegisterChannelEventHandlers(connection);
+        RegisterChatEventHandlers(connection, serverId);
+        RegisterChannelEventHandlers(connection, serverId);
     }
 
 
@@ -148,7 +148,7 @@ public partial class ClientHub(IAppSettingsService appSettingsService, ITokenPro
         };
 
 
-        RegisterEventHandlers(connection);
+        RegisterEventHandlers(connection, serverId);
 
         _connections[serverId] = connection;
         ConnectionStateChanged?.Invoke(serverId, HubConnectionState.Connecting);

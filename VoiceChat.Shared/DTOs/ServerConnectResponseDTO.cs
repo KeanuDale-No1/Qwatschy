@@ -13,8 +13,8 @@ public record ChannelDTO(
     Guid Id,
     string Name,
     string? Description,
-    ConnectedUser[] ConnectedUsers);
+    ConnectedUserDTO[] ConnectedUsers);
 
-public record ConnectedUser(
+public record ConnectedUserDTO(
     Guid Id,
     string Username);

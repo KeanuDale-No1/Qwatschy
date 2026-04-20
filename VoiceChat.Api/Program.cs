@@ -85,7 +85,7 @@ app.AddEndpoints();
 app.UseMiddleware<TokenValidationMiddleware>();
 app.UseWebSockets();
 
-app.MapHub<ChatHub>("/connection");
+app.MapHub<ServerHub>("/connection");
 
 var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()!;
 

@@ -27,7 +27,7 @@ public partial class ClientHub
     //    return new GetMessagesResponseDTO(new List<ChatMessageDTO>(), 0);
     //}
 
-    private void RegisterChatEventHandlers(HubConnection connection)
+    private void RegisterChatEventHandlers(HubConnection connection, Guid serverId)
     {
     }
 }

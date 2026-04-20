@@ -14,22 +14,22 @@ namespace VoiceChat.Client.ViewModels.MainArea.Componets;
 
 public partial class ChannelSidebarViewModel : ViewModelBase
 {
-    private readonly Sounds sounds;
     private readonly VoiceHubClient voiceHubClient;
     private readonly IDialogService dialogService;
+    private readonly ClientHub clientHub;
     public IServerViewService ServerViewService { get; }
 
     
     [ObservableProperty] public bool isInVoiceChannel;
 
 
-    public ChannelSidebarViewModel( Sounds sounds, IServerViewService serverViewService, VoiceHubClient voiceHubClient, IDialogService dialogService ) 
+    public ChannelSidebarViewModel( IServerViewService serverViewService, ClientHub clientHub,
+                                    VoiceHubClient voiceHubClient, IDialogService dialogService ) 
     {
 
-        this.sounds = sounds;
         //this.voiceChannelViewModel = voiceChannelViewModel;
         ServerViewService = serverViewService;
-
+        this.clientHub = clientHub;
         this.voiceHubClient = voiceHubClient;
         this.dialogService = dialogService;
     }
@@ -49,7 +49,8 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     {
         try
         {
-            sounds.PlayJoinSound();
+           
+            //sounds.PlayJoinSound();
 
             await voiceHubClient.LeaveChannelAsync();
             await voiceHubClient.ConnectAsync();
@@ -81,7 +82,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
                 Desciption = description
             };
             //TODO: ChannelHub AddChannel
-
+            clientHub.AddChannel(ServerViewService.ServerConnectionInfo.ServerId, channelInfo);
             //ServerViewService.ServerConnectionInfo?.ChannelInfos?.Add(channelInfo);
         }
     }

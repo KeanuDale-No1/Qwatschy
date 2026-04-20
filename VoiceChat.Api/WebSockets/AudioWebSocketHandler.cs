@@ -78,16 +78,16 @@ public class AudioWebSocketHandler
         }
     }
 
-    public static ConnectedUser[] GetConnectedUsers(string channelId)
+    public static ConnectedUserDTO[] GetConnectedUsers(string channelId)
     {
         if (string.IsNullOrWhiteSpace(channelId))
             channelId = Guid.Empty.ToString();
 
         if (!ConnectedUsers.TryGetValue(channelId, out var connections))
-            return Array.Empty<ConnectedUser>();
+            return Array.Empty<ConnectedUserDTO>();
 
         return connections
-            .Select(c => new ConnectedUser(c.UserId, c.Username))
+            .Select(c => new ConnectedUserDTO(c.UserId, c.Username))
             .ToArray();
     }
 }

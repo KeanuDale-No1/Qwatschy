@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using VoiceChat.Api.UseCases;
+using VoiceChat.Data.Repositories;
+using VoiceChat.Domain.Channel;
 using VoiceChat.Shared.DTOs;
 using VoiceChat.Shared.Networking;
 
 
 namespace VoiceChat.Api.Hubs;
 
-public class ChatHub() : Hub, IChatHubExchange
+public partial class ServerHub(IRepository<Channel> channelRepository) : Hub, IChatHubExchange
 {
     public override async Task OnConnectedAsync()
     {
