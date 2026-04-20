@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using VoiceChat.Client.ViewModels.MainArea;
 
-namespace VoiceChat.Client.Views.MainArea;
+namespace VoiceChat.Client.Views.MainArea.Componets;
 
 public partial class ChannelSidebarView : UserControl
 {

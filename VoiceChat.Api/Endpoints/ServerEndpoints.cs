@@ -2,6 +2,7 @@ using VoiceChat.Api.Options;
 using VoiceChat.Api.Services;
 using VoiceChat.Data.Repositories;
 using VoiceChat.Domain.Auth;
+using VoiceChat.Domain.Channel;
 using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Api.Endpoints;
@@ -14,6 +15,7 @@ public static class ServerEndpoints
     {
         app.MapPost("api/server/connect", async (
             IRepository<User> repository,
+            IRepository<Channel> channelRepository,
             IAuthService authService,
             ServerOptions serverOptions,
             LoginRequestDTO request) =>
@@ -41,13 +43,20 @@ public static class ServerEndpoints
             var token = authService.GenerateToken(user.Id.ToString());
             var serverImage = GetServerImage();
 
+            var channels = await channelRepository.GetAllAsync(); // Optional: Channels können hier mitgeladen werden, falls benötigt
             return new ServerConnectResponseDTO(
                 token,
                 serverOptions.ServerName,
                 serverImage, 
-                serverOptions.Description
+                serverOptions.Description,
+               channels.Select(x=>  MapToChannelDTOs(x)).ToArray()
             );
         }).WithMetadata(new AllowAnonymousAttribute());
+    }
+
+    private static ChannelDTO MapToChannelDTOs(Channel channels)
+    {
+        return new(channels.Id, channels.Name, channels.Descripton, Array.Empty<ConnectedUser>());
     }
 
     private static string? GetServerImage()

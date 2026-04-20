@@ -23,15 +23,15 @@ builder.Services.AddDbContext<VoiceChatDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 
-builder.Services.AddUsecases();
+//builder.Services.AddUsecases();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtOptions>>().Value);
 
 builder.Services.Configure<ServerOptions>(builder.Configuration.GetSection("ServerOptions"));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<ServerOptions>>().Value);
 
-
 builder.Services.AddSingleton<IAuthService, AuthService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -43,9 +43,11 @@ builder.Services.AddCors(options =>
              .AllowCredentials();
     });
 });
+
 builder.Services.AddSignalR(options =>
 {
-    options.EnableDetailedErrors = true;
+    if (builder.Environment.IsDevelopment())
+        options.EnableDetailedErrors = true;
 });
 
 Console.WriteLine("Building app...");

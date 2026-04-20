@@ -5,7 +5,7 @@
 			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea"
 			 xmlns:cv="using:VoiceChat.Client.Converters"
 			 mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
-			 x:Class="VoiceChat.Client.Views.MainArea.ChannelSidebarView"
+			 x:Class="VoiceChat.Client.Views.MainArea.Componets.ChannelSidebarView"
 			 x:DataType="vm:ChannelSidebarViewModel"
 			 Background="{DynamicResource SurfaceBrush}">
 

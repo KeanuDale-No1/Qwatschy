@@ -9,62 +9,22 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using VoiceChat.Client.Models;
 using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.ServerViewService;
-using VoiceChat.Client.Services.ServerViewServices;
 using VoiceChat.Client.Services.TokenProviders;
-using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Client.Hubs;
 
-public partial class ServerConnectionInfo : ObservableObject
-{
-    public ServerConnectionInfo(Guid serverId, string serverAdress, string serverName)
-    {
-        ServerId = serverId;
-        ServerAdress = serverAdress;
-        ServerName = serverName;
-    }
-
-    public Guid ServerId { get; set; }
-    public string ServerAdress { get; set; }
-    public string ServerName { get; set; }
-    [ObservableProperty] private string? serverImage;
 
 
-    public string? Description { get; set; }
-    //public string? ServerImage { get; set; }
-    public string? Token { get; set; }
-    public string ErrorMessage { get; set; } = string.Empty;
-    [ObservableProperty] private bool isConnected;
-
-    public string Abbr => AbbreviationHelper.GetAbbreviation(ServerName);
-}
-
-public static class AbbreviationHelper
-{
-    public static string GetAbbreviation(string input)
-    {
-        if (string.IsNullOrEmpty(input))
-            return string.Empty;
-
-        return new string(input
-            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
-            .Where(w => w.Length > 2)
-            .SelectMany(w => w.Where(char.IsUpper))
-            .Take(3)
-            .ToArray());
-    }
-}
 
 public partial class ClientHub(IAppSettingsService appSettingsService, ITokenProvider tokenProvider, IServerViewService serverViewService) : IClientHubExchange, IDisposable
 {
     private readonly ConcurrentDictionary<Guid, HubConnection> _connections = new();
     public readonly ObservableCollection<ServerConnectionInfo> ServerConnectionInfos = new();
 
-
     public event Action<Guid, HubConnectionState>? ConnectionStateChanged;
-
 
     public IEnumerable<Guid> ConnectedServers => _connections.Keys;
 
@@ -115,6 +75,12 @@ public partial class ClientHub(IAppSettingsService appSettingsService, ITokenPro
                 serverInfo.ServerName = serverData.ServerName;
                 serverInfo.ServerImage = serverData.ServerImage;
                 serverInfo.Description = serverData.Description;
+                serverInfo.ChannelInfos = new ObservableCollection<ChannelInfo>(serverData.Channels.Select(c => new ChannelInfo
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Desciption = c.Description
+                }));
             }
             else
             {

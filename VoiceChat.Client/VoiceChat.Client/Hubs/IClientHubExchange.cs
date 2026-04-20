@@ -15,12 +15,3 @@ public interface IClientHubExchange
     Task ConnectAllAsync();
 }
 
-public enum ServerConnectionState
-{
-    Disconnected,
-    Connecting,
-    Connected,
-    Reconnecting,
-    Reconnected,
-    Error
-}

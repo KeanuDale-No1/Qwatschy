@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using VoiceChat.Client.Hubs;
+using VoiceChat.Client.Models;
 
 namespace VoiceChat.Client.Services.ServerViewService;
 

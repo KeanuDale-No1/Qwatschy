@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using VoiceChat.Client.Hubs;
+using VoiceChat.Client.Models;
 using VoiceChat.Client.Services.ServerViewService;
 
 namespace VoiceChat.Client.Services.ServerViewServices;
