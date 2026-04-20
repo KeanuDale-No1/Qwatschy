@@ -288,4 +288,9 @@
         <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
     </Style>
 
+
+    <Style Selector="GridSplitter.splitter">
+		<Setter Property="Background" Value="Transparent"/>
+    </Style>
+
 </Styles>

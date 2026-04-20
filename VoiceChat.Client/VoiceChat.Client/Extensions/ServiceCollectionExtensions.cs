@@ -57,6 +57,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ServerConnectionsViewModel>();
         services.AddTransient<ActionbarViewModel>();
         services.AddTransient<AddServerDialogViewModel>();
+        services.AddTransient<AddChannelDialogViewModel>();
 
     }
 }

@@ -4,6 +4,8 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
+using VoiceChat.Client.Models;
+using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.Services.ServerViewService;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels.Base;
@@ -14,13 +16,14 @@ public partial class ChannelSidebarViewModel : ViewModelBase
 {
     private readonly Sounds sounds;
     private readonly VoiceHubClient voiceHubClient;
+    private readonly IDialogService dialogService;
     public IServerViewService ServerViewService { get; }
 
     
     [ObservableProperty] public bool isInVoiceChannel;
 
 
-    public ChannelSidebarViewModel( Sounds sounds, IServerViewService serverViewService, VoiceHubClient voiceHubClient ) 
+    public ChannelSidebarViewModel( Sounds sounds, IServerViewService serverViewService, VoiceHubClient voiceHubClient, IDialogService dialogService ) 
     {
 
         this.sounds = sounds;
@@ -28,6 +31,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
         ServerViewService = serverViewService;
 
         this.voiceHubClient = voiceHubClient;
+        this.dialogService = dialogService;
     }
     public ChannelSidebarViewModel()
     {
@@ -63,8 +67,23 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     [RelayCommand]
     public async Task AddChannel()
     {
+        var result = await dialogService.ShowDialog<AddChannelDialogViewModel>();
+        if (result.IsCanceled)
+            return;
 
+        if (result.Data is ValueTuple<string, string?> data)
+        {
+            var (channelName, description) = data;
+            var channelInfo = new ChannelInfo
+            {
+                Id = Guid.NewGuid(),
+                Name = channelName,
+                Desciption = description
+            };
+            //TODO: ChannelHub AddChannel
 
+            //ServerViewService.ServerConnectionInfo?.ChannelInfos?.Add(channelInfo);
+        }
     }
 
 
