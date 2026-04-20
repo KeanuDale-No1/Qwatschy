@@ -2,6 +2,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
+using VoiceChat.Client.Models;
 using VoiceChat.Client.Services.DialogService;
 using VoiceChat.Client.Services.ServerViewService;
 using VoiceChat.Client.ViewModels.Base;

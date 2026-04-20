@@ -1,33 +1,32 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using System.Collections.Concurrent;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.WebSockets;
-using System.Security.Claims;
-using System.Text;
 using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Api.WebSockets;
 
+public record WebSocketConnection(WebSocket Socket, Guid UserId, string Username);
+
 public class AudioWebSocketHandler
 {
-    Dictionary<string, List<WebSocket>> channels = new Dictionary<string, List<WebSocket>>();
+    public static readonly ConcurrentDictionary<string, List<WebSocketConnection>> ConnectedUsers = new();
 
-    public AudioWebSocketHandler()
+    public async Task HandleWebSocketAsync(string? channelId, WebSocket socket, Guid userId, string username, CancellationToken cancellationToken)
     {
-    }
-
-    public async Task HandleWebSocketAsync(string? channelId, WebSocket socket, CancellationToken cancellationToken)
-    {
-        
         try
         {
             if (string.IsNullOrWhiteSpace(channelId))
                 channelId = Guid.Empty.ToString();
 
-            if (!channels.ContainsKey(channelId))
-                channels[channelId] = new List<WebSocket>();
-            channels[channelId].Add(socket);
+            var connection = new WebSocketConnection(socket, userId, username);
+
+            ConnectedUsers.AddOrUpdate(
+                channelId,
+                _ => new List<WebSocketConnection> { connection },
+                (_, list) =>
+                {
+                    list.Add(connection);
+                    return list;
+                });
 
             var buffer = new byte[4096];
 
@@ -40,18 +39,22 @@ public class AudioWebSocketHandler
 
                 if (result.MessageType == WebSocketMessageType.Binary && result.Count > 0)
                 {
-                    foreach (var client in channels[channelId].Where(c => c != socket))
+                    List<WebSocketConnection> connections;
+                    if (ConnectedUsers.TryGetValue(channelId, out connections))
                     {
-                        await client.SendAsync(
-                            buffer.AsMemory(0, result.Count),
-                            WebSocketMessageType.Binary,
-                            true,
-                            CancellationToken.None
-                        );
+                        foreach (var client in connections.Where(c => c.Socket != socket))
+                        {
+                            await client.Socket.SendAsync(
+                                buffer.AsMemory(0, result.Count),
+                                WebSocketMessageType.Binary,
+                                true,
+                                CancellationToken.None
+                            );
+                        }
                     }
                 }
             }
-            channels[channelId].Remove(socket);
+            RemoveConnection(channelId, socket);
         }
         catch (OperationCanceledException)
         {
@@ -61,5 +64,30 @@ public class AudioWebSocketHandler
         {
             Console.WriteLine($"[AudioWS] Error: {ex.Message}");
         }
+
+        await socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Connection closed", cancellationToken);
+    }
+
+    private static void RemoveConnection(string channelId, WebSocket socket)
+    {
+        if (ConnectedUsers.TryGetValue(channelId, out var connections))
+        {
+            var toRemove = connections.FirstOrDefault(c => c.Socket == socket);
+            if (toRemove != null)
+                connections.Remove(toRemove);
+        }
+    }
+
+    public static ConnectedUser[] GetConnectedUsers(string channelId)
+    {
+        if (string.IsNullOrWhiteSpace(channelId))
+            channelId = Guid.Empty.ToString();
+
+        if (!ConnectedUsers.TryGetValue(channelId, out var connections))
+            return Array.Empty<ConnectedUser>();
+
+        return connections
+            .Select(c => new ConnectedUser(c.UserId, c.Username))
+            .ToArray();
     }
 }

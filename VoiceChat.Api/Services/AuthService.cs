@@ -23,7 +23,8 @@ public class AuthService(JwtOptions options) : IAuthService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, userId),
-            new Claim(ClaimTypes.Name, userId)
+            new Claim(ClaimTypes.Name, userId),
+            new Claim("username", userId)
         };
 
         var token = new JwtSecurityToken(

@@ -2,38 +2,31 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
-using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.ServerViewService;
 using VoiceChat.Client.Utilitis;
 using VoiceChat.Client.ViewModels.Base;
-using VoiceChat.Shared.DTOs;
 
-namespace VoiceChat.Client.ViewModels.MainArea;
+namespace VoiceChat.Client.ViewModels.MainArea.Componets;
 
 public partial class ChannelSidebarViewModel : ViewModelBase
 {
     private readonly Sounds sounds;
     private readonly VoiceHubClient voiceHubClient;
-    //private readonly VoiceChannelViewModel voiceChannelViewModel;
+    private readonly IServerViewService serverViewService;
 
-   
-
-
- 
-
+    
     [ObservableProperty] public bool isInVoiceChannel;
 
 
-    public ChannelSidebarViewModel( Sounds sounds, VoiceHubClient voiceHubClient ) 
+    public ChannelSidebarViewModel( Sounds sounds, IServerViewService serverViewService,  VoiceHubClient voiceHubClient ) 
     {
 
         this.sounds = sounds;
         //this.voiceChannelViewModel = voiceChannelViewModel;
+        this.serverViewService = serverViewService;
+
         this.voiceHubClient = voiceHubClient;
     }
     public ChannelSidebarViewModel()
@@ -79,6 +72,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     private async Task DeleteChannel()
     {
     }
+
     [RelayCommand]
     private async Task SelectChannel()
     {

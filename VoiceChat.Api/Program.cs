@@ -106,7 +106,17 @@ app.Map("/audio", async context =>
 
     var webSocket = await context.WebSockets.AcceptWebSocketAsync();
     var channelId = context.Request.Query["channelId"].ToString();
-    await audioHandler.HandleWebSocketAsync(channelId, webSocket, context.RequestAborted);
+
+    var userIdClaim = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var usernameClaim = context.User.FindFirst("username")?.Value ?? context.User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Unknown";
+
+    if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+    {
+        context.Response.StatusCode = 401;
+        return;
+    }
+
+    await audioHandler.HandleWebSocketAsync(channelId, webSocket, userId, usernameClaim, context.RequestAborted);
 });//.AllowAnonymous();
 
 var urls = builder.Configuration["Urls"] ?? "http://localhost:5000";

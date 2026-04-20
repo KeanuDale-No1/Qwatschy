@@ -1,5 +1,6 @@
 using VoiceChat.Api.Options;
 using VoiceChat.Api.Services;
+using VoiceChat.Api.WebSockets;
 using VoiceChat.Data.Repositories;
 using VoiceChat.Domain.Auth;
 using VoiceChat.Domain.Channel;
@@ -56,7 +57,8 @@ public static class ServerEndpoints
 
     private static ChannelDTO MapToChannelDTOs(Channel channels)
     {
-        return new(channels.Id, channels.Name, channels.Descripton, Array.Empty<ConnectedUser>());
+        var connectedUsers = AudioWebSocketHandler.GetConnectedUsers(channels.Id.ToString());
+        return new(channels.Id, channels.Name, channels.Descripton, connectedUsers);
     }
 
     private static string? GetServerImage()
