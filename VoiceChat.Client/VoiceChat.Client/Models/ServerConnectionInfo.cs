@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -31,7 +31,7 @@ public partial class ServerConnectionInfo : ObservableObject
     public string Abbr => AbbreviationHelper.GetAbbreviation(ServerName);
 
 
-    public ObservableCollection<ChannelInfo> ChannelInfos = new();
+    [ObservableProperty] private ObservableCollection<ChannelInfo> channelInfos = new();
 
 }
 

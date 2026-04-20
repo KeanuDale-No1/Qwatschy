@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -14,7 +14,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
 {
     private readonly Sounds sounds;
     private readonly VoiceHubClient voiceHubClient;
-    private readonly IServerViewService serverViewService;
+    public IServerViewService ServerViewService { get; }
 
     
     [ObservableProperty] public bool isInVoiceChannel;
@@ -25,7 +25,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
 
         this.sounds = sounds;
         //this.voiceChannelViewModel = voiceChannelViewModel;
-        this.serverViewService = serverViewService;
+        ServerViewService = serverViewService;
 
         this.voiceHubClient = voiceHubClient;
     }

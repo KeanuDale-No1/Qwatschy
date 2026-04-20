@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
-using System.Text;
-using VoiceChat.Shared.DTOs;
 
 namespace VoiceChat.Client.Models;
 
@@ -12,5 +9,7 @@ public class ChannelInfo
     public string Name { get; set; }
     public string? Desciption { get; set; }
 
-    public ObservableCollection<ConnectedUser> ConnectedUsers = new();
+    public int UnreadMessagesCount { get; set; } = 0;
+
+    public ObservableCollection<ConnectedUser> ConnectedUsers { get; set; } = new();
 }

@@ -23,9 +23,9 @@
 			<Border Classes="ChatHeader">
 				<TextBlock Classes="header" Text="Channels"/>
 			</Border>
-			
+
 			<ScrollViewer>
-				<ItemsControl ItemsSource="{Binding serverViewService.ServerConnectionInfo.ChannelInfos}">
+				<ItemsControl ItemsSource="{Binding ServerViewService.ServerConnectionInfo.ChannelInfos}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<VirtualizingStackPanel/>
@@ -35,35 +35,48 @@
 						<DataTemplate>
 							<Border Classes="channelItem"
 									Margin="0,2">
-								<Border.Background>
-									<MultiBinding Converter="{StaticResource IsSelectedConverter}">
-										<Binding Path="Id"/>
-										<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel"/>
-									</MultiBinding>
-								</Border.Background>
-								<Grid Classes="channelRow" ColumnDefinitions="*,Auto,Auto">
-									<TextBlock Grid.Column="0"
-											   Text="{Binding Name}"
-											   Margin="8,0"
-											   VerticalAlignment="Center"/>
-									<TextBlock Grid.Column="1"
-											   Text="{Binding UnreadCount}"
-											   IsVisible="{Binding UnreadCount}"
-											   Margin="4,0"
-											   VerticalAlignment="Center"
-											   FontWeight="Bold"
-											   Foreground="{DynamicResource PrimaryBrush}"/>
-								<Button Grid.Column="2"
-										Classes="channelJoinButton"
-										Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
-										CommandParameter="{Binding .}"
-										VerticalContentAlignment="Center"
-										HorizontalContentAlignment="Center"
-										Padding="0"
-										FontSize="16"
-										Content="V"
-										ToolTip.Tip="Voice Channel"/>
-								</Grid>
+								<!--<Border.Background>
+								<MultiBinding Converter="{StaticResource IsSelectedConverter}">
+								<Binding Path="Id"/>
+								<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel"/>
+								</MultiBinding>
+								</Border.Background>-->
+								<StackPanel>
+									<Grid Classes="channelRow" ColumnDefinitions="*,Auto,Auto">
+										<TextBlock Grid.Column="0"
+												   Text="{Binding Name}"
+												   Margin="8,0"
+												   VerticalAlignment="Center"/>
+										<TextBlock Grid.Column="1"
+												   Text="{Binding UnreadMessagesCount}"
+												   IsVisible="{Binding UnreadMessagesCount}"
+												   Margin="4,0"
+												   VerticalAlignment="Center"
+												   FontWeight="Bold"
+												   Foreground="{DynamicResource PrimaryBrush}"/>
+										<Button Grid.Column="2"
+												Classes="channelJoinButton"
+												Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
+												CommandParameter="{Binding .}"
+												VerticalContentAlignment="Center"
+												HorizontalContentAlignment="Center"
+												Padding="0"
+												FontSize="16"
+												Content="V"
+												ToolTip.Tip="Voice Channel"/>
+									</Grid>
+									<ItemsControl ItemsSource="{Binding ConnectedUsers}"
+												  Margin="24,0,0,0">
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<TextBlock Text="{Binding Username}"
+														   Margin="8,2"
+														   FontSize="12"
+														   Foreground="{DynamicResource OnSurfaceVariantBrush}"/>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+								</StackPanel>
 								<Border.ContextMenu>
 									<ContextMenu>
 										<MenuItem Header="Löschen"
@@ -80,27 +93,6 @@
 			</ScrollViewer>
 		</StackPanel>
 
-		<StackPanel Grid.Row="1">
-			<Separator/>
-			<Border Classes="ChatHeader">
-				<TextBlock Classes="header" Text="Online"/>
-			</Border>
-			<!-->
-			<ItemsControl ItemsSource="{Binding SelectedChannelUsers}"
-						  x:Name="UsersItemsControl">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<Border Classes="userItem"
-								Padding="8,4"
-								PointerPressed="OnUserClick">
-							<StackPanel Orientation="Horizontal" Spacing="8">
-								<Ellipse Classes="statusIndicator statusOnline" Width="8" Height="8"/>
-								<TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
-							</StackPanel>
-						</Border>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl> -->
-		</StackPanel>
+
 	</Grid>
 </UserControl>
