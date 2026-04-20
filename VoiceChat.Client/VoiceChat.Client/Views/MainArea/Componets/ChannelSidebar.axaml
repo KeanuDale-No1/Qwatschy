@@ -18,22 +18,18 @@
 		<cv:IsSelectedConverter x:Key="IsSelectedConverter" />
 	</UserControl.Resources>
 
-	<StackPanel>
-		<Border Classes="ChatHeader">
-			<Panel>
-				<TextBlock Classes="header" Text="Channels"/>
-				<Button Classes="addChannelButton"
+	<Grid RowDefinitions="Auto,*">
+		<Border Grid.Row="0" Classes="ChatHeader">
+			<Grid ColumnDefinitions="*,Auto">
+				<TextBlock Grid.Column="0" Classes="header" Text="Channels" VerticalAlignment="Center"/>
+				<Button Grid.Column="1" Classes="addChannelButton"
 						Command="{Binding AddChannelCommand}"
-						HorizontalAlignment="Right"
-						VerticalContentAlignment="Center"
-						HorizontalContentAlignment="Center"
-						Padding="0"
 						ToolTip.Tip="Add Channel">
-					<PathIcon Data="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" Width="16" Height="16" HorizontalAlignment="Center" Foreground="{DynamicResource TextBrush}" />
+					<PathIcon Data="M440-280h80v-160h160v-80H520v-160h-80v160H280v80h160v160Zm40 200q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z" />
 				</Button>
-			</Panel>
+			</Grid>
 		</Border>
-		<ScrollViewer>
+		<ScrollViewer Grid.Row="1">
 			<ItemsControl ItemsSource="{Binding ServerViewService.ServerConnectionInfo.ChannelInfos}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -42,55 +38,33 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Border Classes="channelItem"
-								Margin="0,2">
-							<!--<Border.Background>
-							<MultiBinding Converter="{StaticResource IsSelectedConverter}">
-							<Binding Path="Id"/>
-							<Binding Path="$parent[ItemsControl].DataContext.SelectedChannel"/>
-							</MultiBinding>
-							</Border.Background>-->
-							<StackPanel>
-								<Grid Classes="channelRow" ColumnDefinitions="*,Auto,Auto">
-									<TextBlock Grid.Column="0"
-											   Text="{Binding Name}"
-											   Margin="8,0"
-											   VerticalAlignment="Center"/>
-									<TextBlock Grid.Column="1"
-											   Text="{Binding UnreadMessagesCount}"
-											   IsVisible="{Binding UnreadMessagesCount}"
-											   Margin="4,0"
-											   VerticalAlignment="Center"
-											   FontWeight="Bold"
-											   Foreground="{DynamicResource PrimaryBrush}"/>
-									<Button Grid.Column="2"
-											Classes="channelJoinButton"
-											Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
-											CommandParameter="{Binding .}"
-											VerticalContentAlignment="Center"
-											HorizontalContentAlignment="Center"
-											Padding="0"
-											FontSize="16"
-											Content="V"
-											ToolTip.Tip="Voice Channel"/>
-								</Grid>
-								<ItemsControl ItemsSource="{Binding ConnectedUsers}"
-											  Margin="24,0,0,0">
+						<Border Classes="channelItem">
+							<Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+								<StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal">
+									<TextBlock Classes="channelName" Text="{Binding Name}" Margin="8,0"/>
+									<Border Classes="unreadBadge" IsVisible="{Binding UnreadMessagesCount}" Background="{DynamicResource PrimaryBrush}">
+										<TextBlock Text="{Binding UnreadMessagesCount}" FontSize="11" Foreground="White"/>
+									</Border>
+								</StackPanel>
+								<Button Grid.Column="1" Grid.Row="0" Classes="channelJoinButton"
+										Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
+										CommandParameter="{Binding .}"
+										ToolTip.Tip="Voice Channel">
+									<PathIcon Data="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" Width="12" Height="12"/>
+								</Button>
+								<ItemsControl Grid.Column="0" Grid.Row="1" ItemsSource="{Binding ConnectedUsers}" Margin="24,4,0,0">
 									<ItemsControl.ItemTemplate>
 										<DataTemplate>
-											<TextBlock Text="{Binding Username}"
-													   Margin="8,2"
-													   FontSize="12"
-													   Foreground="{DynamicResource OnSurfaceVariantBrush}"/>
+											<TextBlock Classes="channelUser" Text="{Binding Username}"/>
 										</DataTemplate>
 									</ItemsControl.ItemTemplate>
 								</ItemsControl>
-							</StackPanel>
+							</Grid>
 							<Border.ContextMenu>
 								<ContextMenu>
 									<MenuItem Header="Löschen"
-											  Command="{Binding $parent[UserControl].DataContext.DeleteChannelCommand }"
-											  CommandParameter="{Binding .}"/>
+										  Command="{Binding $parent[UserControl].DataContext.DeleteChannelCommand }"
+										  CommandParameter="{Binding .}"/>
 									<MenuItem Header="-"/>
 									<MenuItem Header="Close"/>
 								</ContextMenu>
@@ -100,5 +74,5 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</ScrollViewer>
-	</StackPanel>
+	</Grid>
 </UserControl>

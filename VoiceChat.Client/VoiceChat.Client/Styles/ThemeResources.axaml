@@ -19,6 +19,8 @@
             <Color x:Key="DividerColor">#E0E0E0</Color>
             <Color x:Key="InputBackgroundColor">#FFFFFF</Color>
             <Color x:Key="MessageBubbleColor">#F1F3F4</Color>
+            <Color x:Key="TextTertiaryColor">#5F6368</Color>
+            <Color x:Key="OnSurfaceVariantColor">#5F6368</Color>
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
@@ -36,6 +38,8 @@
             <Color x:Key="DividerColor">#3F3F3F</Color>
             <Color x:Key="InputBackgroundColor">#2D2D2D</Color>
             <Color x:Key="MessageBubbleColor">#3D3D3D</Color>
+            <Color x:Key="TextTertiaryColor">#9AA0A6</Color>
+            <Color x:Key="OnSurfaceVariantColor">#9AA0A6</Color>
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
@@ -54,6 +58,7 @@
     <SolidColorBrush x:Key="DividerBrush" Color="{DynamicResource DividerColor}"/>
     <SolidColorBrush x:Key="InputBackgroundBrush" Color="{DynamicResource InputBackgroundColor}"/>
     <SolidColorBrush x:Key="MessageBubbleBrush" Color="{DynamicResource MessageBubbleColor}"/>
+    <SolidColorBrush x:Key="OnSurfaceVariantBrush" Color="{DynamicResource OnSurfaceVariantColor}"/>
 
     <FontFamily x:Key="DefaultFontFamily">Segoe UI</FontFamily>
     <x:Double x:Key="FontSizeCaption">12</x:Double>

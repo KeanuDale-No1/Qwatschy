@@ -190,4 +190,102 @@
         <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
+    <!-- ChannelSidebar - Windows 8.1 Style -->
+    <Style Selector="Border.ChatHeader">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Padding" Value="12,10"/>
+    </Style>
+
+    <Style Selector="TextBlock.header">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.addChannelButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="MinWidth" Value="24"/>
+        <Setter Property="MinHeight" Value="24"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.addChannelButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+    </Style>
+
+    <Style Selector="Button.addChannelButton:pressed">
+        <Setter Property="Background" Value="{DynamicResource SelectedBrush}"/>
+    </Style>
+
+    <Style Selector="Button.addChannelButton PathIcon">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+    </Style>
+
+    <Style Selector="Border.channelItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Padding" Value="8,6"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style Selector="Border.channelItem:pointerover">
+        <Setter Property="Background" Value="{DynamicResource HoverBrush}"/>
+    </Style>
+
+    <Style Selector="Border.channelItem:selected">
+        <Setter Property="Background" Value="{DynamicResource SelectedBrush}"/>
+    </Style>
+
+    <Style Selector="TextBlock.channelName">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="TextBlock.unreadBadge">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Padding" Value="4,2"/>
+        <Setter Property="MinWidth" Value="18"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style Selector="Button.channelJoinButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="MinWidth" Value="20"/>
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextSecondaryBrush}"/>
+    </Style>
+
+    <Style Selector="Button.channelJoinButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style Selector="TextBlock.channelUser">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{DynamicResource OnSurfaceVariantBrush}"/>
+        <Setter Property="Margin" Value="8,2"/>
+    </Style>
+
+    <Style Selector="ScrollViewer">
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+
 </Styles>
