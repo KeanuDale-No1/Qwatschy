@@ -49,7 +49,7 @@
 									</Border>
 								</StackPanel>
 								<Button Grid.Column="1" Grid.Row="0" Classes="channelJoinButton"
-										Command="{Binding $parent[ItemsControl].DataContext.JoinChannelCommand}"
+										Command="{Binding $parent[ItemsControl].DataContext.JoinVoiceChatChannelCommand}"
 										CommandParameter="{Binding .}"
 										VerticalAlignment="Center"
 										ToolTip.Tip="Voice Channel">

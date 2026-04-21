@@ -1,35 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using System.Net.WebSockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using VoiceChat.Client.Services;
+using VoiceChat.Client.Models;
 using VoiceChat.Client.Services.VoiceService;
 
 namespace VoiceChat.Client.Hubs
 {
-    public class VoiceHubClient
+public class VoiceHubClient
     {
         private ClientWebSocket ws = new ClientWebSocket();
 
+        private readonly VoiceChatService voiceService;
 
-        private readonly IVoiceService voiceService;
-
-        public VoiceHubClient( IVoiceService voiceService)
+        public VoiceHubClient(VoiceChatService voiceService)
         {
             this.voiceService = voiceService;
             voiceService.AudioFrameReceived += VoiceService_AudioFrameRecorded;
         }
-        public async Task ConnectAsync()
+
+        public async Task ConnectAsync(ChannelInfo channelInfo, ServerConnectionInfo connectionInfo)
         {
             if (ws.State == WebSocketState.Open)
                 return;
+
+            await LeaveChannelAsync();
+
             ws = new ClientWebSocket();
-            //ws.Options.SetRequestHeader("Authorization", $"Bearer {tokenService.ReadToken()}");
-            //var uri = new Uri(stateService.ServerAddress.Replace("http", "ws").Replace("https", "wss") + "/audio?channel=" + stateService.ConnectedChannelId+"&token=");
-            //await ws.ConnectAsync(uri, CancellationToken.None);
+
+            var baseUrl = connectionInfo.ServerAdress
+                .Replace("http://", "ws://")
+                .Replace("https://", "wss://")
+                .TrimEnd('/');
+
+            var url = $"{baseUrl}/audio?channelId={channelInfo.Id}&token={connectionInfo.Token}";
+            var uri = new Uri(url);
+
+            await ws.ConnectAsync(uri, CancellationToken.None);
+            voiceService.Start();
             _ = Task.Run(ReceiveLoop);
         }
         private async void VoiceService_AudioFrameRecorded(byte[] frame)
@@ -50,7 +58,10 @@ namespace VoiceChat.Client.Hubs
                 var result = await ws.ReceiveAsync(buffer, CancellationToken.None);
 
                 if (result.MessageType == WebSocketMessageType.Close)
+                {
+                    Console.WriteLine("[VoiceHubClient] WebSocket closed by server.");
                     break;
+                }
 
 
                 byte[] opus = new byte[result.Count];
@@ -74,7 +85,7 @@ namespace VoiceChat.Client.Hubs
             }
             catch { }
 
-            voiceService.StopRecording();
+            voiceService.Stop();
         }
 
     }

@@ -41,21 +41,32 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task JoinChannel()
+    private async Task JoinVoiceChatChannel(ChannelInfo channelInfo)
     {
         try
         {
-            //sounds.PlayJoinSound();
-
             await voiceHubClient.LeaveChannelAsync();
-            await voiceHubClient.ConnectAsync();
+            await voiceHubClient.ConnectAsync(channelInfo, ServerViewService.OpenServerInfo);
+            IsInVoiceChannel = true;
         }
         catch (Exception ex)
         {
-
             Console.WriteLine(ex);
         }
+    }
 
+    [RelayCommand]
+    private async Task LeaveVoiceChatChannel()
+    {
+        try
+        {
+            await voiceHubClient.LeaveChannelAsync();
+            IsInVoiceChannel = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
     }
 
     [RelayCommand]
@@ -105,30 +116,4 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     {
     }
 
-    //[RelayCommand]
-    //public async Task ToggleVoiceChannel()
-    //{
-    //    Console.WriteLine("[ChannelSidebar] ToggleVoiceChannelCommand called");
-    //    Console.WriteLine($"[ChannelSidebar] SelectedChannel: {SelectedChannel?.Name ?? "null"}");
-        
-    //    if (SelectedChannel == null)
-    //    {
-    //        Console.WriteLine("[ChannelSidebar] No channel selected, returning");
-    //        return;
-    //    }
-
-    //    if (IsInVoiceChannel)
-    //    {
-    //        Console.WriteLine("[ChannelSidebar] Leaving voice channel");
-    //        await voiceChannelViewModel.LeaveVoiceChannel();
-    //        IsInVoiceChannel = false;
-    //    }
-    //    else
-    //    {
-    //        Console.WriteLine($"[ChannelSidebar] Joining voice channel: {SelectedChannel.Name}");
-    //        await channelService.JoinChannel(SelectedChannel);
-    //        await voiceChannelViewModel.JoinVoiceChannel(SelectedChannel.Id, SelectedChannel.Name);
-    //        IsInVoiceChannel = true;
-    //    }
-    //}
 }

@@ -13,15 +13,15 @@ namespace VoiceChat.Client.Services.VoiceService
         private bool isInitialized = false;
 
         private bool IsMuted = false;
+
+        public event Action<byte[]> AudioFrameReceived;
+
         public VoiceChatService(IVoiceService voiceService)
         {
             this.voiceService = voiceService;
-            voiceService.AudioFrameReceived += OnAudioFrameReceived;
+            voiceService.AudioFrameReceived += AudioFrameReceived;
         }
 
-        private void OnReceiveAudioFrame(byte[] opusdata)
-        {
-        }
 
         public void Start()
         {
@@ -46,8 +46,6 @@ namespace VoiceChat.Client.Services.VoiceService
                 isRecording = false;
             }
         }
-
-
         public void ToggleMute()
         {
             IsMuted= !IsMuted;
@@ -63,9 +61,9 @@ namespace VoiceChat.Client.Services.VoiceService
             }
         }
 
-        private void OnAudioFrameReceived(byte[] opusdata)
+        public void PlayOpusChunk(byte[] opusdata)
         {
-
+            voiceService.PlayOpusChunk(opusdata);
         }
 
     }
