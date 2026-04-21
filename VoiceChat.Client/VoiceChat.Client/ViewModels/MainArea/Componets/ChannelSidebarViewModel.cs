@@ -35,26 +35,20 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     }
     public ChannelSidebarViewModel()
     {
-
         if (!Design.IsDesignMode)
             throw new InvalidOperationException(
                 "Parameterloser Konstruktor darf nur im Designer verwendet werden.");
-
     }
-
-
 
     [RelayCommand]
     private async Task JoinChannel()
     {
         try
         {
-           
             //sounds.PlayJoinSound();
 
             await voiceHubClient.LeaveChannelAsync();
             await voiceHubClient.ConnectAsync();
-
         }
         catch (Exception ex)
         {
@@ -63,7 +57,6 @@ public partial class ChannelSidebarViewModel : ViewModelBase
         }
 
     }
-
 
     [RelayCommand]
     public async Task AddChannel()
@@ -97,8 +90,9 @@ public partial class ChannelSidebarViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task SelectChannel()
+    private async Task SelectChannel(ChannelInfo channelInfo)
     {
+        ServerViewService.UpdateChannelInfo(channelInfo);
     }
 
     [RelayCommand]
