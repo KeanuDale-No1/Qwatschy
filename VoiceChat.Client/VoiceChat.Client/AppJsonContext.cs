@@ -7,6 +7,8 @@ namespace VoiceChat.Client;
 
 [JsonSerializable(typeof(LoginRequestDTO))]
 [JsonSerializable(typeof(ServerConnectResponseDTO))]
+[JsonSerializable(typeof(ChannelDTO))]
+[JsonSerializable(typeof(ConnectedUserDTO))]
 public partial class AppJsonContext : JsonSerializerContext
 { }
 

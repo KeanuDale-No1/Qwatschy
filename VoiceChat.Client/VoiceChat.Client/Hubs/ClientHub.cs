@@ -79,7 +79,8 @@ public partial class ClientHub(IAppSettingsService appSettingsService, ITokenPro
                 {
                     Id = c.Id,
                     Name = c.Name,
-                    Desciption = c.Description
+                    Desciption = c.Description,
+                    ConnectedUsers = new ObservableCollection<ConnectedUser>(c.ConnectedUsers.Select(cu => new ConnectedUser() { UserId = cu.Id, Username = cu.Username}))
                 }));
             }
             else

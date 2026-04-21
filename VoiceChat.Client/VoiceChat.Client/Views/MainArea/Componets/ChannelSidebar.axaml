@@ -40,53 +40,55 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Border Classes="channelItem">
-							<Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
-								<StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
-									<TextBlock Classes="channelName" Text="{Binding Name}" Margin="8,0"/>
-									<Border Classes="unreadBadge" IsVisible="{Binding UnreadMessagesCount}" Background="{DynamicResource PrimaryBrush}">
-										<TextBlock Text="{Binding UnreadMessagesCount}" FontSize="11" Foreground="White"/>
-									</Border>
-								</StackPanel>
-								<Button Grid.Column="1" Grid.Row="0" Classes="channelJoinButton"
-										Command="{Binding $parent[ItemsControl].DataContext.JoinVoiceChatChannelCommand}"
-										CommandParameter="{Binding .}"
-										VerticalAlignment="Center"
-										ToolTip.Tip="Voice Channel">
-									<PathIcon Data="M619.5-811.5Q685-783 734-734t77.5 114.5Q840-554 840-480t-28.5 139.5Q783-275 734-226t-114.5 77.5Q554-120 480-120q-41 0-79-9t-76-26l61-61q23 8 46.5 12t47.5 4q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 24 4 47.5t12 46.5l-60 60q-18-36-27-74.5t-9-79.5q0-74 28.5-139.5T226-734q49-49 114.5-77.5T480-840q74 0 139.5 28.5ZM520-320v-144L176-120l-56-56 344-344H320v-80h280v280h-80Z"
-											  Width="16"
-											  Height="16"/>
-								</Button>
-								<ItemsControl Grid.Column="0" Grid.Row="1" ItemsSource="{Binding ConnectedUsers}" Margin="24,4,0,0">
-									<ItemsControl.ItemTemplate>
-										<DataTemplate>
-											<StackPanel>
-												<TextBlock Classes="channelUser" Text="{Binding Username}"/>
-												<StackPanel.ContextMenu>
-													<ContextMenu>
-														<MenuItem Header="User Info"/>
-														<MenuItem Header="Message"/>
-														<MenuItem Header="Kick from Channel"
-																  Command="{Binding $parent[UserControl].DataContext.KickUserCommand}"
-																  CommandParameter="{Binding .}"/>
-													</ContextMenu>
-												</StackPanel.ContextMenu>
-											</StackPanel>
+						<StackPanel>
+							<Border Classes="channelItem">
+								<Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+									<StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+										<TextBlock Classes="channelName" Text="{Binding Name}" Margin="8,0"/>
+										<Border Classes="unreadBadge" IsVisible="{Binding UnreadMessagesCount}" Background="{DynamicResource PrimaryBrush}">
+											<TextBlock Text="{Binding UnreadMessagesCount}" FontSize="11" Foreground="White"/>
+										</Border>
+									</StackPanel>
+									<Button Grid.Column="1" Grid.Row="0" Classes="channelJoinButton"
+											Command="{Binding $parent[ItemsControl].DataContext.JoinVoiceChatChannelCommand}"
+											CommandParameter="{Binding .}"
+											VerticalAlignment="Center"
+											ToolTip.Tip="Voice Channel">
+										<PathIcon Data="M619.5-811.5Q685-783 734-734t77.5 114.5Q840-554 840-480t-28.5 139.5Q783-275 734-226t-114.5 77.5Q554-120 480-120q-41 0-79-9t-76-26l61-61q23 8 46.5 12t47.5 4q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 24 4 47.5t12 46.5l-60 60q-18-36-27-74.5t-9-79.5q0-74 28.5-139.5T226-734q49-49 114.5-77.5T480-840q74 0 139.5 28.5ZM520-320v-144L176-120l-56-56 344-344H320v-80h280v280h-80Z"
+												  Width="16"
+												  Height="16"/>
+									</Button>
+								</Grid>
+								<Border.ContextMenu>
+									<ContextMenu>
+										<MenuItem Header="Löschen"
+												  Command="{Binding $parent[UserControl].DataContext.DeleteChannelCommand }"
+												  CommandParameter="{Binding .}"/>
+										<MenuItem Header="-"/>
+										<MenuItem Header="Close"/>
+									</ContextMenu>
+								</Border.ContextMenu>
+							</Border>
+							<ItemsControl Grid.Column="0" Grid.Row="1" ItemsSource="{Binding ConnectedUsers}" Margin="24,4,0,0">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<StackPanel>
+											<TextBlock Classes="channelUser" Text="{Binding Username}"/>
+											<StackPanel.ContextMenu>
+												<ContextMenu>
+													<MenuItem Header="User Info"/>
+													<MenuItem Header="Message"/>
+													<MenuItem Header="Kick from Channel"
+															  Command="{Binding $parent[UserControl].DataContext.KickUserCommand}"
+															  CommandParameter="{Binding .}"/>
+												</ContextMenu>
+											</StackPanel.ContextMenu>
+										</StackPanel>
 
-										</DataTemplate>
-									</ItemsControl.ItemTemplate>
-								</ItemsControl>
-							</Grid>
-							<Border.ContextMenu>
-								<ContextMenu>
-									<MenuItem Header="Löschen"
-											  Command="{Binding $parent[UserControl].DataContext.DeleteChannelCommand }"
-											  CommandParameter="{Binding .}"/>
-									<MenuItem Header="-"/>
-									<MenuItem Header="Close"/>
-								</ContextMenu>
-							</Border.ContextMenu>
-						</Border>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</StackPanel>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

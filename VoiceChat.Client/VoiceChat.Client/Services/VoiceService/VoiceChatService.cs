@@ -19,9 +19,13 @@ namespace VoiceChat.Client.Services.VoiceService
         public VoiceChatService(IVoiceService voiceService)
         {
             this.voiceService = voiceService;
-            voiceService.AudioFrameReceived += AudioFrameReceived;
+            voiceService.AudioFrameReceived += VoiceService_AudioFrameReceived; ;
         }
 
+        private void VoiceService_AudioFrameReceived(byte[] obj)
+        {
+            AudioFrameReceived.Invoke(obj);
+        }
 
         public void Start()
         {
