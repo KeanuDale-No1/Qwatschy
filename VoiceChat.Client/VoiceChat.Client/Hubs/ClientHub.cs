@@ -37,7 +37,7 @@ public partial class ClientHub(IAppSettingsService appSettingsService, ITokenPro
 
     public async Task RemoveServerAsync(Guid serverId)
     {
-        if (serverViewService.ServerConnectionInfo.ServerId == serverId)
+        if (serverViewService.OpenServerInfo.ServerId == serverId)
             serverViewService.UpdateServerConnectionInfo(null);
         await DisconnectAsync(serverId);
         var serverInfo = ServerConnectionInfos.FirstOrDefault(s => s.ServerId == serverId);

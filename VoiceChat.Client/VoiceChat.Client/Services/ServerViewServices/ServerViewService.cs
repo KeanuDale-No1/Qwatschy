@@ -8,17 +8,17 @@ namespace VoiceChat.Client.Services.ServerViewServices;
 
 internal partial class ServerViewService : IServerViewService
 {
-    public ServerConnectionInfo? ServerConnectionInfo { get;internal set; }
+    public ServerConnectionInfo? OpenServerInfo { get;internal set; }
 
     public ServerViewService()
     {
     }
 
-    public event Action ServerConnectionInfoChanged;
+    public event Action OpenServerInfoChanged;
 
     public void UpdateServerConnectionInfo(ServerConnectionInfo newInfo)
     {
-        ServerConnectionInfo = newInfo;
-        ServerConnectionInfoChanged?.Invoke();
+        OpenServerInfo = newInfo;
+        OpenServerInfoChanged?.Invoke();
     }
 }

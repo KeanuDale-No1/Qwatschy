@@ -81,7 +81,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
                 Name = channelName,
                 Desciption = description
             };
-            await clientHub.AddChannel(ServerViewService.ServerConnectionInfo.ServerId, channelInfo);
+            await clientHub.AddChannel(ServerViewService.OpenServerInfo.ServerId, channelInfo);
         }
     }
 
@@ -93,7 +93,7 @@ public partial class ChannelSidebarViewModel : ViewModelBase
         if (channelInfo == null)
             return;
         //TODO Dialog abfrage
-        await clientHub.DeleteChannel(ServerViewService.ServerConnectionInfo.ServerId, channelInfo);
+        await clientHub.DeleteChannel(ServerViewService.OpenServerInfo.ServerId, channelInfo);
     }
 
     [RelayCommand]

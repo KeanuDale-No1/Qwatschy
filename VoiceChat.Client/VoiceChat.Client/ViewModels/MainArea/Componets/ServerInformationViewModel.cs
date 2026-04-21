@@ -16,12 +16,12 @@ public partial class ServerInformationViewModel : ViewModelBase
     public ServerInformationViewModel(IServerViewService serverViewService)
     {
         this.serverViewService = serverViewService;
-        serverConnectionInfo = serverViewService.ServerConnectionInfo;
-        serverViewService.ServerConnectionInfoChanged += OnServerConnectionInfoChanged;
+        serverConnectionInfo = serverViewService.OpenServerInfo;
+        serverViewService.OpenServerInfoChanged += OnServerConnectionInfoChanged;
     }
 
     private void OnServerConnectionInfoChanged()
     {
-        ServerConnectionInfo = serverViewService.ServerConnectionInfo;
+        ServerConnectionInfo = serverViewService.OpenServerInfo;
     }
 }

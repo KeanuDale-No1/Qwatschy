@@ -18,13 +18,13 @@ public partial class MainAreaViewModel : ViewModelBase
     {
         this.clientHub = clientHub;
         this.serverViewService = serverViewService;
-        serverViewService.ServerConnectionInfoChanged += OnServerConnectionInfoChanged;
-        IsConnected = serverViewService.ServerConnectionInfo != null;
+        serverViewService.OpenServerInfoChanged += OnServerConnectionInfoChanged;
+        IsConnected = serverViewService.OpenServerInfo != null;
     }
 
     private void OnServerConnectionInfoChanged()
     {
-        IsConnected = serverViewService.ServerConnectionInfo != null;
+        IsConnected = serverViewService.OpenServerInfo != null;
     }
 
     public async Task Init()

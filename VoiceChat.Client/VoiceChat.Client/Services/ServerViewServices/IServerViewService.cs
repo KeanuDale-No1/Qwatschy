@@ -5,8 +5,8 @@ namespace VoiceChat.Client.Services.ServerViewService;
 
 public interface IServerViewService
 {
-    public event Action ServerConnectionInfoChanged;
-    public ServerConnectionInfo ServerConnectionInfo { get; }
+    public event Action OpenServerInfoChanged;
+    public ServerConnectionInfo OpenServerInfo { get; }
 
     public void UpdateServerConnectionInfo(ServerConnectionInfo newInfo);
 }
