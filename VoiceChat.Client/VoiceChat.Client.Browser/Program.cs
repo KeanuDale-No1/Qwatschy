@@ -18,10 +18,11 @@ internal sealed partial class Program
 {
     private static async Task Main(string[] args)
     {
-        await JSHost.ImportAsync("localStorage", "../js/localStorage.js");
-        await JSHost.ImportAsync("audioService", "../js/audioService.js");
-        var services = ConfigureServices();
         
+        var services = ConfigureServices();
+
+        await JSHost.ImportAsync("audioService", "../js/audioService.js");
+        await JSHost.ImportAsync("localStorage", "../js/localStorage.js");
         
         await BuildAvaloniaApp()
             .AfterSetup(_ =>
@@ -30,7 +31,6 @@ internal sealed partial class Program
             })
             .WithInterFont()
             .StartBrowserAppAsync("out");
-        
     }
 
     public static AppBuilder BuildAvaloniaApp()

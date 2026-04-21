@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
 
 namespace VoiceChat.Client.Services.VoiceService
@@ -27,14 +28,14 @@ namespace VoiceChat.Client.Services.VoiceService
             AudioFrameReceived.Invoke(obj);
         }
 
-        public void Start()
+        public async void Start()
         {
             if (!isInitialized)
             {
                 voiceService.InitializeAsync();
                 isInitialized = true;
             }
-            
+            await Task.Delay(100);
             if (!isRecording)
             {
                 voiceService.StartRecording();

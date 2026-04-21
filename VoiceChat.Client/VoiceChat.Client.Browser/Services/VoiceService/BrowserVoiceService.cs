@@ -38,17 +38,18 @@ public partial class BrowserVoiceService : IVoiceService
 
     public void InitializeAsync()
     {
-        InitJs();
+       InitJs();
     }
 
     public void StartRecording()
     {
-        StartRecordingJs();
+      StartRecordingJs();
     }
 
     public void StopRecording()
     {
-        StopRecordingJs();
+       
+         StopRecordingJs();
     }
 
 
@@ -81,10 +82,7 @@ public partial class BrowserVoiceService : IVoiceService
 
             try
             {
-                Stopwatch sw = Stopwatch.StartNew();
                 byte[] opusData = codec.Encode(frame960);
-                sw.Stop();
-                Console.WriteLine(sw.ElapsedMilliseconds);
                 AudioFrameReceived?.Invoke(opusData);
             }
             catch
@@ -99,7 +97,7 @@ public partial class BrowserVoiceService : IVoiceService
 
     public void PlayOpusChunk(byte[] data)
     {
-        DecodeAndPlay(data);
+       // DecodeAndPlay(data);
     }
 
 
