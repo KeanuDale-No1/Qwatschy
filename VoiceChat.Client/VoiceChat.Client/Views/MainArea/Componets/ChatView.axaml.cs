@@ -1,11 +1,8 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
-using VoiceChat.Client.ViewModels.MainArea;
+using VoiceChat.Client.ViewModels.MainArea.Componets;
 
-namespace VoiceChat.Client.Views.MainArea;
+namespace VoiceChat.Client.Views.MainArea.Componets;
 
 public partial class ChatView : UserControl
 {

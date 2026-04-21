@@ -27,7 +27,7 @@
 				<Grid Grid.Row="1" ColumnDefinitions="220, 1, *, 1, 220" IsVisible="{Binding IsConnected}">
 					<ContentControl Grid.Column="0" Content="{me:Resolve vmc:ChannelSidebarViewModel}" />
 					<GridSplitter Grid.Column="1" Classes="splitter" ResizeDirection="Columns"/>
-					<ContentControl Grid.Column="2" Content="{me:Resolve vm:ChatViewModel}" />
+					<ContentControl Grid.Column="2" Content="{me:Resolve vmc:ChatViewModel}" />
 					<GridSplitter Grid.Column="3" Classes="splitter" ResizeDirection="Columns"/>
 					<ContentControl Grid.Column="4" Content="{me:Resolve vmc:ServerInformationViewModel}" />
 				</Grid>

@@ -32,7 +32,7 @@
 			</Grid>
 		</Border>
 		<ScrollViewer Grid.Row="1">
-			<ItemsControl ItemsSource="{Binding ServerViewService.ServerConnectionInfo.ChannelInfos}">
+			<ItemsControl ItemsSource="{Binding ServerViewService.OpenServerInfo.ChannelInfos}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<VirtualizingStackPanel/>

@@ -2,19 +2,15 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using VoiceChat.Client.Hubs;
 using VoiceChat.Client.Services;
 using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.ViewModels.Base;
-using VoiceChat.Shared.DTOs;
 
-namespace VoiceChat.Client.ViewModels.MainArea;
+namespace VoiceChat.Client.ViewModels.MainArea.Componets;
 
 
 public record ChatMessage(Guid ChannelId, string Username, string Text, DateTime Timestamp, HorizontalAlignment HorizontalAlignment, bool IsOwnMessage, string SenderInitial);
