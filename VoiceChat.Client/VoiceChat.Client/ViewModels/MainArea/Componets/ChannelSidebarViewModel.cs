@@ -81,16 +81,19 @@ public partial class ChannelSidebarViewModel : ViewModelBase
                 Name = channelName,
                 Desciption = description
             };
-            //TODO: ChannelHub AddChannel
-            clientHub.AddChannel(ServerViewService.ServerConnectionInfo.ServerId, channelInfo);
-            //ServerViewService.ServerConnectionInfo?.ChannelInfos?.Add(channelInfo);
+            await clientHub.AddChannel(ServerViewService.ServerConnectionInfo.ServerId, channelInfo);
         }
     }
 
 
     [RelayCommand]
-    private async Task DeleteChannel()
+    private async Task DeleteChannel(ChannelInfo channelInfo)
     {
+
+        if (channelInfo == null)
+            return;
+        //TODO Dialog abfrage
+        await clientHub.DeleteChannel(ServerViewService.ServerConnectionInfo.ServerId, channelInfo);
     }
 
     [RelayCommand]

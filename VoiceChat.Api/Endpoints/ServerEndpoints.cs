@@ -44,7 +44,7 @@ public static class ServerEndpoints
             var token = authService.GenerateToken(user.Id.ToString());
             var serverImage = GetServerImage();
 
-            var channels = await channelRepository.GetAllAsync(); // Optional: Channels können hier mitgeladen werden, falls benötigt
+            var channels = await channelRepository.GetAllAsync();
             return new ServerConnectResponseDTO(
                 token,
                 serverOptions.ServerName,
