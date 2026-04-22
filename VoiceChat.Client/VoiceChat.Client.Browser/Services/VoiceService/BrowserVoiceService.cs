@@ -97,7 +97,7 @@ public partial class BrowserVoiceService : IVoiceService
 
     public void PlayOpusChunk(byte[] data)
     {
-       // DecodeAndPlay(data);
+        DecodeAndPlay(data);
     }
 
 

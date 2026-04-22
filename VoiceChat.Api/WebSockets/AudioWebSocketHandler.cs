@@ -42,7 +42,7 @@ public class AudioWebSocketHandler
                     List<WebSocketConnection> connections;
                     if (ConnectedUsers.TryGetValue(channelId, out connections))
                     {
-                        foreach (var client in connections/*.Where(c => c.Socket != socket)*/)
+                        foreach (var client in connections.Where(c => c.Socket != socket))
                         {
                             await client.Socket.SendAsync(
                                 buffer.AsMemory(0, result.Count),
