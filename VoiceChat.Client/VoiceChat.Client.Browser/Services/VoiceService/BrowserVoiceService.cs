@@ -97,7 +97,11 @@ public partial class BrowserVoiceService : IVoiceService
 
     public void PlayOpusChunk(byte[] data)
     {
-        DecodeAndPlay(data);
+        Console.WriteLine($"[BrowserVoiceService] PlayOpusChunk called with {data.Length} bytes");
+        short[] pcm = codec.Decode(data);
+        byte[] pcmBytes = new byte[pcm.Length * 2];
+        Buffer.BlockCopy(pcm, 0, pcmBytes, 0, pcmBytes.Length);
+        DecodeAndPlay(pcmBytes);
     }
 
 

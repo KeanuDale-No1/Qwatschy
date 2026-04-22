@@ -20,27 +20,31 @@ namespace VoiceChat.Client.Services.VoiceService
         public VoiceChatService(IVoiceService voiceService)
         {
             this.voiceService = voiceService;
-            voiceService.AudioFrameReceived += VoiceService_AudioFrameReceived; ;
+            voiceService.AudioFrameReceived += VoiceService_AudioFrameReceived;
         }
 
         private void VoiceService_AudioFrameReceived(byte[] obj)
         {
-            AudioFrameReceived.Invoke(obj);
+            AudioFrameReceived?.Invoke(obj);
         }
 
-        public async void Start()
+        public async Task Start()
         {
+            Console.WriteLine("[VoiceChatService] Start called");
             if (!isInitialized)
             {
+                Console.WriteLine("[VoiceChatService] Initializing...");
                 voiceService.InitializeAsync();
                 isInitialized = true;
             }
             await Task.Delay(100);
             if (!isRecording)
             {
+                Console.WriteLine("[VoiceChatService] Starting recording...");
                 voiceService.StartRecording();
                 isRecording = true;
             }
+            Console.WriteLine("[VoiceChatService] Start complete");
         }
 
         public void Stop()
@@ -67,9 +71,10 @@ namespace VoiceChat.Client.Services.VoiceService
         }
 
         public void PlayOpusChunk(byte[] opusdata)
-        {
-            voiceService.PlayOpusChunk(opusdata);
-        }
+    {
+        Console.WriteLine($"[VoiceChatService] PlayOpusChunk called with {opusdata.Length} bytes");
+        voiceService.PlayOpusChunk(opusdata);
+    }
 
     }
 }

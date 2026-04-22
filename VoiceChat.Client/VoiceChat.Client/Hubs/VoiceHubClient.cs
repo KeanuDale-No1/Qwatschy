@@ -37,7 +37,7 @@ public class VoiceHubClient
             var uri = new Uri(url);
 
             await ws.ConnectAsync(uri, CancellationToken.None);
-            voiceService.Start();
+            await voiceService.Start();
             _ = Task.Run(ReceiveLoop);
         }
         private async void VoiceService_AudioFrameRecorded(byte[] frame)

@@ -6,10 +6,16 @@ let _dotnetExportsCache = null;
 export async function init() {
     const { getAssemblyExports } = await globalThis.getDotnetRuntime(0);
     _dotnetExportsCache = await getAssemblyExports("Qwatschy.Client.Browser.dll");
+    globalThis._ctx = new AudioContext({ sampleRate: 48000, latencyHint: 0.01 });
+    console.log("[audioService] init complete, AudioContext created:", !!globalThis._ctx);
 }
 
 
 export async function startRecording() {
+    if (globalThis._ctx && globalThis._ctx.state === 'suspended') {
+        await globalThis._ctx.resume();
+    }
+
     const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
             echoCancellation: false,
@@ -26,8 +32,7 @@ export async function startRecording() {
         }
     });
 
-    // Prefer 'interactive' latency for real-time capture
-    const ctx = new AudioContext({ sampleRate: 48000, latencyHint: 0.01 });
+    const ctx = globalThis._ctx;
     await ctx.audioWorklet.addModule("js/processor.js");
 
     const source = ctx.createMediaStreamSource(stream);
@@ -51,10 +56,6 @@ export function stopRecording() {
         globalThis._worklet.disconnect();
         globalThis._worklet = null;
     }
-    if (globalThis._ctx) {
-        globalThis._ctx.close();
-        globalThis._ctx = null;
-    }
     if (globalThis._stream) {
         globalThis._stream.getTracks().forEach(t => t.stop());
         globalThis._stream = null;
@@ -63,6 +64,18 @@ export function stopRecording() {
 
 
 export function decodeAndPlayPCM(pcmBytes) {
+    const ctx = globalThis._ctx;
+    if (!ctx) {
+        console.log("[decodeAndPlayPCM] No AudioContext!");
+        return;
+    }
+
+    if (ctx.state === 'suspended') {
+        console.log("[decodeAndPlayPCM] Resuming suspended AudioContext");
+        ctx.resume();
+    }
+
+    console.log("[decodeAndPlayPCM] Playing", pcmBytes.length, "bytes");
     const pcm16 = new Int16Array(pcmBytes.buffer);
 
     const float32 = new Float32Array(pcm16.length);
