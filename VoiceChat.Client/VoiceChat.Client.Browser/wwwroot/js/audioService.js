@@ -4,6 +4,8 @@ let _worklet = null;
 let _dotnetExports = null;
 let _jitterBuffer = [];
 let _isPlaying = false;
+let _minBuffer = 3;
+let _targetBuffer = 5;
 
 export async function init() {
     const { getAssemblyExports } = await globalThis.getDotnetRuntime(0);
@@ -91,22 +93,30 @@ function queueAudio(float32) {
     playNext();
 }
 
-function playNext() {
-    if (!_ctx || _isPlaying || _jitterBuffer.length === 0) {
+async function playNext() {
+    if (!_ctx || _isPlaying || _jitterBuffer.length < _minBuffer) {
         return;
     }
 
-    const buf = _jitterBuffer.shift();
-    if (!buf || buf.length === 0) {
-        playNext();
+    const chunks = _jitterBuffer.splice(0, _targetBuffer);
+    if (chunks.length === 0) {
         return;
     }
+    
+    let totalLength = chunks.reduce((sum, c) => sum + c.length, 0);
     
     _isPlaying = true;
     
     try {
-        const audioBuffer = _ctx.createBuffer(1, buf.length, 48000);
-        audioBuffer.copyToChannel(buf, 0);
+        const combinedBuffer = new Float32Array(totalLength);
+        let offset = 0;
+        for (const chunk of chunks) {
+            combinedBuffer.set(chunk, offset);
+            offset += chunk.length;
+        }
+
+        const audioBuffer = _ctx.createBuffer(1, combinedBuffer.length, 48000);
+        audioBuffer.copyToChannel(combinedBuffer, 0);
 
         const source = _ctx.createBufferSource();
         source.buffer = audioBuffer;
@@ -121,7 +131,7 @@ function playNext() {
     } catch (e) {
         console.error("[playNext] Error:", e);
         _isPlaying = false;
-        playNext();
+        _jitterBuffer = [];
     }
 }
 
