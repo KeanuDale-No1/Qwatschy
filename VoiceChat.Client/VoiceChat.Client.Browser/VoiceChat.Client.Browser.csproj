@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
   <PropertyGroup>
     <TargetFramework>net10.0-browser</TargetFramework>
     <OutputType>Exe</OutputType>
@@ -40,14 +40,17 @@
     <ProjectReference Include="..\VoiceChat.Client\VoiceChat.Client.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <None Update="wwwroot\js\audioService.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="wwwroot\js\localStorage.js">
+    <None Update="wwwroot\js\processor.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="wwwroot\js\processor.js">
+    <None Update="wwwroot\js\audioProcessor.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="wwwroot\js\localStorage.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

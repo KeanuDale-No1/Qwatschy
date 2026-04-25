@@ -1,24 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 using VoiceChat.Client.Services.VoiceService;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace VoiceChat.Client.Browser.Services;
 
 [SupportedOSPlatform("browser")]
 public partial class BrowserVoiceService : IVoiceService
 {
-    private readonly OpusCodec codec = new OpusCodec();
-    private readonly short[] _pcmBuffer = new short[960];
     internal static BrowserVoiceService? Instance;
 
     public event Action<byte[]>? AudioFrameReceived;
-    private readonly Channel<byte[]> _encodeQueue = Channel.CreateUnbounded<byte[]>();
+
     public BrowserVoiceService()
     {
         Instance = this;
@@ -34,76 +27,61 @@ public partial class BrowserVoiceService : IVoiceService
     internal static partial void StopRecordingJs();
 
     [JSImport("decodeAndPlayPCM", "audioService")]
-    internal static partial void DecodeAndPlay(byte[] chunk);
+    internal static partial void DecodeAndPlayPcm(byte[] pcmData);
+
+    [JSImport("playOpusChunk", "audioService")]
+    internal static partial void PlayOpusChunkJs(byte[] opusData);
 
     public void InitializeAsync()
     {
-       InitJs();
+        InitJs();
+        Console.WriteLine("[BrowserVoiceService] Initialized");
     }
 
     public void StartRecording()
     {
-      StartRecordingJs();
+        StartRecordingJs();
+        Console.WriteLine("[BrowserVoiceService] Recording started");
     }
 
     public void StopRecording()
     {
-       
-         StopRecordingJs();
+        StopRecordingJs();
+        Console.WriteLine("[BrowserVoiceService] Recording stopped");
     }
 
-
-    // Wird von JS aufgerufen
     [JSExport]
-    public static void OnPcmFrame(byte[] pcmBytes)
+    public static void OnOpusFrame(byte[] opusData)
     {
         try
         {
-            Instance?.HandlePcmFrame(pcmBytes);
+            Instance?.AudioFrameReceived?.Invoke(opusData);
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            Console.WriteLine($"[BrowserVoiceService.OnOpusFrame] Error: {ex.Message}");
         }
     }
 
-    private void HandlePcmFrame(byte[] pcmBytes)
+    [JSExport]
+    public static void OnPcmFrame(byte[] pcmData)
     {
-
-        int totalSamples = pcmBytes.Length / 2;
-        short[] pcmShort = new short[totalSamples];
-        Buffer.BlockCopy(pcmBytes, 0, pcmShort, 0, pcmBytes.Length);
-
-        int offset = 0;
-        while (offset + 960 <= totalSamples)
+        try
         {
-            short[] frame960 = new short[960];
-            Array.Copy(pcmShort, offset, frame960, 0, 960);
-
-            try
-            {
-                byte[] opusData = codec.Encode(frame960);
-                AudioFrameReceived?.Invoke(opusData);
-            }
-            catch
-            {
-                // Frame droppen bei Fehler
-            }
-
-            offset += 960;
+            Instance?.AudioFrameReceived?.Invoke(pcmData);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[BrowserVoiceService.OnPcmFrame] Error: {ex.Message}");
         }
     }
-
 
     public void PlayOpusChunk(byte[] data)
     {
+        if (data == null || data.Length == 0)
+            return;
+            
         Console.WriteLine($"[BrowserVoiceService] PlayOpusChunk called with {data.Length} bytes");
-        short[] pcm = codec.Decode(data);
-        byte[] pcmBytes = new byte[pcm.Length * 2];
-        Buffer.BlockCopy(pcm, 0, pcmBytes, 0, pcmBytes.Length);
-        DecodeAndPlay(pcmBytes);
+        PlayOpusChunkJs(data);
     }
-
-
-
 }
