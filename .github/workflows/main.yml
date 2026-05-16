@@ -63,6 +63,15 @@ jobs:
         run: |
           main_exe="${{ matrix.os == 'windows-latest' && 'Qwatschy.exe' || 'Qwatschy' }}"
           vpk pack -o "${{ github.workspace }}" --packId Qwatschy --packVersion ${{ steps.version.outputs.VERSION }} --packDir "${{ github.workspace }}/output" --mainExe "$main_exe"
+          
+          # Rename files to remove version from name
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            mv Qwatschy-*-Setup.exe Qwatschy-Setup.exe 2>/dev/null || true
+            mv Qwatschy-*-full.nupkg Qwatschy-win.nupkg 2>/dev/null || true
+          else
+            mv Qwatschy-*.AppImage Qwatschy.AppImage 2>/dev/null || true
+            mv Qwatschy-*-linux-full.nupkg Qwatschy-linux.nupkg 2>/dev/null || true
+          fi
         shell: bash
 
       - name: Upload Artifact
@@ -70,9 +79,10 @@ jobs:
         with:
           name: release-client-${{ matrix.suffix }}
           path: |
-            ${{ github.workspace }}/Qwatschy-*.nupkg
-            ${{ github.workspace }}/Qwatschy-*.AppImage
-            ${{ github.workspace }}/Qwatschy-*-Setup.exe
+            ${{ github.workspace }}/Qwatschy-win.nupkg
+            ${{ github.workspace }}/Qwatschy-linux.nupkg
+            ${{ github.workspace }}/Qwatschy.AppImage
+            ${{ github.workspace }}/Qwatschy-Setup.exe
 
   build-deb:
     runs-on: ubuntu-latest
@@ -133,18 +143,18 @@ jobs:
           WRAPPER
           chmod +x "${{ github.workspace }}/deb-root/usr/bin/qwatschy"
           
-          cat > "${{ github.workspace }}/deb-root/usr/share/applications/com.qwatschy.Qwatschy.desktop" << 'DESKTOP'
+          cat > "${{ github.workspace }}/deb-root/usr/share/applications/io.github.KeanuDale_No1.Qwatschy.desktop" << 'DESKTOP'
           [Desktop Entry]
           Name=Qwatschy
           Comment=Cross-platform voice chat application
           Exec=/usr/lib/qwatschy/Qwatschy
-          Icon=com.qwatschy.Qwatschy
+          Icon=io.github.KeanuDale_No1.Qwatschy
           Terminal=false
           Type=Application
           Categories=Network;Chat;
           DESKTOP
           
-          cp VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png "${{ github.workspace }}/deb-root/usr/share/icons/hicolor/256x256/apps/com.qwatschy.Qwatschy.png" 2>/dev/null || true
+          cp VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png "${{ github.workspace }}/deb-root/usr/share/icons/hicolor/256x256/apps/io.github.KeanuDale_No1.Qwatschy.png" 2>/dev/null || true
           
           dpkg-deb --build "${{ github.workspace }}/deb-root" "${{ github.workspace }}/Qwatschy-deb.deb"
         shell: bash
@@ -191,7 +201,7 @@ jobs:
 
       - name: Build Flatpak
         run: |
-          flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install build-dir com.qwatschy.Qwatschy.yml
+          flatpak-builder --force-clean --user --install-deps-from=flathub --repo=repo --install build-dir io.github.KeanuDale_No1.Qwatschy.yml
 
       - name: Create App Archive
         run: |
@@ -199,7 +209,7 @@ jobs:
           zip -r "${{ github.workspace }}/Qwatschy-linux.zip" .
 
       - name: Create Flatpak Bundle
-        run: flatpak build-bundle repo Qwatschy.flatpak com.qwatschy.Qwatschy --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo
+        run: flatpak build-bundle repo Qwatschy.flatpak io.github.KeanuDale_No1.Qwatschy --runtime-repo=https://flathub.org/repo/flathub.flatpakrepo
 
       - name: Upload Flatpak Artifact
         uses: actions/upload-artifact@v4

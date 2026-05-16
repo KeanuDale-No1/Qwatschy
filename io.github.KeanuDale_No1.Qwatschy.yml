@@ -1,4 +1,4 @@
-id: com.qwatschy.Qwatschy
+id: io.github.KeanuDale_No1.Qwatschy
 runtime: org.freedesktop.Platform
 runtime-version: '25.08'
 sdk: org.freedesktop.Sdk

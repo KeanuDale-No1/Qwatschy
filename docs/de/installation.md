@@ -75,7 +75,7 @@ Lade den passenden Installer für dein Betriebssystem herunter:
 # Velopack CLI installieren
 dotnet tool install -g vpk
 
-# Qwatschy installieren
+# Qwatschy installieren (ohne Version im Dateinamen)
 vpk install-from-package https://github.com/KeanuDale-No1/Qwatschy/releases/latest/download/Qwatschy-linux.nupkg
 ```
 
@@ -95,10 +95,10 @@ sudo apt install -f
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 # Qwatschy installieren
-flatpak install flathub com.qwatschy.Qwatschy
+flatpak install flathub io.github.KeanuDale_No1.Qwatschy
 
 # Ausführen
-flatpak run com.qwatschy.Qwatschy
+flatpak run io.github.KeanuDale_No1.Qwatschy
 ```
 
 ### Option 4: Arch Linux (AUR)
