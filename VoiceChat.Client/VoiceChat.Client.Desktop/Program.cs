@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
+// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
 // Unauthorized copying, modification, or distribution is strictly prohibited
 
 using Avalonia;
@@ -6,9 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Velopack;
-using VoiceChat.Client.Desktop.Services.SoundPlayer;
+using VoiceChat.Client.Desktop.Services.AppSettings;
 using VoiceChat.Client.Extensions;
-using VoiceChat.Client.Services.SoundPlayer;
+using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.AppSettings;
 using VoiceChat.Client.Services.VoiceService;
 
 namespace VoiceChat.Client.Desktop
@@ -24,6 +25,7 @@ namespace VoiceChat.Client.Desktop
             VelopackApp.Build().Run();
             
             var services = ConfigureServices();
+
 
             BuildAvaloniaApp()
                 .AfterSetup(_ =>
@@ -44,9 +46,8 @@ namespace VoiceChat.Client.Desktop
         {
             var services = new ServiceCollection();
 
-            // Hier registrierst du deinen Desktop-SoundPlayer
-            services.AddSingleton<ISoundPlayer, DesktopSoundPlayer>();
             services.AddSingleton<IVoiceService, Services.VoiceService.DesktopVoiceService>();
+            services.AddSingleton<IStorageService, FileStorageService>();
             services.AddCommonServices();
             // weitere Services...
 

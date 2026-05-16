@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
+// Copyright (c) 2026 KeanuDale-No1 - All Rights Reserved
 // Unauthorized copying, modification, or distribution is strictly prohibited
 
 using Avalonia;
@@ -6,19 +6,23 @@ using Avalonia.Browser;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Runtime.InteropServices.JavaScript;
-using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using VoiceChat.Client;
 using VoiceChat.Client.Extensions;
-using VoiceChat.Client.Services.SoundPlayer;
 using VoiceChat.Client.Services.VoiceService;
 using VoiceChat.Client.Browser.Services;
+using VoiceChat.Client.Browser.Services.AppSettings;
+using VoiceChat.Client.Services.AppSettings;
 
 internal sealed partial class Program
 {
     private static async Task Main(string[] args)
     {
+        
         var services = ConfigureServices();
+
+        await JSHost.ImportAsync("audioService", "../js/audioService.js");
+        await JSHost.ImportAsync("localStorage", "../js/localStorage.js");
         
         await BuildAvaloniaApp()
             .AfterSetup(_ =>
@@ -27,16 +31,15 @@ internal sealed partial class Program
             })
             .WithInterFont()
             .StartBrowserAppAsync("out");
-        
-        await JSHost.ImportAsync("audioService", "../js/audioService.js");
     }
-
+    
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>().WithInterFont();
 
     private static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
+        services.AddSingleton<IStorageService, LocalStorageService>();
         services.AddSingleton<IVoiceService, BrowserVoiceService>();
         services.AddCommonServices();
         return services.BuildServiceProvider();

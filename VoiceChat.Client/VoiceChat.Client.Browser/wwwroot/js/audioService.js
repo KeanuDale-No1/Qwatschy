@@ -1,12 +1,26 @@
-// Simple cached DOTNET exports to reduce bridge overhead per frame
-let _dotnetExportsCache = null;
+let _ctx = null;
+let _stream = null;
+let _worklet = null;
+let _dotnetExports = null;
+let _jitterBuffer = [];
+let _isPlaying = false;
+let _minBuffer = 3;
+let _targetBuffer = 5;
+
 export async function init() {
     const { getAssemblyExports } = await globalThis.getDotnetRuntime(0);
-    _dotnetExportsCache = await getAssemblyExports("VoiceChat.Client.Browser.dll");
+    _dotnetExports = await getAssemblyExports("Qwatschy.Client.Browser.dll");
+    
+    _ctx = new AudioContext({ sampleRate: 48000, latencyHint: "interactive" });
+    
+    console.log("[audioService] init complete (PCM mode)");
 }
 
-
 export async function startRecording() {
+    if (_ctx && _ctx.state === 'suspended') {
+        await _ctx.resume();
+    }
+
     const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
             echoCancellation: false,
@@ -14,8 +28,6 @@ export async function startRecording() {
             autoGainControl: false,
             channelCount: 1,
             sampleRate: 48000,
-
-            // Chrome-spezifische Flags
             googEchoCancellation: false,
             googAutoGainControl: false,
             googNoiseSuppression: false,
@@ -23,55 +35,111 @@ export async function startRecording() {
         }
     });
 
-    // Prefer 'interactive' latency for real-time capture
-    const ctx = new AudioContext({ sampleRate: 48000, latencyHint: 0.01 });
-    await ctx.audioWorklet.addModule("js/processor.js");
+    _stream = stream;
+    
+    await _ctx.audioWorklet.addModule("js/audioProcessor.js");
 
-    const source = ctx.createMediaStreamSource(stream);
-    const worklet = new AudioWorkletNode(ctx, "pcm-worklet");
+    const source = _ctx.createMediaStreamSource(stream);
+    const worklet = new AudioWorkletNode(_ctx, "pcm-processor");
 
     worklet.port.onmessage = async (e) => {
-        const pcm16 = e.data;
-        const bytes = new Uint8Array(pcm16.buffer);
-        _dotnetExportsCache.VoiceChat.Client.Browser.Services.BrowserVoiceService.OnPcmFrame(bytes);
+        const pcmBytes = e.data;
+        _dotnetExports.VoiceChat.Client.Browser.Services.BrowserVoiceService.OnPcmFrame(pcmBytes);
     };
 
     source.connect(worklet);
-
-    globalThis._ctx = ctx;
-    globalThis._stream = stream;
-    globalThis._worklet = worklet;
+    _worklet = worklet;
+    
+    console.log("[audioService] Recording started");
 }
 
 export function stopRecording() {
-    if (globalThis._worklet) {
-        globalThis._worklet.disconnect();
-        globalThis._worklet = null;
+    if (_worklet) {
+        _worklet.disconnect();
+        _worklet = null;
     }
-    if (globalThis._ctx) {
-        globalThis._ctx.close();
-        globalThis._ctx = null;
+    if (_stream) {
+        _stream.getTracks().forEach(t => t.stop());
+        _stream = null;
     }
-    if (globalThis._stream) {
-        globalThis._stream.getTracks().forEach(t => t.stop());
-        globalThis._stream = null;
-    }
+    console.log("[audioService] Recording stopped");
 }
 
-
 export function decodeAndPlayPCM(pcmBytes) {
-    const pcm16 = new Int16Array(pcmBytes.buffer);
+    if (!_ctx) {
+        console.log("[decodeAndPlayPCM] No AudioContext!");
+        return;
+    }
 
+    if (_ctx.state === 'suspended') {
+        _ctx.resume();
+    }
+
+    const pcm16 = new Int16Array(pcmBytes.buffer);
     const float32 = new Float32Array(pcm16.length);
     for (let i = 0; i < pcm16.length; i++) {
         float32[i] = pcm16[i] / 32767;
     }
 
-    const audioBuffer = ctx.createBuffer(1, float32.length, 48000);
-    audioBuffer.copyToChannel(float32, 0);
+    queueAudio(float32);
+}
 
-    const source = ctx.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(ctx.destination);
-    source.start();
+export function playOpusChunk(opusBytes) {
+    decodeAndPlayPCM(opusBytes);
+}
+
+function queueAudio(float32) {
+    _jitterBuffer.push(float32);
+    playNext();
+}
+
+async function playNext() {
+    if (!_ctx || _isPlaying || _jitterBuffer.length < _minBuffer) {
+        return;
+    }
+
+    const chunks = _jitterBuffer.splice(0, _targetBuffer);
+    if (chunks.length === 0) {
+        return;
+    }
+    
+    let totalLength = chunks.reduce((sum, c) => sum + c.length, 0);
+    
+    _isPlaying = true;
+    
+    try {
+        const combinedBuffer = new Float32Array(totalLength);
+        let offset = 0;
+        for (const chunk of chunks) {
+            combinedBuffer.set(chunk, offset);
+            offset += chunk.length;
+        }
+
+        const audioBuffer = _ctx.createBuffer(1, combinedBuffer.length, 48000);
+        audioBuffer.copyToChannel(combinedBuffer, 0);
+
+        const source = _ctx.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(_ctx.destination);
+
+        source.onended = () => {
+            _isPlaying = false;
+            playNext();
+        };
+
+        source.start();
+    } catch (e) {
+        console.error("[playNext] Error:", e);
+        _isPlaying = false;
+        _jitterBuffer = [];
+    }
+}
+
+export function getLatency() {
+    return _jitterBuffer.length;
+}
+
+export function clearBuffer() {
+    _jitterBuffer = [];
+    _isPlaying = false;
 }

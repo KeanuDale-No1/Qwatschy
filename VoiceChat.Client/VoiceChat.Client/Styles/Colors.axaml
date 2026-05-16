@@ -11,8 +11,14 @@
     <Color x:Key="BrandPrimaryHover">#d42a6e</Color>
     <Color x:Key="BrandPrimaryLight">#71cbfa</Color>
 
+    <Color x:Key="DangerColor">#dc3545</Color>
+    <Color x:Key="DangerHoverColor">#c82333</Color>
+
     <SolidColorBrush x:Key="BrandPrimaryBrush" Color="{DynamicResource BrandPrimaryColor}"/>
     <SolidColorBrush x:Key="BrandPrimaryHoverBrush" Color="{DynamicResource BrandPrimaryHover}"/>
     <SolidColorBrush x:Key="BrandPrimaryLightBrush" Color="{DynamicResource BrandPrimaryLight}"/>
+
+    <SolidColorBrush x:Key="DangerBrush" Color="{DynamicResource DangerColor}"/>
+    <SolidColorBrush x:Key="DangerHoverBrush" Color="{DynamicResource DangerHoverColor}"/>
 
 </ResourceDictionary>

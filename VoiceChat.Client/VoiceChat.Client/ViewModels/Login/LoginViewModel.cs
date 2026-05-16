@@ -1,74 +1,41 @@
-﻿using Avalonia.Collections;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using VoiceChat.Client.Services;
+using VoiceChat.Client.Services.AppSettings;
+using VoiceChat.Client.Services.Navigation;
 using VoiceChat.Client.ViewModels.Base;
 using VoiceChat.Client.ViewModels.MainArea;
-using VoiceChat.Shared.Models;
 
 namespace VoiceChat.Client.ViewModels.Login;
 
 
 public partial class LoginViewModel : ViewModelBase
 {
-    private readonly ConnectionService connectionService;
-
-    [ObservableProperty] public string username = "";
-    [ObservableProperty] public string inputserverAddress = "";
-    [NotifyPropertyChangedFor(nameof(HistoryButtonText))]
-    [ObservableProperty] public bool openLastConnection = false;
-    public string HistoryButtonText =>OpenLastConnection? "Verstecke Historie" : "Zeige Historie";
-
-    public ObservableCollection<ServerConnection> ServerConnections { get; } = new ObservableCollection<ServerConnection>();
+    private readonly IAppSettingsService appSettingsService;
+    private readonly INavigationService navigationService;
 
 
+    [ObservableProperty]
+    [NotifyDataErrorInfo]
+    [Required(ErrorMessage = "Ein Name ist erforderlich")]
+    [Length(2,30,ErrorMessage = "Der Name muss 2 bis 20 Zeichen enthalten")]
+    [NotifyCanExecuteChangedFor(nameof(SaveCommand))]
+    public string username = "";
 
-    public LoginViewModel(AppState appState, ConnectionService connectionService)
+    public LoginViewModel(IAppSettingsService appSettingsService, INavigationService navigationService)
     {
-        this.connectionService = connectionService;
-        Username = appState.GetUser().UserName;
-        InputserverAddress = appState.GetLastServer()?.ServerAdress ?? "";
-        ServerConnections = new ObservableCollection<ServerConnection>(appState.GetLastServers());
-    }
-    public LoginViewModel() :this(null!, null!) { }
-
-    [RelayCommand]
-    public async Task Conntect()
-    {
-        if (string.IsNullOrWhiteSpace(InputserverAddress))
-        {
-            Console.WriteLine("serveradresse nicht eingegeben");
-            Console.WriteLine($"serveradresse: {InputserverAddress}");
-            return;
-        }
-            
-        try
-        {
-            await connectionService.ServerConnect(Username, InputserverAddress);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Fehler bei {nameof(LoginViewModel).ToString()} Conntect: {ex.Message}");
-        }
+        this.appSettingsService = appSettingsService;
+        this.navigationService = navigationService;
     }
 
-    [RelayCommand]
-    public async Task OpenHistory()
+    [RelayCommand(CanExecute = nameof(CanSave))]
+    public async Task Save()
     {
-        OpenLastConnection = !OpenLastConnection;
+        
+        appSettingsService.SetUsername(Username);
+        await navigationService.NavigateTo<MainAreaViewModel>();
     }
-
-    [RelayCommand]
-    public async Task SetHistoryServer(ServerConnection serveradress)
-    {
-        InputserverAddress = serveradress.ServerAdress;
-        Username = serveradress.UserName;
-    }
-
+    private bool CanSave() => !HasErrors && !string.IsNullOrWhiteSpace(Username);
 
 }

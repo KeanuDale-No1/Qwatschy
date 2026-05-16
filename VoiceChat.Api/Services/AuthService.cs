@@ -2,7 +2,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using VoiceChat.Shared.Models;
+using VoiceChat.Api.Options;
 
 namespace VoiceChat.Api.Services;
 
@@ -23,7 +23,8 @@ public class AuthService(JwtOptions options) : IAuthService
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, userId),
-            new Claim(ClaimTypes.Name, userId)
+            new Claim(ClaimTypes.Name, userId),
+            new Claim("username", userId)
         };
 
         var token = new JwtSecurityToken(

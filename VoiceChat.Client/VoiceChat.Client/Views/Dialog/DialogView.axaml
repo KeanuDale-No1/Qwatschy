@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:dialog="using:VoiceChat.Client.ViewModels.Dialog"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:vm="using:VoiceChat.Client.ViewModels.Dialog"
+			 x:DataType="vm:DialogViewModel"
+			 x:Class="VoiceChat.Client.Views.Dialog.DialogView"
+				IsVisible="{Binding Show}"
+			 VerticalAlignment="Stretch"
+			 HorizontalAlignment="Stretch">
+	<Grid>
+		<Panel Classes="dialogOverlay"/>
+		<Border Classes="dialogWindow" MinWidth="400" MaxWidth="600">
+			<Grid RowDefinitions="Auto,*">
+				<Border Grid.Row="0" Classes="dialogHeader">
+					<Grid>
+						<TextBlock Text="{Binding DialogViewModelBase?.Title, FallbackValue=''}" Classes="dialogTitle"/>
+						<Button Content="&#xE711;" 
+								Command="{Binding DialogViewModelBase?.CancelCommand, FallbackValue={x:Null}}" 
+								Classes="dialogClose" />
+					</Grid>
+				</Border>
+				<Border Grid.Row="1" Classes="dialogContent">
+					<ContentControl Content="{Binding DialogViewModelBase}" />
+				</Border>
+			</Grid>
+		</Border>
+	</Grid>
+</UserControl>

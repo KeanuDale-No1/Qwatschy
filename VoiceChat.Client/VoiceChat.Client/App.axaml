@@ -14,13 +14,18 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://VoiceChat.Client/Styles/ThemeResources.axaml"/>
                 <ResourceInclude Source="avares://VoiceChat.Client/Styles/Colors.axaml"/>
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 
     <Application.Styles>
         <FluentTheme/>
-        <StyleInclude Source="avares://VoiceChat.Client/Styles/Win81Controls.axaml"/>
+        <StyleInclude Source="avares://VoiceChat.Client/Styles/DialogStyles.axaml"/>
+        <StyleInclude Source="avares://VoiceChat.Client/Styles/Controls.axaml"/>
+
+
+        
     </Application.Styles>
 
 </Application>

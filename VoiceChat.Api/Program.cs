@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using VoiceChat.Api.Endpoints;
 using VoiceChat.Api.Hubs;
+using VoiceChat.Api.Options;
 using VoiceChat.Api.Services;
 using VoiceChat.Api.UseCases;
 using VoiceChat.Api.WebSockets;
 using VoiceChat.Data;
 using VoiceChat.Data.Repositories;
-using VoiceChat.Shared.Models;
+using VoiceChat.Shared.DTOs;
 
 Console.WriteLine("Starting API...");
 
@@ -20,10 +21,17 @@ Console.WriteLine("Configuring services...");
 
 builder.Services.AddDbContext<VoiceChatDbContext>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-builder.Services.AddUsecases();
+
+
+//builder.Services.AddUsecases();
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
 builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtOptions>>().Value);
+
+builder.Services.Configure<ServerOptions>(builder.Configuration.GetSection("ServerOptions"));
+builder.Services.AddSingleton(sp => sp.GetRequiredService<IOptions<ServerOptions>>().Value);
+
 builder.Services.AddSingleton<IAuthService, AuthService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -35,9 +43,11 @@ builder.Services.AddCors(options =>
              .AllowCredentials();
     });
 });
+
 builder.Services.AddSignalR(options =>
 {
-    options.EnableDetailedErrors = true;
+    if (builder.Environment.IsDevelopment())
+        options.EnableDetailedErrors = true;
 });
 
 Console.WriteLine("Building app...");
@@ -75,7 +85,7 @@ app.AddEndpoints();
 app.UseMiddleware<TokenValidationMiddleware>();
 app.UseWebSockets();
 
-app.MapHub<ChatHub>("/connection");
+app.MapHub<ServerHub>("/connection");
 
 var jwtOptions = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>()!;
 
@@ -96,9 +106,20 @@ app.Map("/audio", async context =>
 
     var webSocket = await context.WebSockets.AcceptWebSocketAsync();
     var channelId = context.Request.Query["channelId"].ToString();
-    await audioHandler.HandleWebSocketAsync(channelId, webSocket, context.RequestAborted);
+
+    var userIdClaim = context.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+    var usernameClaim = context.User.FindFirst("username")?.Value ?? context.User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "Unknown";
+
+    if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out var userId))
+    {
+        context.Response.StatusCode = 401;
+        return;
+    }
+
+    await audioHandler.HandleWebSocketAsync(channelId, webSocket, userId, usernameClaim, context.RequestAborted);
 });//.AllowAnonymous();
 
-Console.WriteLine("API ready. Listening on http://localhost:5000");
+var urls = builder.Configuration["Urls"] ?? "http://localhost:5000";
+Console.WriteLine($"API ready. Listening on {urls}");
 
 app.Run();

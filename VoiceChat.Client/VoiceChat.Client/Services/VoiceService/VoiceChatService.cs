@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using VoiceChat.Client.Hubs;
 
 namespace VoiceChat.Client.Services.VoiceService
@@ -9,35 +10,41 @@ namespace VoiceChat.Client.Services.VoiceService
     {
         private readonly IVoiceService voiceService;
       
-        private readonly StateService stateService;
         private bool isRecording = false;
         private bool isInitialized = false;
 
-        public VoiceChatService(IVoiceService voiceService, StateService stateService
-            )
+        private bool IsMuted = false;
+
+        public event Action<byte[]> AudioFrameReceived;
+
+        public VoiceChatService(IVoiceService voiceService)
         {
-            this.stateService = stateService;
             this.voiceService = voiceService;
-            voiceService.AudioFrameReceived += OnAudioFrameReceived;
+            voiceService.AudioFrameReceived += VoiceService_AudioFrameReceived;
         }
 
-        private void OnReceiveAudioFrame(byte[] opusdata)
+        private void VoiceService_AudioFrameReceived(byte[] obj)
         {
+            AudioFrameReceived?.Invoke(obj);
         }
 
-        public void Start()
+        public async Task Start()
         {
+            Console.WriteLine("[VoiceChatService] Start called");
             if (!isInitialized)
             {
+                Console.WriteLine("[VoiceChatService] Initializing...");
                 voiceService.InitializeAsync();
                 isInitialized = true;
             }
-            
+            await Task.Delay(100);
             if (!isRecording)
             {
+                Console.WriteLine("[VoiceChatService] Starting recording...");
                 voiceService.StartRecording();
                 isRecording = true;
             }
+            Console.WriteLine("[VoiceChatService] Start complete");
         }
 
         public void Stop()
@@ -48,12 +55,10 @@ namespace VoiceChat.Client.Services.VoiceService
                 isRecording = false;
             }
         }
-
-
         public void ToggleMute()
         {
-            stateService.SetMuted(!stateService.IsMuted);
-            if (stateService.IsMuted)
+            IsMuted= !IsMuted;
+            if (IsMuted)
             {
                 voiceService.StopRecording();
                 isRecording = false;
@@ -65,13 +70,11 @@ namespace VoiceChat.Client.Services.VoiceService
             }
         }
 
-        private void OnAudioFrameReceived(byte[] opusdata)
-        {
-            if (stateService.ConnectedChannelId.HasValue && stateService.ConnectedChannelId != Guid.Empty)
-            {
-
-            }
-        }
+        public void PlayOpusChunk(byte[] opusdata)
+    {
+        Console.WriteLine($"[VoiceChatService] PlayOpusChunk called with {opusdata.Length} bytes");
+        voiceService.PlayOpusChunk(opusdata);
+    }
 
     }
 }

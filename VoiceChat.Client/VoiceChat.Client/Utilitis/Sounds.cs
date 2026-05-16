@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using VoiceChat.Client.Services.SoundPlayer;
 
 namespace VoiceChat.Client.Utilitis;
 
-public class Sounds()//ISoundPlayer soundPlayer)
+public class Sounds()
 {
     public void PlayJoinSound()
     {

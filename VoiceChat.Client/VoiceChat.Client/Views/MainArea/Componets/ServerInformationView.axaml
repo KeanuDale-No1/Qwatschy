@@ -1,0 +1,36 @@
+<UserControl Padding="0"
+			 xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea.Componets"
+			 xmlns:converters="using:VoiceChat.Client.Converters"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:Class="VoiceChat.Client.Views.MainArea.Componets.ServerInformationView"
+			 x:DataType="vm:ServerInformationViewModel">
+
+	<UserControl.Resources>
+		<converters:ServerImageValueConverter x:Key="ServerImageValueConverter"/>
+	</UserControl.Resources>
+
+	<Border Classes="serverPanel">
+		<StackPanel Classes="serverInfo">
+			<Viewbox MaxWidth="228"
+					 MaxHeight="228"
+					 HorizontalAlignment="Center">
+				<Image Source="{Binding ServerConnectionInfo.ServerImage, Converter={StaticResource ServerImageValueConverter}}"
+					   Width="228"
+					   Height="228"
+					   Stretch="Uniform"/>
+			</Viewbox>
+
+			<TextBlock Classes="serverInfoTitle"
+					   Text="{Binding ServerConnectionInfo.ServerName}"/>
+
+			<Separator/>
+
+			<TextBlock Classes="serverInfoCaption"
+					   Text="{Binding ServerConnectionInfo.Description}"/>
+		</StackPanel>
+	</Border>
+</UserControl>

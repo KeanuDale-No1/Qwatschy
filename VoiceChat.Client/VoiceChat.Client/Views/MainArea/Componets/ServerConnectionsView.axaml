@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="64" d:DesignHeight="450"
+			 xmlns:vm="using:VoiceChat.Client.ViewModels.MainArea.Componets"
+			 xmlns:converters="using:VoiceChat.Client.Converters"
+			 x:DataType="vm:ServerConnectionsViewModel"
+			 x:Class="VoiceChat.Client.Views.MainArea.Componets.ServerConnectionsView">
+
+	<UserControl.Resources>
+		<converters:ServerImageConverter x:Key="ServerImageConverter"/>
+	</UserControl.Resources>
+
+	<ScrollViewer Classes="serverSidebar">
+		<StackPanel>
+			<ItemsControl ItemsSource="{Binding Servers}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Button Classes="serverIcon"
+								Command="{Binding $parent[ItemsControl].DataContext.OpenServerCommand}"
+								CommandParameter="{Binding .}"
+								IsEnabled="{Binding IsConnected}"
+								ToolTip.Tip="{Binding ServerName}">
+							<Grid RowDefinitions="*" ColumnDefinitions="*" >
+								<Border Grid.Row="0" Grid.Column="0"
+										HorizontalAlignment="Stretch"
+										VerticalAlignment="Stretch">
+									<Border.Background>
+										<MultiBinding Converter="{StaticResource ServerImageConverter}">
+											<Binding Path="ServerImage"/>
+											<Binding Path="Abbr"/>
+										</MultiBinding>
+									</Border.Background>
+								</Border>
+								<TextBlock Grid.Row="0" Grid.Column="0"
+										   Text="{Binding Abbr}"
+										   IsVisible="{Binding ServerImage, Converter={x:Static ObjectConverters.IsNull}}"
+										   HorizontalAlignment="Center"
+										   VerticalAlignment="Center"/>
+								<Button Classes="serverCloseIcon"
+										Grid.Row="0" Grid.Column="0"
+										Command="{Binding $parent[ItemsControl].DataContext.RemoveServerCommand}"
+										CommandParameter="{Binding .}"
+										HorizontalAlignment="Right"
+										VerticalAlignment="Top">
+									<PathIcon Data="m376-300 104-104 104 104 56-56-104-104 104-104-56-56-104 104-104-104-56 56 104 104-104 104 56 56Zm-96 180q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520Zm-400 0v520-520Z" 
+											  HorizontalAlignment="Center" 
+											  VerticalAlignment="Center"
+											  Foreground="{DynamicResource TextBrush}" />
+								</Button>
+							</Grid>
+						</Button>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<Button Classes="addServer"
+					Command="{Binding AddServerCommand}"
+					Content="+"/>
+			<Border Classes="serverDivider"/>
+		</StackPanel>
+	</ScrollViewer>
+
+</UserControl>

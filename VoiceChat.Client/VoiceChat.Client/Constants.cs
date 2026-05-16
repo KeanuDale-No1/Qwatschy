@@ -6,6 +6,6 @@ namespace VoiceChat.Client
 {
     public static class QwatschyConstants
     {
-        public const string VoiceChatName = "Qwatschy";
+        public const string AppName = "Qwatschy";
     }
 }
