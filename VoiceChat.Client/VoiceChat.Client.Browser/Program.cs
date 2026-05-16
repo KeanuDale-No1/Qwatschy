@@ -32,7 +32,7 @@ internal sealed partial class Program
             .WithInterFont()
             .StartBrowserAppAsync("out");
     }
-
+    
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>().WithInterFont();
 

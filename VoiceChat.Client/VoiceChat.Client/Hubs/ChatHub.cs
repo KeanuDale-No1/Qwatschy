@@ -8,7 +8,6 @@ namespace VoiceChat.Client.Hubs;
 public partial class ClientHub
 {
 
-
     //public async Task SendMessageAsync(Guid serverId, ChatMessageDTO message)
     //{
     //    if (_connections.TryGetValue(serverId, out var connection) && connection.State == HubConnectionState.Connected)
@@ -29,5 +28,6 @@ public partial class ClientHub
 
     private void RegisterChatEventHandlers(HubConnection connection, Guid serverId)
     {
+    
     }
 }
