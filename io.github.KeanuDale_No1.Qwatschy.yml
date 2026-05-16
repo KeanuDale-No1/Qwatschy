@@ -21,7 +21,7 @@ modules:
       - type: dir
         path: .
     build-commands:
-      - install -d /app/lib/qwatschy
+      - install -d /app/lib/qwatschy /app/bin
       - cp -r output-flatpak/* /app/lib/qwatschy/
-      - install -Dm755 /app/lib/qwatschy/Qwatschy /app/bin/Qwatschy
-      - install -Dm644 VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png /app/share/icons/hicolor/256x256/apps/com.qwatschy.Qwatschy.png
+      - ln -sf /app/lib/qwatschy/Qwatschy /app/bin/Qwatschy
+      - install -Dm644 VoiceChat.Client/VoiceChat.Client/Assets/qwatschy_logo.png /app/share/icons/hicolor/256x256/apps/io.github.KeanuDale_No1.Qwatschy.png
